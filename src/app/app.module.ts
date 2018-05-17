@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
 import * as fromLocation from './location/location.reducer';
+import * as fromMeasurment from './measurment/measurment.reducer';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import * as fromLocation from './location/location.reducer';
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects]),
-    StoreModule.forFeature('location', fromLocation.reducer)
+    StoreModule.forFeature('location', fromLocation.reducer),
+    StoreModule.forFeature('measurment', fromMeasurment.reducer)
   ],
   providers: [],
   bootstrap: [AppComponent]
