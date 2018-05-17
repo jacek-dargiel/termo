@@ -1,0 +1,8 @@
+@import '../../styles/variables';
+
+:host {
+    display: block;
+    background: url($mapBackground);
+    background-size: cover;
+    flex: 1;
+}

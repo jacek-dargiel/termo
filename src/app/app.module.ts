@@ -10,10 +10,14 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
 import * as fromLocation from './location/location.reducer';
 import * as fromMeasurment from './measurment/measurment.reducer';
+import { MapComponent } from './map/map.component';
+import { MapLocationComponent } from './map-location/map-location.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MapComponent,
+    MapLocationComponent
   ],
   imports: [
     BrowserModule,
