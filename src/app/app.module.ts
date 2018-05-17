@@ -8,6 +8,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
+import * as fromLocation from './location/location.reducer';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { AppEffects } from './app.effects';
     BrowserModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([AppEffects])
+    EffectsModule.forRoot([AppEffects]),
+    StoreModule.forFeature('location', fromLocation.reducer)
   ],
   providers: [],
   bootstrap: [AppComponent]
