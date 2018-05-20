@@ -3,13 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
+import { reducers, metaReducers } from './state/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
-import * as fromLocation from './location/location.reducer';
-import * as fromMeasurment from './measurment/measurment.reducer';
+import * as fromLocation from './state/location/location.reducer';
+import * as fromMeasurment from './state/measurment/measurment.reducer';
 import { MapComponent } from './map/map.component';
 import { MapLocationComponent } from './map-location/map-location.component';
 
