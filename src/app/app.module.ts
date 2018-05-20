@@ -10,8 +10,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
 import * as fromLocation from './state/location/location.reducer';
 import * as fromMeasurment from './state/measurment/measurment.reducer';
-import { MapComponent } from './map/map.component';
-import { MapLocationComponent } from './map-location/map-location.component';
+import { MapComponent } from './containers/map/map.component';
+import { MapLocationComponent } from './components/map-location/map-location.component';
 
 @NgModule({
   declarations: [
