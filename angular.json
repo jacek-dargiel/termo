@@ -122,8 +122,5 @@
       }
     }
   },
-  "defaultProject": "termo",
-  "cli": {
-    "defaultCollection": "@ngrx/schematics"
-  }
+  "defaultProject": "termo"
 }

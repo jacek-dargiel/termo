@@ -12,6 +12,7 @@ import * as fromLocation from './state/location/location.reducer';
 import * as fromMeasurment from './state/measurment/measurment.reducer';
 import { MapComponent } from './containers/map/map.component';
 import { MapLocationComponent } from './components/map-location/map-location.component';
+import { LocationService } from './services/location.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,9 @@ import { MapLocationComponent } from './components/map-location/map-location.com
     StoreModule.forFeature('location', fromLocation.reducer),
     StoreModule.forFeature('measurment', fromMeasurment.reducer)
   ],
-  providers: [],
+  providers: [
+    LocationService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
