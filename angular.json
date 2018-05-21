@@ -54,7 +54,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "termo:build"
+            "browserTarget": "termo:build",
+            "proxyConfig": "./proxy.conf.json"
           },
           "configurations": {
             "production": {

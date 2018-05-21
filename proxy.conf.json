@@ -1,0 +1,9 @@
+{
+  "/api": {
+    "target": "https://io.adafruit.com",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": "/api/v2/przemekd"
+    }
+  }
+}
