@@ -1,7 +1,45 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+import { aioHeaders } from './aio-headers';
+import { environment } from 'environments/environment';
+
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { AIOFeed, MeasurmentLocation, Point } from '../interfaces';
 
 @Injectable()
 export class LocationService {
 
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+  ) { }
+
+  getLocations(): Observable<MeasurmentLocation[]> {
+    const options = {
+      headers: aioHeaders,
+    };
+    return this.http.get<AIOFeed[]>(`${environment.API_URL}/groups/temperatura/feeds`, options)
+      .pipe(
+        map(feeds => feeds.map(feed => this.mapFeedToLocation(feed)))
+      );
+  }
+
+  mapFeedToLocation(feed: AIOFeed): MeasurmentLocation {
+    const mapPosition = this.parseMapPosition(feed.description);
+    return {
+      name: feed.name,
+      feedKey: feed.key,
+      mapPosition,
+    };
+  }
+
+  parseMapPosition(description: string): Point {
+    try {
+      return JSON.parse(description);
+    } catch (e) {
+      throw new Error('Failed parsing AIO feed description from JSON to map position');
+    }
+  }
 }

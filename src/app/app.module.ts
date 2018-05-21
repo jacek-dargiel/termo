@@ -13,6 +13,7 @@ import * as fromMeasurment from './state/measurment/measurment.reducer';
 import { MapComponent } from './containers/map/map.component';
 import { MapLocationComponent } from './components/map-location/map-location.component';
 import { LocationService } from './services/location.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { LocationService } from './services/location.service';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects]),
     StoreModule.forFeature('location', fromLocation.reducer),
-    StoreModule.forFeature('measurment', fromMeasurment.reducer)
+    StoreModule.forFeature('measurment', fromMeasurment.reducer),
+    HttpClientModule,
   ],
   providers: [
     LocationService
