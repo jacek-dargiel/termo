@@ -7,6 +7,8 @@ import { MapFacade } from './map.facade';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
+  public locationsLoading$ = this.mapFacade.locationsLoading$;
+  public locations$ = this.mapFacade.locations$;
 
   constructor(
     private mapFacade: MapFacade,
