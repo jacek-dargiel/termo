@@ -7,7 +7,8 @@ import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { AIOFeed, MeasurmentLocation, Point } from '../interfaces';
+import { AIOFeed, Point } from '../interfaces';
+import { Location } from '../state/location/location.model';
 
 @Injectable()
 export class LocationService {
@@ -16,7 +17,7 @@ export class LocationService {
     private http: HttpClient,
   ) { }
 
-  getLocations(): Observable<MeasurmentLocation[]> {
+  getLocations(): Observable<Location[]> {
     const options = {
       headers: aioHeaders,
     };
@@ -26,9 +27,10 @@ export class LocationService {
       );
   }
 
-  mapFeedToLocation(feed: AIOFeed): MeasurmentLocation {
+  mapFeedToLocation(feed: AIOFeed): Location {
     const mapPosition = this.parseMapPosition(feed.description);
     return {
+      id: feed.id,
       name: feed.name,
       feedKey: feed.key,
       mapPosition,

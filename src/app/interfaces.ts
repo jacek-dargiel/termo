@@ -32,12 +32,6 @@ interface AIOFeedOwner {
     username: string;
 }
 
-export interface MeasurmentLocation {
-    name: string;
-    mapPosition: Point;
-    feedKey: string;
-}
-
 export interface Point {
     x: number;
     y: number;
