@@ -3,13 +3,13 @@ import { Location } from './location.model';
 import { LocationActions, LocationActionTypes } from './location.actions';
 
 export interface State extends EntityState<Location> {
-  // additional entities state properties
+  loading: boolean;
 }
 
 export const adapter: EntityAdapter<Location> = createEntityAdapter<Location>();
 
 export const initialState: State = adapter.getInitialState({
-  // additional entity state properties
+  loading: false,
 });
 
 export function reducer(
@@ -50,11 +50,29 @@ export function reducer(
     }
 
     case LocationActionTypes.LoadLocations: {
-      return adapter.addAll(action.payload.locations, state);
+      const loadedState = {
+        ...state,
+        loading: false,
+      };
+      return adapter.addAll(action.payload.locations, loadedState);
     }
 
     case LocationActionTypes.ClearLocations: {
       return adapter.removeAll(state);
+    }
+
+    case LocationActionTypes.FetchLocations: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
+    case LocationActionTypes.FetchLocationsError: {
+      return {
+        ...state,
+        loading: false,
+      };
     }
 
     default: {

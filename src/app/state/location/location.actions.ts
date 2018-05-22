@@ -12,7 +12,10 @@ export enum LocationActionTypes {
   UpdateLocations = '[Location] Update Locations',
   DeleteLocation = '[Location] Delete Location',
   DeleteLocations = '[Location] Delete Locations',
-  ClearLocations = '[Location] Clear Locations'
+  ClearLocations = '[Location] Clear Locations',
+
+  FetchLocations = '[Location] Fetch Locations',
+  FetchLocationsError = '[Location] Fetch Locations Error',
 }
 
 export class LoadLocations implements Action {
@@ -73,6 +76,17 @@ export class ClearLocations implements Action {
   readonly type = LocationActionTypes.ClearLocations;
 }
 
+// ### Custom actions
+
+export class FetchLocations implements Action {
+  readonly type = LocationActionTypes.FetchLocations;
+}
+
+export class FetchLocationsError implements Action {
+  readonly type = LocationActionTypes.FetchLocationsError;
+  constructor(public payload: { error: Error }) {}
+}
+
 export type LocationActions =
  LoadLocations
  | AddLocation
@@ -83,4 +97,7 @@ export type LocationActions =
  | UpdateLocations
  | DeleteLocation
  | DeleteLocations
- | ClearLocations;
+ | ClearLocations
+ | FetchLocations
+ | FetchLocationsError
+ ;
