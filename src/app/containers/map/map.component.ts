@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MapFacade } from './map.facade';
 
 @Component({
   selector: 'termo-map',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MapComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private mapFacade: MapFacade,
+  ) { }
 
   ngOnInit() {
+    this.mapFacade.fetchLocations();
   }
 
 }
