@@ -14,6 +14,7 @@ import { MapComponent } from './containers/map/map.component';
 import { MapLocationComponent } from './components/map-location/map-location.component';
 import { LocationService } from './services/location.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ErrorHandlingService } from './services/error-handling.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
   ],
   providers: [
-    LocationService
+    ErrorHandlingService,
+    LocationService,
   ],
   bootstrap: [AppComponent]
 })
