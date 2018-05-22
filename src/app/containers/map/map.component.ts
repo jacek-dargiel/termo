@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { MapFacade } from './map.facade';
 
 @Component({
@@ -12,6 +12,7 @@ export class MapComponent implements OnInit {
 
   constructor(
     private mapFacade: MapFacade,
+    public el: ElementRef<HTMLElement>,
   ) { }
 
   ngOnInit() {
