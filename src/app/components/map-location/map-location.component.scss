@@ -1,3 +1,36 @@
 :host {
   position: absolute;
+  background: #fff;
+  border: 1px solid mix(#aaa, lightblue, 80%);
+  padding: 0.4rem 1rem;
+  overflow: hidden;
+}
+
+.arrow {
+  $size: 15px;
+  position: absolute;
+  width: $size;
+  height: $size;
+  bottom: -1*$size/2;
+  right: -1*$size/2;
+  background: #00b1ff;
+  transform: rotate(0.125turn);
+}
+
+.temperature{
+  font-weight: 600;
+
+  &--primary {
+    color: #00b1ff;
+    font-size: 4rem;
+  }
+  &--minimal {
+    color: #555;
+
+    &::before {
+      content: '/';
+      color: #999;
+      margin: 0 0.25rem;
+    }
+  }
 }

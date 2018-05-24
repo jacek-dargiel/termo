@@ -12,7 +12,10 @@ export class MapLocationComponent implements OnInit {
   @HostBinding('style.top.px') top;
   @HostBinding('style.left.px') left;
 
-  constructor(public map: MapComponent) { }
+  constructor(
+    private map: MapComponent,
+    private mapLocation: ElementRef<HTMLElement>,
+  ) { }
 
   ngOnInit() {
     this.adjustPosition();
@@ -22,8 +25,8 @@ export class MapLocationComponent implements OnInit {
     this.adjustPosition();
   }
   adjustPosition() {
-    this.left = this.location.mapPosition.x * this.map.el.nativeElement.clientWidth;
-    this.top = this.location.mapPosition.y * this.map.el.nativeElement.clientHeight;
+    this.left = this.location.mapPosition.x * this.map.el.nativeElement.clientWidth - this.mapLocation.nativeElement.clientWidth;
+    this.top = this.location.mapPosition.y * this.map.el.nativeElement.clientHeight - this.mapLocation.nativeElement.clientHeight;
   }
 
 }
