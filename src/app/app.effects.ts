@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { defer, Observable, of } from 'rxjs';
-import { LoadLocations, LocationActionTypes, FetchLocationsError } from './state/location/location.actions';
+import { FetchLocationsSuccess, LocationActionTypes, FetchLocationsError } from './state/location/location.actions';
 import { LocationService } from './services/location.service';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { ErrorHandlingService } from './services/error-handling.service';
@@ -27,9 +27,9 @@ export class AppEffects {
 
   @Effect()
   loadLocations$ = this.actions$.pipe(
-    ofType(LocationActionTypes.FetchLocations),
+    ofType(LocationActionTypes.MapInitialized),
     switchMap(() => this.location.getLocations()),
-    map(locations => new LoadLocations({locations})),
+    map(locations => new FetchLocationsSuccess({locations})),
     catchError(error => of(new FetchLocationsError(error)))
   );
 }

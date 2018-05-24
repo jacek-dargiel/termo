@@ -49,7 +49,7 @@ export function reducer(
       return adapter.removeMany(action.payload.ids, state);
     }
 
-    case LocationActionTypes.LoadLocations: {
+    case LocationActionTypes.FetchLocationsSuccess: {
       const loadedState = {
         ...state,
         loading: false,
@@ -61,7 +61,7 @@ export function reducer(
       return adapter.removeAll(state);
     }
 
-    case LocationActionTypes.FetchLocations: {
+    case LocationActionTypes.MapInitialized: {
       return {
         ...state,
         loading: true,

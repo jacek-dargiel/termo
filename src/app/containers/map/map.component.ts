@@ -16,7 +16,7 @@ export class MapComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.mapFacade.fetchLocations();
+    this.mapFacade.dispatchMapInit();
   }
 
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '../../state/reducers';
-import { FetchLocations } from '../../state/location/location.actions';
+import { MapInitialized } from '../../state/location/location.actions';
 import * as locationSelectors from '../../state/location/location.selectors';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class MapFacade {
     private store: Store<State>
   ) {}
 
-  fetchLocations() {
-    this.store.dispatch(new FetchLocations());
+  dispatchMapInit() {
+    this.store.dispatch(new MapInitialized());
   }
 }

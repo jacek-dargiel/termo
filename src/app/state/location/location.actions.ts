@@ -3,7 +3,6 @@ import { Update } from '@ngrx/entity';
 import { Location } from './location.model';
 
 export enum LocationActionTypes {
-  LoadLocations = '[Location] Load Locations',
   AddLocation = '[Location] Add Location',
   UpsertLocation = '[Location] Upsert Location',
   AddLocations = '[Location] Add Locations',
@@ -14,12 +13,13 @@ export enum LocationActionTypes {
   DeleteLocations = '[Location] Delete Locations',
   ClearLocations = '[Location] Clear Locations',
 
-  FetchLocations = '[Location] Fetch Locations',
-  FetchLocationsError = '[Location] Fetch Locations Error',
+  MapInitialized = '[Map] Map Initialized',
+  FetchLocationsSuccess = '[API] Fetch Locations Success',
+  FetchLocationsError = '[API] Fetch Locations Error',
 }
 
-export class LoadLocations implements Action {
-  readonly type = LocationActionTypes.LoadLocations;
+export class FetchLocationsSuccess implements Action {
+  readonly type = LocationActionTypes.FetchLocationsSuccess;
 
   constructor(public payload: { locations: Location[] }) {}
 }
@@ -78,8 +78,8 @@ export class ClearLocations implements Action {
 
 // ### Custom actions
 
-export class FetchLocations implements Action {
-  readonly type = LocationActionTypes.FetchLocations;
+export class MapInitialized implements Action {
+  readonly type = LocationActionTypes.MapInitialized;
 }
 
 export class FetchLocationsError implements Action {
@@ -88,7 +88,7 @@ export class FetchLocationsError implements Action {
 }
 
 export type LocationActions =
- LoadLocations
+ FetchLocationsSuccess
  | AddLocation
  | UpsertLocation
  | AddLocations
@@ -98,6 +98,6 @@ export type LocationActions =
  | DeleteLocation
  | DeleteLocations
  | ClearLocations
- | FetchLocations
+ | MapInitialized
  | FetchLocationsError
  ;
