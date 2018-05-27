@@ -1,12 +1,15 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Measurment } from './measurment.model';
 import { MeasurmentActions, MeasurmentActionTypes } from './measurment.actions';
+import { compareAsc } from 'date-fns/esm';
 
 export interface State extends EntityState<Measurment> {
   // additional entities state properties
 }
 
-export const adapter: EntityAdapter<Measurment> = createEntityAdapter<Measurment>();
+export const adapter: EntityAdapter<Measurment> = createEntityAdapter<Measurment>({
+  sortComparer: (a: Measurment, b: Measurment) => compareAsc(a.created_at, b.created_at),
+});
 
 export const initialState: State = adapter.getInitialState({
   // additional entity state properties
