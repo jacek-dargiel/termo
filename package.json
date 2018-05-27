@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --progress=false",
     "postbuild": "node ./node_modules/envsub/bin/envsub.js ./src/netlify.toml.template ./dist/netlify.toml",
     "test": "ng test",
     "lint": "ng lint",
