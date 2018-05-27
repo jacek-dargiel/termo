@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { defer, Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { FetchLocationsSuccess, LocationActionTypes, FetchLocationsError } from './state/location/location.actions';
 import { LocationService } from './services/location.service';
-import { map, switchMap, catchError } from 'rxjs/operators';
+import { map, switchMap, catchError, mergeMap, mergeAll } from 'rxjs/operators';
 import { ErrorHandlingService } from './services/error-handling.service';
+import { MeasurmentService } from './services/measurment.service';
+import { LoadMeasurments, MeasurmentActionTypes, FetchMeasurmentsError } from './state/measurment/measurment.actions';
 
 
 @Injectable()
@@ -13,6 +15,7 @@ export class AppEffects {
   constructor(
     private actions$: Actions,
     private location: LocationService,
+    private measurment: MeasurmentService,
     private errorHandling: ErrorHandlingService,
   ) {}
 
@@ -20,8 +23,9 @@ export class AppEffects {
   ajaxError$ = this.actions$.pipe(
     ofType(
       LocationActionTypes.FetchLocationsError,
+      MeasurmentActionTypes.FetchMeasurmentsError
     ),
-    map((action: FetchLocationsError) => action.payload.error),
+    map((action: FetchLocationsError | FetchMeasurmentsError) => action.payload.error),
     map(error => this.errorHandling.handle(error)),
   );
 
@@ -31,5 +35,15 @@ export class AppEffects {
     switchMap(() => this.location.getLocations()),
     map(locations => new FetchLocationsSuccess({locations})),
     catchError(error => of(new FetchLocationsError(error)))
+  );
+
+  @Effect()
+  loadMeasurments$ = this.actions$.pipe(
+    ofType(LocationActionTypes.FetchLocationsSuccess),                      // => Observable<FetchLocationSuccess>
+    map((action: FetchLocationsSuccess) => action.payload.locations),       // => Observable<Location[]>
+    mergeAll(),                                                             // => Observable<Location>
+    mergeMap(location => this.measurment.getMeasurments(location.feedKey)), // => Observable<Measurment[]>
+    map(measurments => new LoadMeasurments({measurments})),                 // => Observable<LoadMeasurments>
+    catchError(error => of(new FetchMeasurmentsError(error))),
   );
 }
