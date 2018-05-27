@@ -18,6 +18,7 @@ import { ErrorHandlingService } from './services/error-handling.service';
 import { MapFacade } from './containers/map/map.facade';
 import { MeasurmentService } from './services/measurment.service';
 import { IsLocationOutdatedPipe } from './pipes/is-location-outdated.pipe';
+import { RelativeTimePipe } from './pipes/relative-time.pipe';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { IsLocationOutdatedPipe } from './pipes/is-location-outdated.pipe';
     MapComponent,
     MapLocationComponent,
     IsLocationOutdatedPipe,
+    RelativeTimePipe
   ],
   imports: [
     BrowserModule,
