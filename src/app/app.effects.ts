@@ -7,6 +7,7 @@ import { map, switchMap, catchError, mergeMap, mergeAll } from 'rxjs/operators';
 import { ErrorHandlingService } from './services/error-handling.service';
 import { MeasurmentService } from './services/measurment.service';
 import { LoadMeasurments, MeasurmentActionTypes, FetchMeasurmentsError } from './state/measurment/measurment.actions';
+import { subDays } from 'date-fns/esm';
 
 
 @Injectable()
@@ -42,7 +43,10 @@ export class AppEffects {
     ofType(LocationActionTypes.FetchLocationsSuccess),                      // => Observable<FetchLocationSuccess>
     map((action: FetchLocationsSuccess) => action.payload.locations),       // => Observable<Location[]>
     mergeAll(),                                                             // => Observable<Location>
-    mergeMap(location => this.measurment.getMeasurments(location.feedKey)), // => Observable<Measurment[]>
+    mergeMap(location => {
+      const start = subDays(new Date(), 1);
+      return this.measurment.getMeasurments(location.feedKey, start);
+    }),                                                                     // => Observable<Measurment[]>
     map(measurments => new LoadMeasurments({measurments})),                 // => Observable<LoadMeasurments>
     catchError(error => of(new FetchMeasurmentsError(error))),
   );

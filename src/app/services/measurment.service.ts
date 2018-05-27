@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Measurment } from '../state/measurment/measurment.model';
 import { environment } from 'environments/environment.prod';
 import { map } from 'rxjs/operators';
@@ -13,9 +13,17 @@ export class MeasurmentService {
     private http: HttpClient,
   ) { }
 
-  getMeasurments(locationKey: string) {
+  getMeasurments(locationKey: string, start?: Date, end?: Date) {
+    let params = new HttpParams();
+    if (start) {
+      params = params.append('start_time', start.toISOString());
+    }
+    if (end) {
+      params = params.append('end_time', end.toISOString());
+    }
     const options = {
       headers: aioHeaders,
+      params,
     };
     return this.http.get<AIOFeedData[]>(`${environment.API_URL}/feeds/${locationKey}/data`, options)
       .pipe(
