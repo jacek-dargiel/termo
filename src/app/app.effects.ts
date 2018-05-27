@@ -45,7 +45,7 @@ export class AppEffects {
     mergeAll(),                                                             // => Observable<Location>
     mergeMap(location => {
       const start = subDays(new Date(), 1);
-      return this.measurment.getMeasurments(location.feedKey, start);
+      return this.measurment.getMeasurments(location.id, start);
     }),                                                                     // => Observable<Measurment[]>
     map(measurments => new LoadMeasurments({measurments})),                 // => Observable<LoadMeasurments>
     catchError(error => of(new FetchMeasurmentsError(error))),

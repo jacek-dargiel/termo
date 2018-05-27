@@ -1,9 +1,8 @@
 import { Point } from '../../interfaces';
 
 export interface Location {
-  id: number;
+  id: string;
   name: string;
   mapPosition: Point;
-  feedKey: string;
   updatedAt: Date;
 }

@@ -30,9 +30,8 @@ export class LocationService {
   mapFeedToLocation(feed: AIOFeed): Location {
     const mapPosition = this.parseMapPosition(feed.description);
     return {
-      id: feed.id,
+      id: feed.key,
       name: feed.name,
-      feedKey: feed.key,
       mapPosition,
       updatedAt: new Date(Date.parse(feed.updated_at)),
     };
