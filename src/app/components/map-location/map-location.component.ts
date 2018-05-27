@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, HostBinding, ElementRef, HostListener } from '@angular/core';
-import { Location } from '../../state/location/location.model';
+import { Component, Input, HostBinding, ElementRef, HostListener, OnChanges } from '@angular/core';
+import { LocationWithKeyMeasurmentValues } from '../../state/location/location.model';
 import { MapComponent } from '../../containers/map/map.component';
 
 @Component({
@@ -7,8 +7,8 @@ import { MapComponent } from '../../containers/map/map.component';
   templateUrl: './map-location.component.html',
   styleUrls: ['./map-location.component.scss']
 })
-export class MapLocationComponent implements OnInit {
-  @Input() location: Location;
+export class MapLocationComponent implements OnChanges {
+  @Input() location: LocationWithKeyMeasurmentValues;
   @HostBinding('style.top.px') top;
   @HostBinding('style.left.px') left;
 
@@ -17,7 +17,7 @@ export class MapLocationComponent implements OnInit {
     private mapLocation: ElementRef<HTMLElement>,
   ) { }
 
-  ngOnInit() {
+  ngOnChanges() {
     this.adjustPosition();
   }
 

@@ -2,8 +2,11 @@
   position: absolute;
   background: #fff;
   border: 1px solid mix(#aaa, lightblue, 80%);
+  box-shadow: 0.3rem 0.3rem 1rem rgba(#000, 0.5);
   padding: 0.4rem 1rem;
   overflow: hidden;
+  width: 13rem;
+  text-align: center;
 }
 
 .arrow {
@@ -19,19 +22,18 @@
 
 .temperature{
   font-weight: 600;
+  margin-bottom: 0.5rem;
 
   &--primary {
     color: #00b1ff;
-    font-size: 4rem;
+    font-size: 3rem;
   }
   &--minimal {
+    border-top: 1px solid #555;
+    width: 9rem;
+    margin: 0.2rem auto 0.5rem auto;
+    padding-top: 0.2rem;
     color: #555;
-
-    &::before {
-      content: '/';
-      color: #999;
-      margin: 0 0.25rem;
-    }
   }
 }
 
