@@ -34,3 +34,14 @@
     }
   }
 }
+
+.footer {
+  font-size: 0.88rem;
+  color: #777;
+  
+  &--warning {
+    &::before {
+      content: '⚠️'
+    }
+  }
+}

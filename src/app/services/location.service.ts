@@ -34,6 +34,7 @@ export class LocationService {
       name: feed.name,
       feedKey: feed.key,
       mapPosition,
+      updatedAt: new Date(Date.parse(feed.updated_at)),
     };
   }
 

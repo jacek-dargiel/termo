@@ -6,6 +6,11 @@
       <span class="unit">°C</span>
     </span>
   </div>
-
+  <div
+    class="footer footer--warning footer--warning-outdated"
+    *ngIf="location.updatedAt | isLocationOutdated"
+  >
+    <span>Opóźnione: {{ location.updatedAt | relativeTime }}</span>
+  </div>
 </div>
 <div class="arrow"></div>

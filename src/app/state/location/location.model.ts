@@ -5,4 +5,5 @@ export interface Location {
   name: string;
   mapPosition: Point;
   feedKey: string;
+  updatedAt: Date;
 }
