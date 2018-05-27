@@ -17,12 +17,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandlingService } from './services/error-handling.service';
 import { MapFacade } from './containers/map/map.facade';
 import { MeasurmentService } from './services/measurment.service';
+import { IsLocationOutdatedPipe } from './pipes/is-location-outdated.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    MapLocationComponent
+    MapLocationComponent,
+    IsLocationOutdatedPipe,
   ],
   imports: [
     BrowserModule,
