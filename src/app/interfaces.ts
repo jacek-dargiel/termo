@@ -36,3 +36,17 @@ export interface Point {
     x: number;
     y: number;
 }
+
+export interface AIOFeedData {
+    id: string;
+    value: string;
+    feed_id: number;
+    feed_key: string;
+    created_at: string;
+    location: string | null;
+    lat: string | null;
+    lon: string | null;
+    ele: string | null;
+    created_epoch: number;
+    expiration: string;
+}

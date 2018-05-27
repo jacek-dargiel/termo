@@ -16,6 +16,7 @@ import { LocationService } from './services/location.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandlingService } from './services/error-handling.service';
 import { MapFacade } from './containers/map/map.facade';
+import { MeasurmentService } from './services/measurment.service';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { MapFacade } from './containers/map/map.facade';
   providers: [
     ErrorHandlingService,
     LocationService,
+    MeasurmentService,
     MapFacade,
   ],
   bootstrap: [AppComponent]
