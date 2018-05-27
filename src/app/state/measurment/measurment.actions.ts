@@ -12,7 +12,10 @@ export enum MeasurmentActionTypes {
   UpdateMeasurments = '[Measurment] Update Measurments',
   DeleteMeasurment = '[Measurment] Delete Measurment',
   DeleteMeasurments = '[Measurment] Delete Measurments',
-  ClearMeasurments = '[Measurment] Clear Measurments'
+  ClearMeasurments = '[Measurment] Clear Measurments',
+
+  FetchMeasurments = '[Map] Fetch Measurments',
+  FetchMeasurmentsError = '[API] Fetch Measurments Error',
 }
 
 export class LoadMeasurments implements Action {
@@ -73,6 +76,16 @@ export class ClearMeasurments implements Action {
   readonly type = MeasurmentActionTypes.ClearMeasurments;
 }
 
+export class FetchMeasurments implements Action {
+  readonly type = MeasurmentActionTypes.FetchMeasurments;
+  constructor(public payload: { locations: number[] }) {}
+}
+
+export class FetchMeasurmentsError implements Action {
+  readonly type = MeasurmentActionTypes.FetchMeasurmentsError;
+  constructor(public payload: { error: Error }) {}
+}
+
 export type MeasurmentActions =
  LoadMeasurments
  | AddMeasurment
@@ -83,4 +96,7 @@ export type MeasurmentActions =
  | UpdateMeasurments
  | DeleteMeasurment
  | DeleteMeasurments
- | ClearMeasurments;
+ | ClearMeasurments
+ | FetchMeasurments
+ | FetchMeasurmentsError
+;
