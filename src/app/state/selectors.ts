@@ -1,9 +1,9 @@
-import * as fromLocation from './location.reducer';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import * as fromLocation from './location/location.reducer';
 
 export const selectLocationState = createFeatureSelector<fromLocation.State>('location');
 
-export const selectLoading = createSelector(
+export const selectLocationLoading = createSelector(
   selectLocationState,
   location => location.loading
 );
