@@ -1,0 +1,57 @@
+@import '../../../styles/variables';
+
+:host {
+  position: absolute;
+  display: block;
+  width: 100%;
+}
+
+header {
+  padding: 0 1.5rem;
+  height: 5rem;
+  background: $colorPrimary;
+  box-shadow: 0 0 2rem 0.5rem rgba(darken($colorPrimary, 30), 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.refresh {
+  background: lighten($colorPrimary, 10);
+  border: 0;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 1.2rem;
+  padding: 0.75rem 4rem;
+  position: relative;
+
+  &__progress {
+    position: absolute;
+    width: 75%;
+    background-color: lighten($colorPrimary, 20);
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+  
+  &--in-progress {
+    .refresh__progress {
+      background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.35) 25%, rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0.35) 75%, rgba(255, 255, 255, 0) 75%, rgba(255, 255, 255, 0));
+      background-size: 20px 20px;
+      animation: candystripe 1s linear infinite;
+      width: 100% !important;
+    }
+  }
+
+  &__label {
+    z-index: 2;
+    position: relative;
+  }
+}
+
+@keyframes candystripe {
+  to {background-position: 20px 0;}
+}

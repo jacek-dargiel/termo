@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 :host {
   position: absolute;
   background: #fff;
@@ -16,7 +18,7 @@
   height: $size;
   bottom: -1*$size/2;
   right: -1*$size/2;
-  background: #00b1ff;
+  background: $colorPrimary;
   transform: rotate(0.125turn);
 }
 
@@ -25,7 +27,7 @@
   margin-bottom: 0.5rem;
 
   &--primary {
-    color: #00b1ff;
+    color: $colorPrimary;
     font-size: 3rem;
   }
   &--minimal {
