@@ -1,20 +1,23 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Location } from './location.model';
 import { LocationActions, LocationActionTypes } from './location.actions';
+import { MeasurmentActionTypes, MeasurmentActions } from '../measurment/measurment.actions';
 
 export interface State extends EntityState<Location> {
   loading: boolean;
+  locationsLoadingMeasurments: string[] | number[];
 }
 
 export const adapter: EntityAdapter<Location> = createEntityAdapter<Location>();
 
 export const initialState: State = adapter.getInitialState({
   loading: false,
+  locationsLoadingMeasurments: [],
 });
 
 export function reducer(
   state = initialState,
-  action: LocationActions
+  action: LocationActions | MeasurmentActions
 ): State {
   switch (action.type) {
     case LocationActionTypes.AddLocation: {
@@ -53,6 +56,7 @@ export function reducer(
       const loadedState = {
         ...state,
         loading: false,
+        locationsLoadingMeasurments: action.payload.locations.map(location => location.id),
       };
       return adapter.addAll(action.payload.locations, loadedState);
     }
@@ -72,6 +76,15 @@ export function reducer(
       return {
         ...state,
         loading: false,
+      };
+    }
+
+    case MeasurmentActionTypes.FetchMeasurmentsSuccess: {
+      let locationsLoadingMeasurments = state.locationsLoadingMeasurments as string[];
+      locationsLoadingMeasurments = locationsLoadingMeasurments.filter(locationID => locationID !== action.payload.location.id);
+      return {
+        ...state,
+        locationsLoadingMeasurments
       };
     }
 
