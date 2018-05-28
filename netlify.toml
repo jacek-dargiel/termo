@@ -1,0 +1,6 @@
+[[redirects]]
+from = "/api"
+to = "https://io.adafruit.com/api/v2/"
+status = 200
+force = false
+headers = {X-AIO-Key = ""}
