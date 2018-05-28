@@ -1,5 +1,7 @@
 export const environment = {
   production: true,
   API_URL: '/api',
-  locationOutdatedThreshold: 90000,  // 15 min === 9000 ms
+  locationOutdatedThreshold: 900000,
+  refreshTimeout: 300000,
+  // refreshTimeout: 30000,
 };
