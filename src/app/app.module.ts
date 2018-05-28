@@ -20,6 +20,7 @@ import { MeasurmentService } from './services/measurment.service';
 import { IsLocationOutdatedPipe } from './pipes/is-location-outdated.pipe';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
 import { ToFixedPipe } from './to-fixed.pipe';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ToFixedPipe } from './to-fixed.pipe';
     MapLocationComponent,
     IsLocationOutdatedPipe,
     RelativeTimePipe,
-    ToFixedPipe
+    ToFixedPipe,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
