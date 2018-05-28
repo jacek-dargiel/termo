@@ -6,7 +6,11 @@ import { LocationService } from './services/location.service';
 import { map, switchMap, catchError, mergeMap, mergeAll } from 'rxjs/operators';
 import { ErrorHandlingService } from './services/error-handling.service';
 import { MeasurmentService } from './services/measurment.service';
-import { MeasurmentActionTypes, FetchMeasurmentsError, AddMeasurments } from './state/measurment/measurment.actions';
+import {
+  MeasurmentActionTypes,
+  FetchMeasurmentsError,
+  FetchMeasurmentsSuccess,
+} from './state/measurment/measurment.actions';
 import { subDays } from 'date-fns/esm';
 
 
@@ -45,9 +49,14 @@ export class AppEffects {
     mergeAll(),                                                             // => Observable<Location>
     mergeMap(location => {
       const start = subDays(new Date(), 1);
-      return this.measurment.getMeasurments(location.id, start);
-    }),                                                                     // => Observable<Measurment[]>
-    map(measurments => new AddMeasurments({measurments})),                  // => Observable<AddMeasurments>
+      return this.measurment.getMeasurments(location.id, start)
+        .pipe(
+          map(measurments => ({ measurments, location }))
+        );
+    }),                                                                     // => Observable<{Measurment[], Location}>
+    map(
+      ({measurments, location}) => new FetchMeasurmentsSuccess({measurments, location})
+    ),                                                                      // => Observable<FetchMeasurmentsSuccess>
     catchError(error => of(new FetchMeasurmentsError(error))),
   );
 }

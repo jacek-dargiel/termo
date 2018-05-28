@@ -60,6 +60,10 @@ export function reducer(
       return adapter.removeAll(state);
     }
 
+    case MeasurmentActionTypes.FetchMeasurmentsSuccess: {
+      return adapter.addMany(action.payload.measurments, state);
+    }
+
     default: {
       return state;
     }

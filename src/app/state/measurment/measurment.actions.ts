@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
 import { Measurment } from './measurment.model';
+import { Location } from '../location/location.model';
 
 export enum MeasurmentActionTypes {
   LoadMeasurments = '[Measurment] Load Measurments',
@@ -15,6 +16,7 @@ export enum MeasurmentActionTypes {
   ClearMeasurments = '[Measurment] Clear Measurments',
 
   FetchMeasurments = '[Map] Fetch Measurments',
+  FetchMeasurmentsSuccess = '[API] Fetch Measurments Success',
   FetchMeasurmentsError = '[API] Fetch Measurments Error',
 }
 
@@ -81,6 +83,12 @@ export class FetchMeasurments implements Action {
   constructor(public payload: { locations: number[] }) {}
 }
 
+export class FetchMeasurmentsSuccess implements Action {
+  readonly type = MeasurmentActionTypes.FetchMeasurmentsSuccess;
+
+  constructor(public payload: { measurments: Measurment[], location: Location }) {}
+}
+
 export class FetchMeasurmentsError implements Action {
   readonly type = MeasurmentActionTypes.FetchMeasurmentsError;
   constructor(public payload: { error: Error }) {}
@@ -98,5 +106,6 @@ export type MeasurmentActions =
  | DeleteMeasurments
  | ClearMeasurments
  | FetchMeasurments
+ | FetchMeasurmentsSuccess
  | FetchMeasurmentsError
 ;
