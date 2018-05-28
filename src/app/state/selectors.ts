@@ -103,6 +103,11 @@ export const selectLocationsMappedWithKeyMeasurmentValues = createSelector(
   }
 );
 
+export const selectIdsOfLocationsLoadingMeasurments = createSelector(
+  selectLocationState,
+  locationState => locationState.locationsLoadingMeasurments,
+);
+
 function mapLocationWithKeyMeasurmentValues(
   location: Location,
   lastMeasurmentsByLocation: Dictionary<Measurment>,

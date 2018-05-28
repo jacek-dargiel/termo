@@ -9,6 +9,7 @@ import { MapComponent } from '../../containers/map/map.component';
 })
 export class MapLocationComponent implements OnChanges {
   @Input() location: LocationWithKeyMeasurmentValues;
+  @Input() loading: boolean;
   @HostBinding('style.top.px') top;
   @HostBinding('style.left.px') left;
 

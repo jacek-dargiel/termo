@@ -1,4 +1,5 @@
 <termo-map-location
   *ngFor="let location of locations$ | async"
   [location]="location"
+  [loading]="(locationsLoading$ | async).includes(location.id)"
 ></termo-map-location>

@@ -1,4 +1,7 @@
-<div class="temperature-box">
+<div
+  class="temperature-box"
+  *ngIf="!loading; else spinner"
+>
   <div class="temperatures">
     <div class="temperature temperature--primary">
       <span class="value">
@@ -20,3 +23,6 @@
   </div>
 </div>
 <div class="arrow"></div>
+<ng-template #spinner>
+  <termo-spinner></termo-spinner>
+</ng-template>

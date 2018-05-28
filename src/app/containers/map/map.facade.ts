@@ -6,7 +6,7 @@ import * as selectors from '../../state/selectors';
 
 @Injectable()
 export class MapFacade {
-  public locationsLoading$ = this.store.select(selectors.selectLocationLoading);
+  public locationsLoading$ = this.store.select(selectors.selectIdsOfLocationsLoadingMeasurments);
   public locations$ = this.store.select(selectors.selectLocationsMappedWithKeyMeasurmentValues);
 
   constructor(
