@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject, interval, ReplaySubject } from 'rxjs';
-import { switchMap, map, share, filter, takeWhile, tap } from 'rxjs/operators';
+import { interval, ReplaySubject } from 'rxjs';
+import { switchMap, map, share, filter, takeWhile } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 
 @Injectable({

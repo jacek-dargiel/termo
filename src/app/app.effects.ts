@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { FetchLocationsSuccess, LocationActionTypes, FetchLocationsError, LocationsRefreshFinished } from './state/location/location.actions';
+import {
+  FetchLocationsSuccess,
+  LocationActionTypes,
+  FetchLocationsError,
+  // LocationsRefreshFinished,
+} from './state/location/location.actions';
 import { LocationService } from './services/location.service';
-import { map, switchMap, catchError, mergeMap, mergeAll, endWith, filter, tap } from 'rxjs/operators';
+import { map, switchMap, catchError, mergeMap, mergeAll, filter, tap } from 'rxjs/operators';
 import { ErrorHandlingService } from './services/error-handling.service';
 import { MeasurmentService } from './services/measurment.service';
 import {
