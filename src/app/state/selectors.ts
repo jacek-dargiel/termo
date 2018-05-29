@@ -53,10 +53,13 @@ export const selectLastMeasurmentsByLocation = createSelector(
   (measurmentsByLocation): Dictionary<Measurment> => {
     return Object.keys(measurmentsByLocation)
       .reduce(
-        (lastMeasurmentsByLocation, locationID) => ({
-          ...lastMeasurmentsByLocation,
-          [locationID]: measurmentsByLocation[locationID][0]
-        }),
+        (lastMeasurmentsByLocation, locationID) => {
+          const locationMeasurments = measurmentsByLocation[locationID];
+          return {
+            ...lastMeasurmentsByLocation,
+            [locationID]: locationMeasurments[locationMeasurments.length - 1],
+          };
+        },
         {},
       );
   }
