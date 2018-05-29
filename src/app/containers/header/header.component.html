@@ -2,7 +2,10 @@
   <button
     class="refresh"
   >
-    <div class="refresh__progress"></div>
+    <div
+      class="refresh__progress"
+      [style.width.%]="progress | async"
+    ></div>
     <span class="refresh__label">Odśwież</span>
   </button>
 </header>
