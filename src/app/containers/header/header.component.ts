@@ -8,9 +8,11 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  public progress = this.headerFacade.progress.pipe(
+  public progress$ = this.headerFacade.progress.pipe(
     map(progress => progress * 100)
   );
+  public refreshing$ = this.headerFacade.refreshing;
+
   constructor(
     private headerFacade: HeaderFacade,
   ) { }
