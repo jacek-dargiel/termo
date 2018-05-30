@@ -5,10 +5,20 @@ import {
   FetchLocationsSuccess,
   LocationActionTypes,
   FetchLocationsError,
-  // LocationsRefreshFinished,
+  RefreshMeasurmentsStart,
+  RefreshMeasurmentsFinish,
 } from './state/location/location.actions';
 import { LocationService } from './services/location.service';
-import { map, switchMap, catchError, mergeMap, mergeAll, filter, tap } from 'rxjs/operators';
+import {
+  map,
+  switchMap,
+  catchError,
+  mergeMap,
+  mergeAll,
+  filter,
+  tap,
+  concat
+} from 'rxjs/operators';
 import { ErrorHandlingService } from './services/error-handling.service';
 import { MeasurmentService } from './services/measurment.service';
 import {
@@ -54,35 +64,39 @@ export class AppEffects {
   );
 
   @Effect()
-  loadMeasurments$ = this.actions$.pipe(
-    ofType(LocationActionTypes.FetchLocationsSuccess),                      // => Observable<FetchLocationSuccess>
-    map((action: FetchLocationsSuccess) => action.payload.locations),       // => Observable<Location[]>
-    mergeAll(),                                                             // => Observable<Location>
-    mergeMap(location => {
-      const start = subDays(new Date(), 1);
-      return this.measurment.getMeasurments(location.id, start)
-        .pipe(
-          map((measurments) => new FetchMeasurmentsSuccess({measurments, location})),
-        );
-    }),                                                                     // => Observable<FetchMeasurmentsSuccess>
-    catchError(error => of(new FetchMeasurmentsError(error))),
+  refreshMeasurmentsStart$ = this.actions$.pipe(
+    ofType(LocationActionTypes.FetchLocationsSuccess),
+    map((action: FetchLocationsSuccess) => action.payload.locations),
+    map(locations => new RefreshMeasurmentsStart({ locations })),
   );
 
   @Effect()
-  refresh$ = this.actions$.pipe(
-    ofType(MeasurmentActionTypes.FetchMeasurmentsSuccess, MeasurmentActionTypes.FetchMeasurmentsError),
+  refreshMeasurments$ = this.actions$.pipe(
+    ofType<RefreshMeasurmentsStart>(LocationActionTypes.RefreshMeasurmentsStart),
+    map(action => action.payload.locations),
+    switchMap(locations => {
+      return of(locations).pipe(
+        mergeAll(),
+        mergeMap(location => {
+          const start = subDays(new Date(), 1);
+          return this.measurment.getMeasurments(location.id, start).pipe(
+            map(measurments => ({ measurments, location }))
+          );
+        }),
+        map(({ measurments, location }) => new FetchMeasurmentsSuccess({ measurments, location })),
+        catchError(error => of(new FetchMeasurmentsError(error))),
+        concat(of(new RefreshMeasurmentsFinish())),
+      );
+    }),
+  );
+
+  @Effect()
+  timerRefresh$ = this.actions$.pipe(
+    ofType(LocationActionTypes.RefreshMeasurmentsFinish),
     tap(() => this.refreshCounter.restart()),
     switchMap(() => this.refreshCounter.timer),
     filter(countdownValue => countdownValue === 0),
     switchMap(() => this.store.select(selectAllLocations)),
-    mergeAll(),                                                             // => Observable<Location>
-    mergeMap(location => {
-      const start = subDays(new Date(), 1);
-      return this.measurment.getMeasurments(location.id, start)
-        .pipe(
-          map((measurments) => new FetchMeasurmentsSuccess({measurments, location})),
-        );
-    }),                                                                     // => Observable<FetchMeasurmentsSuccess>
-    catchError(error => of(new FetchMeasurmentsError(error))),
+    map(locations => new RefreshMeasurmentsStart({locations}))
   );
 }

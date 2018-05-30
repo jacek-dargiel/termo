@@ -14,6 +14,8 @@ export enum LocationActionTypes {
   ClearLocations = '[Location] Clear Locations',
 
   MapInitialized = '[Map] Map Initialized',
+  RefreshMeasurmentsStart = '[Effect] Refresh Measurments Start',
+  RefreshMeasurmentsFinish = '[Effect] Refresh Measurments Finish',
   FetchLocationsSuccess = '[API] Fetch Locations Success',
   FetchLocationsError = '[API] Fetch Locations Error',
 }
@@ -82,6 +84,15 @@ export class MapInitialized implements Action {
   readonly type = LocationActionTypes.MapInitialized;
 }
 
+export class RefreshMeasurmentsStart implements Action {
+  readonly type = LocationActionTypes.RefreshMeasurmentsStart;
+  constructor(public payload: { locations: Location[] }) {}
+}
+
+export class RefreshMeasurmentsFinish implements Action {
+  readonly type = LocationActionTypes.RefreshMeasurmentsFinish;
+}
+
 export class FetchLocationsError implements Action {
   readonly type = LocationActionTypes.FetchLocationsError;
   constructor(public payload: { error: Error }) {}
@@ -99,5 +110,7 @@ export type LocationActions =
  | DeleteLocations
  | ClearLocations
  | MapInitialized
+ | RefreshMeasurmentsStart
+ | RefreshMeasurmentsFinish
  | FetchLocationsError
  ;

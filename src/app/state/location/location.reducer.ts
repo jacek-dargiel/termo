@@ -56,7 +56,6 @@ export function reducer(
       const loadedState = {
         ...state,
         loading: false,
-        locationsLoadingMeasurments: action.payload.locations.map(location => location.id),
       };
       return adapter.addAll(action.payload.locations, loadedState);
     }
@@ -69,6 +68,13 @@ export function reducer(
       return {
         ...state,
         loading: true,
+      };
+    }
+
+    case LocationActionTypes.RefreshMeasurmentsStart: {
+      return {
+        ...state,
+        locationsLoadingMeasurments: action.payload.locations.map(location => location.id),
       };
     }
 
