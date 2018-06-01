@@ -20,4 +20,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
+  public refresh () {
+    this.headerFacade.refresh();
+  }
+
 }
