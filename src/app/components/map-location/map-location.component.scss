@@ -9,6 +9,17 @@
   overflow: hidden;
   width: 13rem;
   text-align: center;
+  display: block;
+  margin-bottom: 1rem;
+
+  @media (max-width: 1024px) {
+    box-sizing: border-box;
+    position: relative;
+    margin: 1rem auto;
+    width: calc(100% - 2rem);
+    top: unset !important;
+    left: unset !important;
+  }
 }
 
 .arrow {
@@ -20,6 +31,10 @@
   right: -1*$size/2;
   background: $colorPrimary;
   transform: rotate(0.125turn);
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
 }
 
 header h2 {
