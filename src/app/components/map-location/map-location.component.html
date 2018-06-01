@@ -2,11 +2,12 @@
   class="temperature-box"
   *ngIf="!loading; else spinner"
 >
+  <header>
+    <h2>🌡{{location.name}}</h2>
+  </header>
   <div class="temperatures">
     <div class="temperature temperature--primary">
-      <span class="value">
-        {{location.lastMeasurmentValue | toFixed}}
-      </span><span class="unit">°C</span>
+      <span class="value">{{location.lastMeasurmentValue | toFixed}}</span><span class="unit">°C</span>
     </div>
     <div
       class="temperature temperature--minimal"
