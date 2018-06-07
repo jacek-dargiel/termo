@@ -2,6 +2,8 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Location } from './location.model';
 import { LocationActions, LocationActionTypes } from './location.actions';
 import { MeasurmentActionTypes, MeasurmentActions } from '../measurment/measurment.actions';
+import { Measurment } from '../measurment/measurment.model';
+import { compareAsc } from 'date-fns/esm';
 
 export interface State extends EntityState<Location> {
   loading: boolean;
@@ -86,11 +88,18 @@ export function reducer(
     }
 
     case MeasurmentActionTypes.FetchMeasurmentsSuccess: {
+      let locationsState = state;
+      if (action.payload.measurments.length > 0) {
+        let sortedMeasurments = sortMeasurments(action.payload.measurments);
+        let latestMeasurment = sortedMeasurments[sortedMeasurments.length - 1];
+        locationsState = adapter.updateOne({id: action.payload.location.id, changes: { updatedAt: latestMeasurment.created_at }}, state);
+      }
+
       let locationsLoadingMeasurments = state.locationsLoadingMeasurments as string[];
       locationsLoadingMeasurments = locationsLoadingMeasurments.filter(locationID => locationID !== action.payload.location.id);
       return {
-        ...state,
-        locationsLoadingMeasurments
+        ...locationsState,
+        locationsLoadingMeasurments,
       };
     }
 
@@ -106,3 +115,7 @@ export const {
   selectAll,
   selectTotal,
 } = adapter.getSelectors();
+
+function sortMeasurments(measurments: Measurment[]) {
+  return [...measurments].sort((a: Measurment, b: Measurment) => compareAsc(a.created_at, b.created_at));
+}
