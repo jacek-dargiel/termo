@@ -9,42 +9,42 @@ import { mapToObject } from '../helpers/utils';
 
 import { mapValues, groupBy, sortBy } from 'lodash/fp';
 
-const mapValuesWithKey = mapValues.convert({ cap: false });
+let mapValuesWithKey = mapValues.convert({ cap: false });
 
-export const selectLocationState = createFeatureSelector<fromLocation.State>('location');
-export const selectMeasurmentState = createFeatureSelector<fromMeasurment.State>('measurment');
+export let selectLocationState = createFeatureSelector<fromLocation.State>('location');
+export let selectMeasurmentState = createFeatureSelector<fromMeasurment.State>('measurment');
 
-export const selectLocationLoading = createSelector(
+export let selectLocationLoading = createSelector(
   selectLocationState,
   location => location.loading
 );
 
-export const selectAllLocations = createSelector(
+export let selectAllLocations = createSelector(
   selectLocationState,
   fromLocation.selectAll,
 );
 
-export const selectLocationIds = createSelector(
+export let selectLocationIds = createSelector(
   selectLocationState,
   fromLocation.selectIds,
 );
 
-export const selectLocationEntities = createSelector(
+export let selectLocationEntities = createSelector(
   selectLocationState,
   fromLocation.selectEntities,
 );
 
-export const selectAllMeasurments = createSelector(
+export let selectAllMeasurments = createSelector(
   selectMeasurmentState,
   fromMeasurment.selectAll
 );
 
-export const selectMeasurmentEntities = createSelector(
+export let selectMeasurmentEntities = createSelector(
   selectMeasurmentState,
   fromMeasurment.selectEntities,
 );
 
-export const selectMeasurmentsByLocation = createSelector(
+export let selectMeasurmentsByLocation = createSelector(
   selectLocationIds,
   selectAllMeasurments,
   (locationIDs: string[], measurments): Dictionary<Measurment[]> => {
@@ -56,12 +56,12 @@ export const selectMeasurmentsByLocation = createSelector(
   }
 );
 
-const selectLatestMeasurmentIdsByLocation = createSelector(
+let selectLatestMeasurmentIdsByLocation = createSelector(
   selectLocationState,
   locationState => locationState.latestMeasurmentIDs,
 );
 
-export const selectLastMeasurmentsByLocation = createSelector(
+export let selectLastMeasurmentsByLocation = createSelector(
   selectLocationIds,
   selectLatestMeasurmentIdsByLocation,
   selectMeasurmentEntities,
@@ -73,7 +73,7 @@ export const selectLastMeasurmentsByLocation = createSelector(
   }
 );
 
-// export const selectLastMeasurmentsByLocation = createSelector(
+// export let selectLastMeasurmentsByLocation = createSelector(
 //   selectMeasurmentsByLocation,
 //   (measurmentsByLocation): Dictionary<Measurment> => {
 //     return mapToObject(
@@ -87,7 +87,7 @@ function isMeasurmentAfterToday(measurment: Measurment): boolean {
   return isAfter(measurment.created_at, subDays(new Date(), 1));
 }
 
-export const selectTodaysMeasurmentsByLocation = createSelector(
+export let selectTodaysMeasurmentsByLocation = createSelector(
   selectMeasurmentsByLocation,
   (measurmentsByLocation): Dictionary<Measurment[]> => {
     return mapValuesWithKey(
@@ -97,7 +97,7 @@ export const selectTodaysMeasurmentsByLocation = createSelector(
   }
 );
 
-export const selectMinimalMeasurmentsByLocation = createSelector(
+export let selectMinimalMeasurmentsByLocation = createSelector(
   selectTodaysMeasurmentsByLocation,
   (todaysMeasurmentsByLocation): Dictionary<Measurment> => {
     return mapValuesWithKey(
@@ -110,7 +110,7 @@ export const selectMinimalMeasurmentsByLocation = createSelector(
   }
 );
 
-export const selectLocationsMappedWithKeyMeasurmentValues = createSelector(
+export let selectLocationsMappedWithKeyMeasurmentValues = createSelector(
   selectAllLocations,
   selectLastMeasurmentsByLocation,
   selectMinimalMeasurmentsByLocation,
@@ -119,7 +119,7 @@ export const selectLocationsMappedWithKeyMeasurmentValues = createSelector(
   }
 );
 
-export const selectIdsOfLocationsLoadingMeasurments = createSelector(
+export let selectIdsOfLocationsLoadingMeasurments = createSelector(
   selectLocationState,
   locationState => locationState.locationsLoadingMeasurments,
 );

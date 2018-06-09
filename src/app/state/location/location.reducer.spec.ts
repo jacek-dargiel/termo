@@ -1,13 +1,13 @@
-import { reducer, initialState } from './location.reducer';
+import { reducer, INITIAL_STATE } from './location.reducer';
 
 describe('Location Reducer', () => {
   describe('unknown action', () => {
     it('should return the initial state', () => {
-      const action = {} as any;
+      let action = {} as any;
 
-      const result = reducer(initialState, action);
+      let result = reducer(INITIAL_STATE, action);
 
-      expect(result).toBe(initialState);
+      expect(result).toBe(INITIAL_STATE);
     });
   });
 });

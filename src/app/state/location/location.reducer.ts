@@ -14,16 +14,16 @@ export interface State extends EntityState<Location> {
   latestMeasurmentIDs: Dictionary<string>;
 }
 
-export const adapter: EntityAdapter<Location> = createEntityAdapter<Location>();
+export let adapter: EntityAdapter<Location> = createEntityAdapter<Location>();
 
-export const initialState: State = adapter.getInitialState({
+export const INITIAL_STATE: State = adapter.getInitialState({
   loading: false,
   locationsLoadingMeasurments: [],
   latestMeasurmentIDs: {},
 });
 
 export function reducer(
-  state = initialState,
+  state = INITIAL_STATE,
   action: LocationActions | MeasurmentActions
 ): State {
   switch (action.type) {
@@ -60,7 +60,7 @@ export function reducer(
     }
 
     case LocationActionTypes.FetchLocationsSuccess: {
-      const loadedState = {
+      let loadedState = {
         ...state,
         loading: false,
       };
