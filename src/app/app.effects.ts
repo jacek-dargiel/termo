@@ -17,7 +17,8 @@ import {
   mergeAll,
   filter,
   tap,
-  concat
+  concat,
+  first
 } from 'rxjs/operators';
 import { ErrorHandlingService } from './services/error-handling.service';
 import { MeasurmentService } from './services/measurment.service';
@@ -96,7 +97,11 @@ export class AppEffects {
     tap(() => this.refreshCounter.restart()),
     switchMap(() => this.refreshCounter.timer),
     filter(countdownValue => countdownValue === 0),
-    switchMap(() => this.store.select(selectAllLocations)),
+    switchMap(() => {
+      return this.store.select(selectAllLocations).pipe(
+        first(),
+      );
+    }),
     map(locations => new RefreshMeasurmentsStart({locations}))
   );
 }
