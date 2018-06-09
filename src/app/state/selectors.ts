@@ -7,7 +7,9 @@ import { isAfter, subDays } from 'date-fns/esm';
 import { LocationWithKeyMeasurmentValues, Location } from './location/location.model';
 import { mapToObject } from '../helpers/utils';
 
-import { keys, last } from 'lodash/fp';
+import { mapValues, groupBy, sortBy } from 'lodash/fp';
+
+const mapValuesWithKey = mapValues.convert({ cap: false });
 
 export const selectLocationState = createFeatureSelector<fromLocation.State>('location');
 export const selectMeasurmentState = createFeatureSelector<fromMeasurment.State>('measurment');
@@ -27,36 +29,59 @@ export const selectLocationIds = createSelector(
   fromLocation.selectIds,
 );
 
-// export const selectLocationEntities = createSelector(
-//   selectLocationState,
-//   fromLocation.selectEntities,
-// );
+export const selectLocationEntities = createSelector(
+  selectLocationState,
+  fromLocation.selectEntities,
+);
 
 export const selectAllMeasurments = createSelector(
   selectMeasurmentState,
   fromMeasurment.selectAll
 );
 
+export const selectMeasurmentEntities = createSelector(
+  selectMeasurmentState,
+  fromMeasurment.selectEntities,
+);
+
 export const selectMeasurmentsByLocation = createSelector(
   selectLocationIds,
   selectAllMeasurments,
   (locationIDs: string[], measurments): Dictionary<Measurment[]> => {
+    let grouped: Dictionary<Measurment[]> = groupBy('feed_key', measurments);
     return mapToObject<Measurment[]>(
-      (locationID: string) => measurments.filter(measurment => measurment.feed_key === locationID),
+      locationID => grouped[locationID] || [],
       locationIDs,
     );
   }
 );
 
+const selectLatestMeasurmentIdsByLocation = createSelector(
+  selectLocationState,
+  locationState => locationState.latestMeasurmentIDs,
+);
+
 export const selectLastMeasurmentsByLocation = createSelector(
-  selectMeasurmentsByLocation,
-  (measurmentsByLocation): Dictionary<Measurment> => {
+  selectLocationIds,
+  selectLatestMeasurmentIdsByLocation,
+  selectMeasurmentEntities,
+  (locationIDs, latestMeasurmentIDs, measurmentEntities): Dictionary<Measurment> => {
     return mapToObject(
-      (locationID: string) => last(measurmentsByLocation[locationID]),
-      keys(measurmentsByLocation)
+      locationID => measurmentEntities[latestMeasurmentIDs[locationID]],
+      locationIDs
     );
   }
 );
+
+// export const selectLastMeasurmentsByLocation = createSelector(
+//   selectMeasurmentsByLocation,
+//   (measurmentsByLocation): Dictionary<Measurment> => {
+//     return mapToObject(
+//       (locationID: string) => last(measurmentsByLocation[locationID]),
+//       keys(measurmentsByLocation)
+//     );
+//   }
+// );
 
 function isMeasurmentAfterToday(measurment: Measurment): boolean {
   return isAfter(measurment.created_at, subDays(new Date(), 1));
@@ -65,9 +90,9 @@ function isMeasurmentAfterToday(measurment: Measurment): boolean {
 export const selectTodaysMeasurmentsByLocation = createSelector(
   selectMeasurmentsByLocation,
   (measurmentsByLocation): Dictionary<Measurment[]> => {
-    return mapToObject(
-      (locationID: string) => measurmentsByLocation[locationID].filter(isMeasurmentAfterToday),
-      keys(measurmentsByLocation),
+    return mapValuesWithKey(
+      (measurments: Measurment[], locationID: string) => measurmentsByLocation[locationID].filter(isMeasurmentAfterToday),
+      measurmentsByLocation,
     );
   }
 );
@@ -75,13 +100,12 @@ export const selectTodaysMeasurmentsByLocation = createSelector(
 export const selectMinimalMeasurmentsByLocation = createSelector(
   selectTodaysMeasurmentsByLocation,
   (todaysMeasurmentsByLocation): Dictionary<Measurment> => {
-    return mapToObject(
-      (locationID: string) => {
-        const toSort = [...todaysMeasurmentsByLocation[locationID]];
-        const sorted = toSort.sort((a, b) => (a.value - b.value));
-        return sorted[0] || null;
+    return mapValuesWithKey(
+      (measurments: Measurment[], locationID: string) => {
+        let sorted: Measurment[] = sortBy('value', todaysMeasurmentsByLocation[locationID]);
+        return sorted[0];
       },
-      keys(todaysMeasurmentsByLocation),
+      todaysMeasurmentsByLocation,
     );
   }
 );

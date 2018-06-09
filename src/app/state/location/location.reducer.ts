@@ -4,10 +4,14 @@ import { LocationActions, LocationActionTypes } from './location.actions';
 import { MeasurmentActionTypes, MeasurmentActions } from '../measurment/measurment.actions';
 import { Measurment } from '../measurment/measurment.model';
 import { compareAsc } from 'date-fns/esm';
+import { Dictionary } from '@ngrx/entity/src/models';
+import { mapToObject } from '../../helpers/utils';
+import { filter, last } from 'lodash/fp';
 
 export interface State extends EntityState<Location> {
   loading: boolean;
   locationsLoadingMeasurments: string[] | number[];
+  latestMeasurmentIDs: Dictionary<string>;
 }
 
 export const adapter: EntityAdapter<Location> = createEntityAdapter<Location>();
@@ -15,6 +19,7 @@ export const adapter: EntityAdapter<Location> = createEntityAdapter<Location>();
 export const initialState: State = adapter.getInitialState({
   loading: false,
   locationsLoadingMeasurments: [],
+  latestMeasurmentIDs: {},
 });
 
 export function reducer(
@@ -93,6 +98,17 @@ export function reducer(
         let sortedMeasurments = sortMeasurments(action.payload.measurments);
         let latestMeasurment = sortedMeasurments[sortedMeasurments.length - 1];
         locationsState = adapter.updateOne({id: action.payload.location.id, changes: { updatedAt: latestMeasurment.created_at }}, state);
+
+        locationsState = {
+          ...locationsState,
+          latestMeasurmentIDs: mapToObject(
+            (locationID: string) => {
+              let locationMeasurments = filter({ feed_key: locationID }, sortedMeasurments);
+              return last(locationMeasurments).id;
+            },
+            state.ids,
+          ),
+        };
       }
 
       let locationsLoadingMeasurments = state.locationsLoadingMeasurments as string[];
