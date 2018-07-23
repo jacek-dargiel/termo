@@ -7,7 +7,9 @@ import { isAfter, subDays } from 'date-fns/esm';
 import { LocationWithKeyMeasurmentValues, Location } from './location/location.model';
 import { mapToObject } from '../helpers/utils';
 
-import { mapValues, groupBy, sortBy } from 'lodash/fp';
+import { mapValues } from 'lodash/fp/mapValues';
+import { groupBy } from 'lodash/fp/groupBy';
+import { sortBy } from 'lodash/fp/sortBy';
 
 let mapValuesWithKey = mapValues.convert({ cap: false });
 

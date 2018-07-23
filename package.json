@@ -57,6 +57,7 @@
     "tslint": "~5.9.1",
     "typescript": "2.7",
     "vrsource-tslint-rules": "^5.8.2",
-    "webpack": "~4.6"
+    "webpack": "~4.6",
+    "webpack-bundle-analyzer": "^2.13.1"
   }
 }
