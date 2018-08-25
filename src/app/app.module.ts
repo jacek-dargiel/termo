@@ -22,6 +22,7 @@ import { RelativeTimePipe } from './pipes/relative-time.pipe';
 import { ToFixedPipe } from './to-fixed.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { HeaderComponent } from './containers/header/header.component';
+import { SnackbarComponent } from './components/snackbar/snackbar.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { HeaderComponent } from './containers/header/header.component';
     RelativeTimePipe,
     ToFixedPipe,
     SpinnerComponent,
-    HeaderComponent
+    HeaderComponent,
+    SnackbarComponent
   ],
   imports: [
     BrowserModule,
