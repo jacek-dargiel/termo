@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { SnackbarService } from './snackbar.service';
 
 @Injectable()
 export class ErrorHandlingService {
-  private _error$ = new Subject<Error>();
-  public error$ = this._error$.asObservable();
+  constructor(
+    private snackbarService: SnackbarService,
+  ) {
 
+  }
   handle(error: Error) {
-    this._error$.next(error);
+    let dataObject = {
+      message: error.message,
+      timeout: 5000,
+    };
+    this.snackbarService.show(dataObject as any);
   }
 }

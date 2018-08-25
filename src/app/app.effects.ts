@@ -61,7 +61,10 @@ export class AppEffects {
     ofType(LocationActionTypes.MapInitialized),
     switchMap(() => this.location.getLocations()),
     map(locations => new FetchLocationsSuccess({locations})),
-    catchError(error => of(new FetchLocationsError(error)))
+    catchError(() => {
+      let readableError = new Error('Nie udało się pobrać listy tuneli.');
+      return of(new FetchLocationsError({error: readableError}));
+    })
   );
 
   @Effect()
@@ -85,7 +88,10 @@ export class AppEffects {
           );
         }),
         map(({ measurments, location }) => new FetchMeasurmentsSuccess({ measurments, location })),
-        catchError(error => of(new FetchMeasurmentsError(error))),
+        catchError(error => {
+          let readableError = new Error('Nie udało się pobrać najnowszych pomiarów temperatury.');
+          return of(new FetchMeasurmentsError({ error: readableError }));
+        }),
         concat(of(new RefreshMeasurmentsFinish())),
       );
     }),
