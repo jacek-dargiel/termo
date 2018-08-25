@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
-import { aioHeaders } from './aio-headers';
-import { environment } from 'environments/environment';
+import { ApiService } from './api.service';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -14,21 +12,18 @@ import { Location } from '../state/location/location.model';
 export class LocationService {
 
   constructor(
-    private http: HttpClient,
+    private api: ApiService,
   ) { }
 
   getLocations(): Observable<Location[]> {
-    const options = {
-      headers: aioHeaders,
-    };
-    return this.http.get<AIOFeed[]>(`${environment.API_URL}/groups/temperatura/feeds`, options)
+    return this.api.get<AIOFeed[]>(`/groups/temperatura/feeds`)
       .pipe(
         map(feeds => feeds.map(feed => this.mapFeedToLocation(feed)))
       );
   }
 
   mapFeedToLocation(feed: AIOFeed): Location {
-    const mapPosition = this.parseMapPosition(feed.description);
+    let mapPosition = this.parseMapPosition(feed.description);
     return {
       id: feed.key,
       name: feed.name,

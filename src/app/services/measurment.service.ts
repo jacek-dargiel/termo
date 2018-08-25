@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Measurment } from '../state/measurment/measurment.model';
-import { environment } from 'environments/environment.prod';
+import { ApiService } from './api.service';
+
 import { map } from 'rxjs/operators';
+
+import { HttpParams } from '@angular/common/http';
+
+import { Measurment } from '../state/measurment/measurment.model';
 import { AIOFeedData } from '../interfaces';
-import { aioHeaders } from './aio-headers';
 
 @Injectable()
 export class MeasurmentService {
 
   constructor(
-    private http: HttpClient,
+    private api: ApiService,
   ) { }
 
   getMeasurments(locationKey: string, start?: Date, end?: Date) {
@@ -21,11 +23,10 @@ export class MeasurmentService {
     if (end) {
       params = params.append('end_time', end.toISOString());
     }
-    const options = {
-      headers: aioHeaders,
+    let options = {
       params,
     };
-    return this.http.get<AIOFeedData[]>(`${environment.API_URL}/feeds/${locationKey}/data`, options)
+    return this.api.get<AIOFeedData[]>(`/feeds/${locationKey}/data`, options)
       .pipe(
         map(feedData => feedData.map(singleFeedData => this.mapFeedMeasurmentDataToMeasurment(singleFeedData))),
       );
