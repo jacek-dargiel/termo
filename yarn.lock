@@ -266,6 +266,16 @@
   dependencies:
     "@types/jasmine" "*"
 
+"@types/material__base@*":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@types/material__base/-/material__base-0.35.0.tgz#ad7ee346c50dce541b4d5acc209a4313399f6880"
+
+"@types/material__snackbar@^0.35.0":
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/@types/material__snackbar/-/material__snackbar-0.35.0.tgz#1fb61c4ac0f0df8862d630ec7923fd925618ddf6"
+  dependencies:
+    "@types/material__base" "*"
+
 "@types/node@^6.0.46":
   version "6.0.110"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.110.tgz#6bbfc1c14d671348e3db4f89f3b487785e684684"

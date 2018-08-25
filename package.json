@@ -41,6 +41,7 @@
     "@ngrx/schematics": "6.0.1",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
+    "@types/material__snackbar": "^0.35.0",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.2.1",
     "envsub": "^3.1.0",
