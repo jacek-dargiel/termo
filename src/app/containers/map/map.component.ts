@@ -17,6 +17,11 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     this.mapFacade.dispatchMapInit();
+    this.mapFacade.getImageDimentions()
+      .subscribe(dimentions => {
+        let ratio = (dimentions.height / dimentions.width).toString();
+        this.el.nativeElement.style.setProperty('--mapBackgroundRatio', ratio);
+      });
   }
 
 }

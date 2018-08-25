@@ -8,11 +8,12 @@
   padding: 0.4rem 1rem;
   overflow: hidden;
   width: 13rem;
+  margin-left: -13rem;
   text-align: center;
   display: block;
   margin-bottom: 1rem;
 
-  @media (max-width: 1024px) {
+  @media (max-width: $breakpointMobile) {
     box-sizing: border-box;
     position: relative;
     margin: 1rem auto;
@@ -27,12 +28,12 @@
   position: absolute;
   width: $size;
   height: $size;
-  bottom: -1*$size/2;
+  top: -1*$size/2;
   right: -1*$size/2;
   background: $colorPrimary;
   transform: rotate(0.125turn);
 
-  @media (max-width: 1024px) {
+  @media (max-width: $breakpointMobile) {
     display: none;
   }
 }

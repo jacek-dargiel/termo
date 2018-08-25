@@ -1,9 +1,20 @@
 @import '../../../styles/variables';
 
+:root {
+    --mapBackgroundRatio: 9/16;
+}
+
 :host {
+    position: relative;
     display: block;
     background: url($mapBackground);
     background-size: cover;
-    flex: 1;
-    padding-top: 5rem;
+    margin-top: $headerHeight;
+    width: 100vw;
+    height: calc(100vw * var(--mapBackgroundRatio));
+    box-shadow: 0 0 2rem 0.5rem rgba(darken($mapBackgroundColor, 80), 0.5);
+
+    @media (max-width: $breakpointMobile) {
+        height: auto;
+    }
 }

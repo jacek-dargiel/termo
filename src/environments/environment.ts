@@ -7,6 +7,7 @@ export const environment = {
   API_URL: '/api',
   locationOutdatedThreshold: 900000,  // 15 min === 90000 ms
   refreshTimeout: 300000,             // 5 min === 30000 ms
+  mapBackgroundUrl: '/assets/map.jpg',
   // refreshTimeout: 30000,
 };
 

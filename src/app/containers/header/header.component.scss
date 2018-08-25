@@ -2,13 +2,15 @@
 
 :host {
   position: absolute;
+  top: 0;
   display: block;
   width: 100%;
+  z-index: 2;
 }
 
 header {
   padding: 0 1.5rem;
-  height: 5rem;
+  height: $headerHeight;
   // background: $colorPrimary;
   display: flex;
   flex-direction: column;

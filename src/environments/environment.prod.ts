@@ -4,4 +4,5 @@ export const environment = {
   locationOutdatedThreshold: 900000,
   refreshTimeout: 300000,
   // refreshTimeout: 30000,
+  mapBackgroundUrl: '/assets/map.jpg',
 };
