@@ -1,10 +1,11 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Measurment } from './measurment.model';
 import { MeasurmentActions, MeasurmentActionTypes } from './measurment.actions';
+import { LocationActionTypes, LocationActions } from '../location/location.actions';
 import { compareAsc } from 'date-fns/esm';
 
 export interface State extends EntityState<Measurment> {
-  // additional entities state properties
+  loading: boolean;
 }
 
 export const adapter: EntityAdapter<Measurment> = createEntityAdapter<Measurment>({
@@ -12,12 +13,12 @@ export const adapter: EntityAdapter<Measurment> = createEntityAdapter<Measurment
 });
 
 export const initialState: State = adapter.getInitialState({
-  // additional entity state properties
+  loading: false,
 });
 
 export function reducer(
   state = initialState,
-  action: MeasurmentActions
+  action: MeasurmentActions | LocationActions
 ): State {
   switch (action.type) {
     case MeasurmentActionTypes.AddMeasurment: {
@@ -60,8 +61,25 @@ export function reducer(
       return adapter.removeAll(state);
     }
 
+    case LocationActionTypes.RefreshMeasurmentsStart: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
     case MeasurmentActionTypes.FetchMeasurmentsSuccess: {
-      return adapter.addMany(action.payload.measurments, state);
+      return adapter.addMany(action.payload.measurments, {
+        ...state,
+        loading: false,
+      });
+    }
+
+    case MeasurmentActionTypes.FetchMeasurmentsError: {
+      return {
+        ...state,
+        loading: false,
+      };
     }
 
     default: {

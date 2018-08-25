@@ -46,6 +46,11 @@ export let selectMeasurmentEntities = createSelector(
   fromMeasurment.selectEntities,
 );
 
+export let selectMeasurmentsLoading = createSelector(
+  selectMeasurmentState,
+  state => state.loading,
+);
+
 export let selectMeasurmentsByLocation = createSelector(
   selectLocationIds,
   selectAllMeasurments,
