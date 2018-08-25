@@ -91,7 +91,7 @@ export class FetchMeasurmentsSuccess implements Action {
 
 export class FetchMeasurmentsError implements Action {
   readonly type = MeasurmentActionTypes.FetchMeasurmentsError;
-  constructor(public payload: { error: Error }) {}
+  constructor(public payload: { error: Error, location: Location }) {}
 }
 
 export type MeasurmentActions =

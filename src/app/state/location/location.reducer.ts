@@ -84,6 +84,14 @@ export function reducer(
       };
     }
 
+    case MeasurmentActionTypes.FetchMeasurmentsError: {
+      let locations = state.locationsLoadingMeasurments as string[];
+      return {
+        ...state,
+        locationsLoadingMeasurments: locations.filter(id => id !== action.payload.location.id),
+      };
+    }
+
     case LocationActionTypes.FetchLocationsError: {
       return {
         ...state,

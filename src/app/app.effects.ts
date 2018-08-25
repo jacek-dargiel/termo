@@ -85,14 +85,13 @@ export class AppEffects {
         mergeMap(location => {
           const start = subDays(new Date(), 1);
           return this.measurment.getMeasurments(location.id, start).pipe(
-            map(measurments => ({ measurments, location }))
+            map((measurments) => new FetchMeasurmentsSuccess({ measurments, location })),
+            catchError(error => {
+              console.error(error);
+              let readableError = new Error('Nie udało się pobrać najnowszych pomiarów temperatury.');
+              return of(new FetchMeasurmentsError({ error: readableError, location }));
+            }),
           );
-        }),
-        map(({ measurments, location }) => new FetchMeasurmentsSuccess({ measurments, location })),
-        catchError(error => {
-          console.error(error);
-          let readableError = new Error('Nie udało się pobrać najnowszych pomiarów temperatury.');
-          return of(new FetchMeasurmentsError({ error: readableError }));
         }),
         concat(of(new RefreshMeasurmentsFinish())),
       );
