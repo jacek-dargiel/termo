@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { AIOFeed, Point } from '../interfaces';
 import { Location } from '../state/location/location.model';
@@ -18,7 +18,12 @@ export class LocationService {
   getLocations(): Observable<Location[]> {
     return this.api.get<AIOFeed[]>(`/groups/temperatura/feeds`)
       .pipe(
-        map(feeds => feeds.map(feed => this.mapFeedToLocation(feed)))
+        map(feeds => feeds.map(feed => this.mapFeedToLocation(feed))),
+        tap(locations => {
+          if (locations.length === 0) {
+            throw new Error('0 Locations recived from API.');
+          }
+        }),
       );
   }
 

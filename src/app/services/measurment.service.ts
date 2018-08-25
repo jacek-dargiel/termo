@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 import { HttpParams } from '@angular/common/http';
 
@@ -29,6 +29,11 @@ export class MeasurmentService {
     return this.api.get<AIOFeedData[]>(`/feeds/${locationKey}/data`, options)
       .pipe(
         map(feedData => feedData.map(singleFeedData => this.mapFeedMeasurmentDataToMeasurment(singleFeedData))),
+        tap(measurmens => {
+          if (measurmens.length === 0) {
+            throw new Error('0 Measurments recived from API.');
+          }
+        }),
       );
   }
 
