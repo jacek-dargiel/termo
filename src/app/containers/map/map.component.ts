@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { MapFacade } from './map.facade';
+import { Location } from '../../state/location/location.model';
 
 @Component({
   selector: 'termo-map',
@@ -22,6 +23,10 @@ export class MapComponent implements OnInit {
         let ratio = (dimentions.height / dimentions.width).toString();
         this.el.nativeElement.style.setProperty('--mapBackgroundRatio', ratio);
       });
+  }
+
+  onLocationSelect(location: Location) {
+    this.mapFacade.selectLocation(location);
   }
 
 }

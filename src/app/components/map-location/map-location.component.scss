@@ -3,7 +3,7 @@
 :host {
   position: absolute;
   background: #fff;
-  border: 1px solid mix(#bbb, $colorPrimary, 85%);
+  outline: 1px solid mix(#bbb, $colorPrimary, 85%);
   box-shadow: 0.3rem 0.3rem 1rem rgba(#000, 0.5);
   padding: 0.4rem 1rem;
   overflow: hidden;
@@ -11,6 +11,13 @@
   // margin-left: -13rem;
   text-align: center;
   display: block;
+  cursor: pointer;
+
+  &:focus,
+  &:active {
+    outline: 0.2rem solid #eede25;
+    user-select: none;
+  }
   
   @media (max-width: $breakpointMobile) {
     box-sizing: border-box;

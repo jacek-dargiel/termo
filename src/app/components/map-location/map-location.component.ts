@@ -1,5 +1,5 @@
-import { Component, Input, HostBinding, OnInit } from '@angular/core';
-import { LocationWithKeyMeasurmentValues } from '../../state/location/location.model';
+import { Component, Input, HostBinding, OnInit, HostListener, Output, EventEmitter } from '@angular/core';
+import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/location.model';
 
 @Component({
   selector: 'termo-map-location',
@@ -9,6 +9,7 @@ import { LocationWithKeyMeasurmentValues } from '../../state/location/location.m
 export class MapLocationComponent implements OnInit {
   @Input() location: LocationWithKeyMeasurmentValues;
   @Input() loading: boolean;
+  @Output() select = new EventEmitter<Location>();
   @HostBinding('style.bottom.%') bottom;
   @HostBinding('style.right.%') right;
 
@@ -22,6 +23,11 @@ export class MapLocationComponent implements OnInit {
   adjustPosition() {
     this.right = 100 - (this.location.mapPosition.x * 100);
     this.bottom = 100 - (this.location.mapPosition.y * 100);
+  }
+
+  @HostListener('click')
+  selectLocationEntities() {
+    this.select.emit(this.location);
   }
 
 }

@@ -1,0 +1,46 @@
+@import '../../../styles/variables';
+@import '../../../../node_modules/@material/animation/_functions.scss';
+
+$chartHeight: 15rem;
+
+:host {
+  position: fixed;
+  bottom: 1.5rem;
+  transform: translateY($chartHeight + 3rem);
+  left: 1.5rem;
+  right: 1.5rem;
+  height: 15rem;
+  background: #fff;
+  border: 1px solid mix(#bbb, $colorPrimary, 85%);
+  box-shadow: 0.3rem 0.3rem 1rem rgba(#000, 0.5);
+  transition: mdc-animation-exit-temporary(transform, 175ms);
+  
+  &.chart--visible {
+    transition: mdc-animation-enter(transform, 175ms);
+    transform: translateY(0);
+  }
+}
+
+.chart {
+  margin: 0.75rem 1rem;
+}
+.header {
+  display: flex;
+
+  &__location-name {
+    flex: 1;
+    margin: 0;
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: mix(#777, $colorPrimary, 80%);
+  }
+
+  &__actions {
+    width: 2rem;
+
+    .btn--icon {
+      background: transparent;
+      border: 0;
+    }
+  }
+}

@@ -11,6 +11,7 @@ export interface State extends EntityState<Location> {
   loading: boolean;
   locationsLoadingMeasurments: string[] | number[];
   latestMeasurmentIDs: Dictionary<string>;
+  selected: string;
 }
 
 export let adapter: EntityAdapter<Location> = createEntityAdapter<Location>();
@@ -19,6 +20,7 @@ export const INITIAL_STATE: State = adapter.getInitialState({
   loading: false,
   locationsLoadingMeasurments: [],
   latestMeasurmentIDs: {},
+  selected: undefined,
 });
 
 export function reducer(
@@ -119,6 +121,13 @@ export function reducer(
       return {
         ...locationsState,
         locationsLoadingMeasurments,
+      };
+    }
+
+    case LocationActionTypes.SelectLocation: {
+      return {
+        ...state,
+        selected: action.payload.location && action.payload.location.id,
       };
     }
 

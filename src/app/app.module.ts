@@ -23,6 +23,7 @@ import { ToFixedPipe } from './to-fixed.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { HeaderComponent } from './containers/header/header.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
+import { ChartComponent } from './containers/chart/chart.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { SnackbarComponent } from './components/snackbar/snackbar.component';
     ToFixedPipe,
     SpinnerComponent,
     HeaderComponent,
-    SnackbarComponent
+    SnackbarComponent,
+    ChartComponent
   ],
   imports: [
     BrowserModule,

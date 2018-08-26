@@ -18,6 +18,8 @@ export enum LocationActionTypes {
   RefreshMeasurmentsFinish = '[Effect] Refresh Measurments Finish',
   FetchLocationsSuccess = '[API] Fetch Locations Success',
   FetchLocationsError = '[API] Fetch Locations Error',
+
+  SelectLocation = '[Map] Select Location',
 }
 
 export class FetchLocationsSuccess implements Action {
@@ -98,6 +100,11 @@ export class FetchLocationsError implements Action {
   constructor(public payload: { error: Error }) {}
 }
 
+export class SelectLocation implements Action {
+  readonly type = LocationActionTypes.SelectLocation;
+  constructor(public payload: { location: Location }) {}
+}
+
 export type LocationActions =
  FetchLocationsSuccess
  | AddLocation
@@ -113,4 +120,5 @@ export type LocationActions =
  | RefreshMeasurmentsStart
  | RefreshMeasurmentsFinish
  | FetchLocationsError
+ | SelectLocation
  ;

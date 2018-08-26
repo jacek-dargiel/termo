@@ -1,0 +1,12 @@
+<div class="chart" *ngIf="location">
+  <header class="header">
+    <h3 class="header__location-name">🌡{{location?.name}}</h3>
+    <div class="header__actions">
+      <button
+        type="button"
+        class="btn btn--icon"
+        (click)="close()"
+      >️✖</button>
+    </div>
+  </header>
+</div>

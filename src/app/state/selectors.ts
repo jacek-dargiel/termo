@@ -16,6 +16,11 @@ let mapValuesWithKey = mapValues.convert({ cap: false });
 export let selectLocationState = createFeatureSelector<fromLocation.State>('location');
 export let selectMeasurmentState = createFeatureSelector<fromMeasurment.State>('measurment');
 
+export let selectSelectedLocationID = createSelector(
+  selectLocationState,
+  location => location.selected
+);
+
 export let selectLocationLoading = createSelector(
   selectLocationState,
   location => location.loading
@@ -34,6 +39,14 @@ export let selectLocationIds = createSelector(
 export let selectLocationEntities = createSelector(
   selectLocationState,
   fromLocation.selectEntities,
+);
+
+export let selectSelectedLocation = createSelector(
+  selectSelectedLocationID,
+  selectLocationEntities,
+  (id, locationEntities) => {
+    return locationEntities[id];
+  }
 );
 
 export let selectAllMeasurments = createSelector(
