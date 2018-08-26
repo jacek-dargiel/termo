@@ -8,11 +8,10 @@
   padding: 0.4rem 1rem;
   overflow: hidden;
   width: 13rem;
-  margin-left: -13rem;
+  // margin-left: -13rem;
   text-align: center;
   display: block;
-  margin-bottom: 1rem;
-
+  
   @media (max-width: $breakpointMobile) {
     box-sizing: border-box;
     position: relative;
@@ -28,7 +27,7 @@
   position: absolute;
   width: $size;
   height: $size;
-  top: -1*$size/2;
+  bottom: -1*$size/2;
   right: -1*$size/2;
   background: $colorPrimary;
   transform: rotate(0.125turn);

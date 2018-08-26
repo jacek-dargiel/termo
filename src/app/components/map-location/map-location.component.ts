@@ -9,8 +9,8 @@ import { LocationWithKeyMeasurmentValues } from '../../state/location/location.m
 export class MapLocationComponent implements OnInit {
   @Input() location: LocationWithKeyMeasurmentValues;
   @Input() loading: boolean;
-  @HostBinding('style.top.%') top;
-  @HostBinding('style.left.%') left;
+  @HostBinding('style.bottom.%') bottom;
+  @HostBinding('style.right.%') right;
 
   constructor(
   ) { }
@@ -20,8 +20,8 @@ export class MapLocationComponent implements OnInit {
   }
 
   adjustPosition() {
-    this.left = this.location.mapPosition.x * 100;
-    this.top = this.location.mapPosition.y * 100;
+    this.right = 100 - (this.location.mapPosition.x * 100);
+    this.bottom = 100 - (this.location.mapPosition.y * 100);
   }
 
 }
