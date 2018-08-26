@@ -1,5 +1,5 @@
 $breakpointMobile: 1024px;
 $headerHeight: 5rem;
 $mapBackground: '/assets/map.jpg';
-$mapBackgroundColor: #3f5b1c;
 $colorPrimary: #006CD8;
+$mapBackgroundColor: mix(#eee, $colorPrimary, 98%);

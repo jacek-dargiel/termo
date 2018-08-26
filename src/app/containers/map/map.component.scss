@@ -9,10 +9,10 @@
     display: block;
     background: url($mapBackground);
     background-size: cover;
-    margin-top: $headerHeight;
-    width: 100vw;
-    height: calc(100vw * var(--mapBackgroundRatio));
-    box-shadow: 0 0 2rem 0.5rem rgba(darken($mapBackgroundColor, 80), 0.5);
+    margin-top: 1vw;
+    width: 98vw;
+    height: calc(98vw * var(--mapBackgroundRatio));
+    box-shadow: 0 0 2rem 0.5rem rgba(darken($mapBackgroundColor, 80), 0.35);
 
     @media (max-width: $breakpointMobile) {
         height: auto;
