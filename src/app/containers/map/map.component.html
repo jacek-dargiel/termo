@@ -3,5 +3,6 @@
   *ngFor="let location of locations$ | async"
   [location]="location"
   [loading]="(locationsLoading$ | async).includes(location.id)"
+  [selected]="(selectedLocation$ | async)?.id === location.id"
   (select)="onLocationSelect(location)"
 ></termo-map-location>

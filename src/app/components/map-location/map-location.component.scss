@@ -13,6 +13,10 @@
   display: block;
   cursor: pointer;
 
+  &.location--selected {
+    border-bottom: 0.2rem solid $colorPrimary;
+  }
+
   &:focus,
   &:active {
     outline: 0.2rem solid #eede25;

@@ -10,6 +10,7 @@ import { Location } from '../../state/location/location.model';
 export class MapComponent implements OnInit {
   public locationsLoading$ = this.mapFacade.locationsLoading$;
   public locations$ = this.mapFacade.locations$;
+  public selectedLocation$ = this.mapFacade.selectedLocation$;
 
   constructor(
     private mapFacade: MapFacade,

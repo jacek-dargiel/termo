@@ -11,6 +11,7 @@ import { Location } from '../../state/location/location.model';
 export class MapFacade {
   public locationsLoading$ = this.store.select(selectors.selectIdsOfLocationsLoadingMeasurments);
   public locations$ = this.store.select(selectors.selectLocationsMappedWithKeyMeasurmentValues);
+  public selectedLocation$ = this.store.select(selectors.selectSelectedLocation);
 
   constructor(
     private store: Store<State>,

@@ -9,6 +9,9 @@ import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/
 export class MapLocationComponent implements OnInit {
   @Input() location: LocationWithKeyMeasurmentValues;
   @Input() loading: boolean;
+  @Input()
+  @HostBinding('class.location--selected')
+  selected: boolean;
   @Output() select = new EventEmitter<Location>();
   @HostBinding('style.bottom.%') bottom;
   @HostBinding('style.right.%') right;
