@@ -28,6 +28,10 @@ export class SnackbarComponent implements AfterViewInit, OnDestroy {
   }
 
   showSnackbar(dataObject: MDCSnackbarData) {
+    if (!this.snackbar) {
+      console.error('Can\'t show snackbar before view init.', dataObject);
+      return;
+    }
     this.snackbar.show(dataObject);
   }
 
