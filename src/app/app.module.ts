@@ -1,5 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
@@ -40,12 +43,14 @@ import { ChartComponent } from './containers/chart/chart.component';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects]),
     StoreModule.forFeature('location', fromLocation.reducer),
     StoreModule.forFeature('measurment', fromMeasurment.reducer),
     HttpClientModule,
+    NgxChartsModule,
   ],
   providers: [
     ErrorHandlingService,

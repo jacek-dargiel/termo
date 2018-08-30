@@ -9,4 +9,14 @@
       >️✖</button>
     </div>
   </header>
+  <div class="chart__container">
+    <ngx-charts-line-chart
+      *ngIf="location && chartData"
+      [results]="chartData"
+      [xAxis]="true"
+      [yAxis]="true"
+      [roundDomains]="true"
+      [xAxisTickFormatting]="formatTime"
+    ></ngx-charts-line-chart>
+  </div>
 </div>

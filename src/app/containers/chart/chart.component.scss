@@ -14,6 +14,7 @@ $chartHeight: 15rem;
   border: 1px solid mix(#bbb, $colorPrimary, 85%);
   box-shadow: 0.3rem 0.3rem 1rem rgba(#000, 0.5);
   transition: mdc-animation-exit-temporary(transform, 175ms);
+  display: flex;
   
   &.chart--visible {
     transition: mdc-animation-enter(transform, 175ms);
@@ -22,7 +23,16 @@ $chartHeight: 15rem;
 }
 
 .chart {
+  flex: 1;
   margin: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+
+  &__container {
+    flex: 1;
+    // width: 500px;
+    // height: 300px;
+  }
 }
 .header {
   display: flex;
