@@ -79,7 +79,7 @@ export let selectMeasurmentsByLocation = createSelector(
 export let selectSelectedLocationMeasurments = createSelector(
   selectSelectedLocationID,
   selectMeasurmentsByLocation,
-  (id, measurments) => measurments[id] || [],
+  (id, measurments) => measurments[id],
 );
 
 let selectLatestMeasurmentIdsByLocation = createSelector(

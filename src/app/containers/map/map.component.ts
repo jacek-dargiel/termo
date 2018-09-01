@@ -27,7 +27,7 @@ export class MapComponent implements OnInit {
   }
 
   onLocationSelect(location: Location) {
-    this.mapFacade.selectLocation(location);
+    this.mapFacade.selectLocation(location).subscribe();
   }
 
 }

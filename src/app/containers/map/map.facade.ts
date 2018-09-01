@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { isEmpty } from 'lodash/fp';
 import { State } from '../../state/reducers';
 import { MapInitialized, SelectLocation } from '../../state/location/location.actions';
 import * as selectors from '../../state/selectors';
 import { MapBackgroundService } from '../../services/map-background.service';
 import { environment } from 'environments/environment';
 import { Location } from '../../state/location/location.model';
+import { ErrorHandlingService } from '../../services/error-handling.service';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class MapFacade {
@@ -13,9 +16,12 @@ export class MapFacade {
   public locations$ = this.store.select(selectors.selectLocationsMappedWithKeyMeasurmentValues);
   public selectedLocation$ = this.store.select(selectors.selectSelectedLocation);
 
+  private measurmentsByLocation$ = this.store.select(selectors.selectMeasurmentsByLocation);
+
   constructor(
     private store: Store<State>,
     private mapBackgroundService: MapBackgroundService,
+    private errorHandlingService: ErrorHandlingService,
   ) {}
 
   dispatchMapInit() {
@@ -28,6 +34,15 @@ export class MapFacade {
   }
 
   selectLocation(location: Location) {
-    this.store.dispatch(new SelectLocation({location}));
+    return this.measurmentsByLocation$.pipe(
+      tap(measurmentsByLocation => {
+        let locationMeasurments = measurmentsByLocation[location.id];
+        if (isEmpty(locationMeasurments)) {
+          this.errorHandlingService.handle(new Error('Brak aktualnych danych do wyświetlenia na wykresie.'));
+          return;
+        }
+        this.store.dispatch(new SelectLocation({location}));
+      })
+    );
   }
 }
