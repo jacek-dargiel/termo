@@ -2,9 +2,8 @@ import { Component, OnInit, HostBinding, OnDestroy } from '@angular/core';
 import { ChartFacade } from './chart.facade';
 import { Subscription } from 'rxjs';
 import { Location } from '../../state/location/location.model';
-import { map, switchMap, tap, filter } from 'rxjs/operators';
+import { map, switchMapTo, tap, filter } from 'rxjs/operators';
 import { Measurment } from '../../state/measurment/measurment.model';
-import { ErrorHandlingService } from '../../services/error-handling.service';
 import { format } from 'date-fns/esm';
 
 @Component({
@@ -21,7 +20,6 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   constructor(
     private chartFacade: ChartFacade,
-    private errorHandlingService: ErrorHandlingService,
   ) { }
 
   ngOnInit() {
@@ -29,16 +27,13 @@ export class ChartComponent implements OnInit, OnDestroy {
       .pipe(
         tap(location => {
           this.location = location;
+          this.visible = Boolean(location);
         }),
-        switchMap(() => this.chartFacade.selectedLocationMeasurments$),
-        tap(measurments => {
-          this.visible = measurments.length > 0;
-          if (this.location && (measurments.length === 0)) {
-            this.errorHandlingService.handle(new Error('Brak danych do wyświetlenia na wykresie.'));
-          }
+        switchMapTo(this.chartFacade.selectedLocationMeasurments$),
+        filter(measurments => measurments !== undefined),
+        map(measurments => {
+          return this.mapMeasurmentToChartDataPoint(measurments);
         }),
-        filter(measurments => measurments.length > 0),
-        map(measurments => this.mapMeasurmentToChartDataPoint(measurments)),
       )
       .subscribe(data => {
         this.chartData = data;
