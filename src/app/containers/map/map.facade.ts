@@ -8,7 +8,7 @@ import { MapBackgroundService } from '../../services/map-background.service';
 import { environment } from 'environments/environment';
 import { Location } from '../../state/location/location.model';
 import { ErrorHandlingService } from '../../services/error-handling.service';
-import { tap } from 'rxjs/operators';
+import { tap, first } from 'rxjs/operators';
 
 @Injectable()
 export class MapFacade {
@@ -35,6 +35,7 @@ export class MapFacade {
 
   selectLocation(location: Location) {
     return this.measurmentsByLocation$.pipe(
+      first(),
       tap(measurmentsByLocation => {
         let locationMeasurments = measurmentsByLocation[location.id];
         if (isEmpty(locationMeasurments)) {
