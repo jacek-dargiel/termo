@@ -3,7 +3,7 @@ import * as fromLocation from './location/location.reducer';
 import * as fromMeasurment from './measurment/measurment.reducer';
 import { Dictionary } from '@ngrx/entity/src/models';
 import { Measurment } from './measurment/measurment.model';
-import { isAfter, subDays } from 'date-fns/esm';
+import { isAfter, subHours } from 'date-fns/esm';
 import { LocationWithKeyMeasurmentValues, Location } from './location/location.model';
 import { mapToObject } from '../helpers/utils';
 
@@ -109,22 +109,22 @@ export let selectLastMeasurmentsByLocation = createSelector(
 //   }
 // );
 
-function isMeasurmentAfterToday(measurment: Measurment): boolean {
-  return isAfter(measurment.created_at, subDays(new Date(), 1));
+function isMeasurmentInMinimumRange(measurment: Measurment): boolean {
+  return isAfter(measurment.created_at, subHours(new Date(), 12));
 }
 
-export let selectTodaysMeasurmentsByLocation = createSelector(
+export let selectMeasurmentsFromMinimumRangeByLocation = createSelector(
   selectMeasurmentsByLocation,
   (measurmentsByLocation): Dictionary<Measurment[]> => {
     return mapValuesWithKey(
-      (measurments: Measurment[], locationID: string) => measurmentsByLocation[locationID].filter(isMeasurmentAfterToday),
+      (measurments: Measurment[], locationID: string) => measurmentsByLocation[locationID].filter(isMeasurmentInMinimumRange),
       measurmentsByLocation,
     );
   }
 );
 
 export let selectMinimalMeasurmentsByLocation = createSelector(
-  selectTodaysMeasurmentsByLocation,
+  selectMeasurmentsFromMinimumRangeByLocation,
   (todaysMeasurmentsByLocation): Dictionary<Measurment> => {
     return mapValuesWithKey(
       (measurments: Measurment[], locationID: string) => {
