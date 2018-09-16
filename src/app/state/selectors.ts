@@ -7,11 +7,7 @@ import { isAfter, subHours } from 'date-fns/esm';
 import { LocationWithKeyMeasurmentValues, Location } from './location/location.model';
 import { mapToObject } from '../helpers/utils';
 
-import mapValues from 'lodash/fp/mapValues';
-import groupBy from 'lodash/fp/groupBy';
-import sortBy from 'lodash/fp/sortBy';
-
-let mapValuesWithKey = mapValues.convert({ cap: false });
+import { mapValuesWithKey, groupBy, sortBy } from '../helpers/lodash';
 
 export let selectLocationState = createFeatureSelector<fromLocation.State>('location');
 export let selectMeasurmentState = createFeatureSelector<fromMeasurment.State>('measurment');

@@ -13,7 +13,10 @@
   "private": true,
   "jest": {
     "preset": "jest-preset-angular",
-    "setupTestFrameworkScriptFile": "<rootDir>/src/setupJest.ts"
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setupJest.ts",
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!(lodash-es|date-fns)/)"
+    ]
   },
   "dependencies": {
     "@angular/animations": "^6.0.3",
@@ -34,6 +37,7 @@
     "core-js": "^2.5.4",
     "date-fns": "^2.0.0-alpha.9",
     "lodash": "^4.17.10",
+    "lodash-es": "^4.17.11",
     "normalize.css": "^8.0.0",
     "rxjs": "^6.2.0",
     "zone.js": "^0.8.26"
@@ -44,6 +48,7 @@
     "@angular/compiler-cli": "^6.0.3",
     "@angular/language-service": "^6.0.3",
     "@ngrx/schematics": "6.0.1",
+    "@types/lodash-es": "^4.17.1",
     "@types/material__snackbar": "^0.35.0",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.2.1",

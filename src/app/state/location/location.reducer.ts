@@ -5,7 +5,7 @@ import { MeasurmentActionTypes, MeasurmentActions } from '../measurment/measurme
 import { Measurment } from '../measurment/measurment.model';
 import { compareAsc } from 'date-fns/esm';
 import { Dictionary } from '@ngrx/entity/src/models';
-import last from 'lodash/fp/last';
+import { last } from '../../helpers/lodash';
 
 export interface State extends EntityState<Location> {
   loading: boolean;

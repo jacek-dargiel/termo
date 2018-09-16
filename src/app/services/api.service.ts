@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { tap } from 'rxjs/operators';
-import isEmpty from 'lodash/fp/isEmpty';
+import { isEmpty } from '../helpers/lodash';
 
 @Injectable({
   providedIn: 'root'

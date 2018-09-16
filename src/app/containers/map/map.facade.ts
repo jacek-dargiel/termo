@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { isEmpty } from 'lodash/fp';
+import { isEmpty } from '../../helpers/lodash';
 import { State } from '../../state/reducers';
 import { MapInitialized, SelectLocation } from '../../state/location/location.actions';
 import * as selectors from '../../state/selectors';
