@@ -15,7 +15,7 @@
     "preset": "jest-preset-angular",
     "setupTestFrameworkScriptFile": "<rootDir>/src/setupJest.ts",
     "transformIgnorePatterns": [
-      "<rootDir>/node_modules/(?!(lodash-es|date-fns)/)"
+      "<rootDir>/node_modules/(?!(lodash-es|date-fns|@material)/)"
     ]
   },
   "dependencies": {
