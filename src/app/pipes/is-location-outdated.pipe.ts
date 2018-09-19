@@ -7,8 +7,8 @@ import { environment } from 'environments/environment';
 })
 export class IsLocationOutdatedPipe implements PipeTransform {
 
-  transform(value: any): any {
-    const thresholdDate = subMilliseconds(new Date(), environment.locationOutdatedThreshold);
+  transform(value: any, since = new Date()): boolean {
+    let thresholdDate = subMilliseconds(since, environment.locationOutdatedThreshold);
     return isBefore(value, thresholdDate);
   }
 

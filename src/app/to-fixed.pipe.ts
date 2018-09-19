@@ -7,7 +7,7 @@ export class ToFixedPipe implements PipeTransform {
 
   transform(value: number, precision = 2): any {
     try {
-      return value.toFixed(2);
+      return value.toFixed(precision);
     } catch (e) {
       return '';
     }
