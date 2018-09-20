@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build --progress=false --prod --aot",
     "postbuild": "node ./node_modules/envsub/bin/envsub.js ./netlify.toml.template ./netlify.toml",
-    "test": "jest",
+    "test": "jest --ci",
+    "test-watch": "jest --watchAll",
+    "deploy": "yarn run test && yarn run build",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
