@@ -1,0 +1,188 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MapLocationComponent should display outdated warning 1`] = `
+<termo-map-location
+  bottom={[Function Number]}
+  location={[Function Object]}
+  right={[Function Number]}
+  select={[Function EventEmitter]}
+>
+  <div
+    class="temperature-box"
+  >
+    <header>
+      <h2>
+        🌡Górny Tunel
+      </h2>
+    </header>
+    <div
+      class="temperatures"
+    >
+      <div
+        class="temperature temperature--primary"
+      >
+        <span
+          class="value"
+        >
+          21.12
+        </span>
+        <span
+          class="unit"
+        >
+          °C
+        </span>
+      </div>
+      
+      <div
+        class="temperature temperature--minimal"
+      >
+        <span
+          class="value"
+        >
+          Min: 19.50
+        </span>
+        <span
+          class="unit"
+        >
+          °C
+        </span>
+      </div>
+    </div>
+    
+    <div
+      class="footer footer--warning footer--warning-outdated"
+    >
+      <span>
+        Opóźnione: 4 dni
+      </span>
+    </div>
+  </div><div
+    class="arrow"
+  />
+</termo-map-location>
+`;
+
+exports[`MapLocationComponent should properly render base state 1`] = `
+<termo-map-location
+  bottom={[Function Number]}
+  location={[Function Object]}
+  right={[Function Number]}
+  select={[Function EventEmitter]}
+>
+  <div
+    class="temperature-box"
+  >
+    <header>
+      <h2>
+        🌡Górny Tunel
+      </h2>
+    </header>
+    <div
+      class="temperatures"
+    >
+      <div
+        class="temperature temperature--primary"
+      >
+        <span
+          class="value"
+        >
+          21.12
+        </span>
+        <span
+          class="unit"
+        >
+          °C
+        </span>
+      </div>
+      
+      <div
+        class="temperature temperature--minimal"
+      >
+        <span
+          class="value"
+        >
+          Min: 19.50
+        </span>
+        <span
+          class="unit"
+        >
+          °C
+        </span>
+      </div>
+    </div>
+    
+  </div><div
+    class="arrow"
+  />
+</termo-map-location>
+`;
+
+exports[`MapLocationComponent should render loading state 1`] = `
+<termo-map-location
+  bottom={[Function Number]}
+  loading={[Function Boolean]}
+  location={[Function Object]}
+  right={[Function Number]}
+  select={[Function EventEmitter]}
+>
+  <termo-spinner /><div
+    class="arrow"
+  />
+</termo-map-location>
+`;
+
+exports[`MapLocationComponent should render selected state 1`] = `
+<termo-map-location
+  bottom={[Function Number]}
+  location={[Function Object]}
+  right={[Function Number]}
+  select={[Function EventEmitter]}
+  selected={[Function Boolean]}
+>
+  <div
+    class="temperature-box"
+  >
+    <header>
+      <h2>
+        🌡Górny Tunel
+      </h2>
+    </header>
+    <div
+      class="temperatures"
+    >
+      <div
+        class="temperature temperature--primary"
+      >
+        <span
+          class="value"
+        >
+          21.12
+        </span>
+        <span
+          class="unit"
+        >
+          °C
+        </span>
+      </div>
+      
+      <div
+        class="temperature temperature--minimal"
+      >
+        <span
+          class="value"
+        >
+          Min: 19.50
+        </span>
+        <span
+          class="unit"
+        >
+          °C
+        </span>
+      </div>
+    </div>
+    
+  </div><div
+    class="arrow"
+  />
+</termo-map-location>
+`;
