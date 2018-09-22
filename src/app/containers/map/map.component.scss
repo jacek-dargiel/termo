@@ -9,6 +9,7 @@
     display: block;
     background: url($mapBackground);
     background-size: cover;
+    background-position: bottom right;
     margin-top: 1vw;
     width: 98vw;
     height: calc(98vw * var(--mapBackgroundRatio));
