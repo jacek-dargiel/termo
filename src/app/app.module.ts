@@ -27,6 +27,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { HeaderComponent } from './containers/header/header.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { ChartComponent } from './containers/chart/chart.component';
+import { TERMO_CURRENT_TIME_FACTORY } from './pipes/current-time.injection-token';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { ChartComponent } from './containers/chart/chart.component';
     LocationService,
     MeasurmentService,
     MapFacade,
+    {provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => new Date()},
   ],
   bootstrap: [AppComponent]
 })
