@@ -5,12 +5,21 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ToFixedPipe implements PipeTransform {
 
-  transform(value: number, precision = 2): any {
+  transform(value: number, precision = 2, locale?: string): any {
+    let fixed;
     try {
-      return value.toFixed(precision);
+      let formatingOptions: Intl.NumberFormatOptions = {
+        style: 'decimal',
+        minimumFractionDigits: precision,
+        maximumFractionDigits: precision,
+      };
+      let formater = Intl.NumberFormat(locale, formatingOptions);
+      fixed = formater.format(value);
+      return fixed;
     } catch (e) {
-      return '';
+      fixed = value.toFixed(precision);
+      fixed = fixed.replace('.', ',');
+      return fixed;
     }
   }
-
 }
