@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpinnerComponent should render spinner 1`] = `
+<termo-spinner>
+  <div
+    class="spinner"
+  >
+    <div
+      class="rect1"
+    />
+    <div
+      class="rect2"
+    />
+    <div
+      class="rect3"
+    />
+    <div
+      class="rect4"
+    />
+    <div
+      class="rect5"
+    />
+  </div>
+</termo-spinner>
+`;

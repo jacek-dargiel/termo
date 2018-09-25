@@ -22,4 +22,8 @@ describe('SpinnerComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should render spinner', () => {
+    expect(fixture).toMatchSnapshot();
+  });
 });
