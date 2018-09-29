@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChartComponent should hide chart when closed 1`] = `
+<termo-chart
+  chartData={[Function Array]}
+  chartFacade={[Function MockChartFacade]}
+  location="undefined"
+  locationMeasurmentsSub={[Function Subscriber]}
+  selectedLocationSub={[Function Subscriber]}
+  visible="false"
+>
+  
+</termo-chart>
+`;
+
+exports[`ChartComponent should render chart 1`] = `
+<termo-chart
+  chartData={[Function Array]}
+  chartFacade={[Function MockChartFacade]}
+  location={[Function Object]}
+  locationMeasurmentsSub={[Function Subscriber]}
+  selectedLocationSub={[Function Subscriber]}
+  visible={[Function Boolean]}
+>
+  <div
+    class="chart"
+  >
+    <header
+      class="header"
+    >
+      <h3
+        class="header__location-name"
+      >
+        🌡Górny Tunel
+      </h3>
+      <div
+        class="header__actions"
+      >
+        <button
+          class="btn btn--icon"
+          type="button"
+        >
+          ️✖
+        </button>
+      </div>
+    </header>
+    <div
+      class="chart__container"
+    >
+      
+      <ngx-charts-line-chart />
+    </div>
+  </div>
+</termo-chart>
+`;
+
+exports[`ChartComponent should render new location when location changes 1`] = `
+<termo-chart
+  chartData={[Function Array]}
+  chartFacade={[Function MockChartFacade]}
+  location={[Function Object]}
+  locationMeasurmentsSub={[Function Subscriber]}
+  selectedLocationSub={[Function Subscriber]}
+  visible={[Function Boolean]}
+>
+  <div
+    class="chart"
+  >
+    <header
+      class="header"
+    >
+      <h3
+        class="header__location-name"
+      >
+        🌡Dolny Tunel
+      </h3>
+      <div
+        class="header__actions"
+      >
+        <button
+          class="btn btn--icon"
+          type="button"
+        >
+          ️✖
+        </button>
+      </div>
+    </header>
+    <div
+      class="chart__container"
+    >
+      
+      <ngx-charts-line-chart />
+    </div>
+  </div>
+</termo-chart>
+`;
