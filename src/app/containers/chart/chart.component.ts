@@ -2,7 +2,7 @@ import { Component, OnInit, HostBinding, OnDestroy } from '@angular/core';
 import { ChartFacade } from './chart.facade';
 import { Subscription } from 'rxjs';
 import { Location } from '../../state/location/location.model';
-import { map, switchMapTo, tap, filter } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { Measurment } from '../../state/measurment/measurment.model';
 import { format } from 'date-fns/esm';
 
@@ -14,6 +14,7 @@ import { format } from 'date-fns/esm';
 export class ChartComponent implements OnInit, OnDestroy {
   @HostBinding('class.chart--visible') visible = false;
   selectedLocationSub: Subscription;
+  locationMeasurmentsSub: Subscription;
   measurmentsSub: Subscription;
   location: Location;
   chartData;
@@ -24,16 +25,15 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.selectedLocationSub = this.chartFacade.selectedLocation$
+      .subscribe(location => {
+        this.location = location;
+        this.visible = Boolean(location);
+      });
+
+    this.locationMeasurmentsSub = this.chartFacade.selectedLocationMeasurments$
       .pipe(
-        tap(location => {
-          this.location = location;
-          this.visible = Boolean(location);
-        }),
-        switchMapTo(this.chartFacade.selectedLocationMeasurments$),
         filter(measurments => measurments !== undefined),
-        map(measurments => {
-          return this.mapMeasurmentToChartDataPoint(measurments);
-        }),
+        map(measuments => this.mapMeasurmentToChartDataPoint(measuments))
       )
       .subscribe(data => {
         this.chartData = data;
@@ -43,6 +43,9 @@ export class ChartComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.selectedLocationSub) {
       this.selectedLocationSub.unsubscribe();
+    }
+    if (this.locationMeasurmentsSub) {
+      this.locationMeasurmentsSub.unsubscribe();
     }
   }
 
