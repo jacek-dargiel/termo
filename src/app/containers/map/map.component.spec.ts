@@ -1,25 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, Component, Input, HostBinding, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Component, Input, HostBinding, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 
 import { MapComponent } from './map.component';
 import { MapLocationComponent } from '../../components/map-location/map-location.component';
 import { MapFacade } from './map.facade';
 import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
 import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/location.model';
-import { ToFixedPipe } from '../../to-fixed.pipe';
-import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
-import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
+import { By } from '@angular/platform-browser';
 
 class MockMapFacade {
   public locationsLoading$ = new BehaviorSubject<string[]>([]);
   public locations$ = new BehaviorSubject<LocationWithKeyMeasurmentValues[]>([]);
   public selectedLocation$ = new Subject<Location>();
 
-  public dispatchMapInit() {}
-  public getImageDimentions() {
+  public dispatchMapInit = jest.fn();
+  public selectLocation = jest.fn(() => of());
+
+  public getImageDimentions = jest.fn(() => {
     return of({width: 800, height: 600});
-  }
-  public selectLocation(location: Location) {}
+  });
 }
 
 let mockLocations: LocationWithKeyMeasurmentValues[] = [
@@ -83,6 +82,7 @@ describe('MapComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
+    component.updateMapRatio = jest.fn(component.updateMapRatio);
     facade = TestBed.get(MapFacade);
     fixture.detectChanges();
   });
@@ -123,5 +123,23 @@ describe('MapComponent', () => {
     facade.locationsLoading$.next([]);
     fixture.detectChanges();
     expect(fixture).toMatchSnapshot();
+  });
+
+  it('should dispatch map initialization action on init', () => {
+    expect(facade.dispatchMapInit).toHaveBeenCalled();
+  });
+
+  it('should update map image dimentions on init', () => {
+    expect(facade.getImageDimentions).toHaveBeenCalled();
+    expect(component.updateMapRatio).toHaveBeenCalledWith({width: 800, height: 600});
+  });
+
+  it('should select location when clicked', () => {
+    facade.locations$.next(mockLocations);
+    fixture.detectChanges();
+    let locationComp: MockMapLocationComponent = fixture.debugElement.query(By.css('termo-map-location')).componentInstance;
+    locationComp.select.emit();
+    fixture.detectChanges();
+    expect(facade.selectLocation).toHaveBeenCalledWith(locationComp.location);
   });
 });
