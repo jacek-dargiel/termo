@@ -1,10 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, Component, Input, HostBinding, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
+import { Component, Input, HostBinding, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { MapComponent } from './map.component';
-import { MapLocationComponent } from '../../components/map-location/map-location.component';
 import { MapFacade } from './map.facade';
-import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
+import { of, Subject, BehaviorSubject } from 'rxjs';
 import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/location.model';
 import { By } from '@angular/platform-browser';
 
