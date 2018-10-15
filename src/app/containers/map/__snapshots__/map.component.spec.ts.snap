@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MapComponent should properly render initial state 1`] = `
+<termo-map
+  el={[Function ElementRef]}
+  locations$={[Function BehaviorSubject]}
+  locationsLoading$={[Function BehaviorSubject]}
+  mapFacade={[Function MockMapFacade]}
+  selectedLocation$={[Function Subject]}
+>
+  <termo-header />
+</termo-map>
+`;
+
+exports[`MapComponent should render loading states 1`] = `
+<termo-map
+  el={[Function ElementRef]}
+  locations$={[Function BehaviorSubject]}
+  locationsLoading$={[Function BehaviorSubject]}
+  mapFacade={[Function MockMapFacade]}
+  selectedLocation$={[Function Subject]}
+>
+  <termo-header /><termo-map-location
+    ng-reflect-loading="true"
+    ng-reflect-location="[object Object]"
+    ng-reflect-selected="false"
+  /><termo-map-location
+    ng-reflect-loading="true"
+    ng-reflect-location="[object Object]"
+    ng-reflect-selected="false"
+  />
+</termo-map>
+`;
+
+exports[`MapComponent should render loading states 2`] = `
+<termo-map
+  el={[Function ElementRef]}
+  locations$={[Function BehaviorSubject]}
+  locationsLoading$={[Function BehaviorSubject]}
+  mapFacade={[Function MockMapFacade]}
+  selectedLocation$={[Function Subject]}
+>
+  <termo-header /><termo-map-location
+    ng-reflect-loading="true"
+    ng-reflect-location="[object Object]"
+    ng-reflect-selected="false"
+  /><termo-map-location
+    ng-reflect-loading="false"
+    ng-reflect-location="[object Object]"
+    ng-reflect-selected="false"
+  />
+</termo-map>
+`;
+
+exports[`MapComponent should render loading states 3`] = `
+<termo-map
+  el={[Function ElementRef]}
+  locations$={[Function BehaviorSubject]}
+  locationsLoading$={[Function BehaviorSubject]}
+  mapFacade={[Function MockMapFacade]}
+  selectedLocation$={[Function Subject]}
+>
+  <termo-header /><termo-map-location
+    ng-reflect-loading="false"
+    ng-reflect-location="[object Object]"
+    ng-reflect-selected="false"
+  /><termo-map-location
+    ng-reflect-loading="true"
+    ng-reflect-location="[object Object]"
+    ng-reflect-selected="false"
+  />
+</termo-map>
+`;
+
+exports[`MapComponent should render loading states 4`] = `
+<termo-map
+  el={[Function ElementRef]}
+  locations$={[Function BehaviorSubject]}
+  locationsLoading$={[Function BehaviorSubject]}
+  mapFacade={[Function MockMapFacade]}
+  selectedLocation$={[Function Subject]}
+>
+  <termo-header /><termo-map-location
+    ng-reflect-loading="false"
+    ng-reflect-location="[object Object]"
+    ng-reflect-selected="false"
+  /><termo-map-location
+    ng-reflect-loading="false"
+    ng-reflect-location="[object Object]"
+    ng-reflect-selected="false"
+  />
+</termo-map>
+`;
+
+exports[`MapComponent should render locations 1`] = `
+<termo-map
+  el={[Function ElementRef]}
+  locations$={[Function BehaviorSubject]}
+  locationsLoading$={[Function BehaviorSubject]}
+  mapFacade={[Function MockMapFacade]}
+  selectedLocation$={[Function Subject]}
+>
+  <termo-header /><termo-map-location
+    ng-reflect-loading="false"
+    ng-reflect-location="[object Object]"
+    ng-reflect-selected="false"
+  /><termo-map-location
+    ng-reflect-loading="false"
+    ng-reflect-location="[object Object]"
+    ng-reflect-selected="false"
+  />
+</termo-map>
+`;

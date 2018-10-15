@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Component, Input, HostBinding, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { MapComponent } from './map.component';
 import { MapLocationComponent } from '../../components/map-location/map-location.component';
 import { MapFacade } from './map.facade';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
 import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/location.model';
 import { ToFixedPipe } from '../../to-fixed.pipe';
 import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
 import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
 
 class MockMapFacade {
-  public locationsLoading$: Observable<boolean>;
-  public locations$: Observable<LocationWithKeyMeasurmentValues>;
-  public selectedLocation$: Observable<Location>;
+  public locationsLoading$ = new BehaviorSubject<string[]>([]);
+  public locations$ = new BehaviorSubject<LocationWithKeyMeasurmentValues[]>([]);
+  public selectedLocation$ = new Subject<Location>();
 
   public dispatchMapInit() {}
   public getImageDimentions() {
@@ -22,23 +22,60 @@ class MockMapFacade {
   public selectLocation(location: Location) {}
 }
 
+let mockLocations: LocationWithKeyMeasurmentValues[] = [
+  {
+    id: 'temperatura.gorny_tunel',
+    name: 'Górny Tunel',
+    mapPosition: {
+      x: 0.25,
+      y: 0.75,
+    },
+    updatedAt: new Date('2018-09-19T22:10:00'),
+    lastMeasurmentValue: 21.12,
+    minimalMeasurmentValue: 19.5,
+  },
+  {
+    id: 'temperatura.dolny_tunel',
+    name: 'Dolny Tunel',
+    mapPosition: {
+      x: 0.5,
+      y: 0.5,
+    },
+    updatedAt: new Date('2018-09-19T22:10:00'),
+    lastMeasurmentValue: 15,
+    minimalMeasurmentValue: -5,
+  },
+];
+
+@Component({
+  selector: 'termo-map-location',
+  template: ``,
+})
+export class MockMapLocationComponent {
+  @Input() location: LocationWithKeyMeasurmentValues;
+  @Input() loading: boolean;
+  @Input()
+  @HostBinding('class.location--selected')
+  selected: boolean;
+  @Output() select = new EventEmitter<Location>();
+}
+
+
 describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
+  let facade: MockMapFacade;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MapComponent,
-        MapLocationComponent,
-        ToFixedPipe,
-        IsLocationOutdatedPipe,
-        RelativeTimePipe,
+        MockMapLocationComponent,
       ],
       providers: [
         { provide: MapFacade, useClass: MockMapFacade },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
   }));
@@ -46,10 +83,45 @@ describe('MapComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
+    facade = TestBed.get(MapFacade);
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should properly render initial state', () => {
+    expect(fixture).toMatchSnapshot();
+  });
+  it('should render locations', () => {
+    facade.locations$.next(mockLocations);
+    fixture.detectChanges();
+    expect(fixture).toMatchSnapshot();
+  });
+  it('should render loading states', () => {
+    facade.locations$.next(mockLocations);
+    facade.locationsLoading$.next([
+      'temperatura.gorny_tunel',
+      'temperatura.dolny_tunel',
+    ]);
+    fixture.detectChanges();
+    expect(fixture).toMatchSnapshot();
+
+    facade.locationsLoading$.next([
+      'temperatura.gorny_tunel',
+    ]);
+    fixture.detectChanges();
+    expect(fixture).toMatchSnapshot();
+
+    facade.locationsLoading$.next([
+      'temperatura.dolny_tunel',
+    ]);
+    fixture.detectChanges();
+    expect(fixture).toMatchSnapshot();
+
+    facade.locationsLoading$.next([]);
+    fixture.detectChanges();
+    expect(fixture).toMatchSnapshot();
   });
 });
