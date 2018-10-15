@@ -7,6 +7,7 @@ exports[`MapComponent should properly render initial state 1`] = `
   locationsLoading$={[Function BehaviorSubject]}
   mapFacade={[Function MockMapFacade]}
   selectedLocation$={[Function Subject]}
+  updateMapRatio={[Function Function]}
 >
   <termo-header />
 </termo-map>
@@ -19,6 +20,7 @@ exports[`MapComponent should render loading states 1`] = `
   locationsLoading$={[Function BehaviorSubject]}
   mapFacade={[Function MockMapFacade]}
   selectedLocation$={[Function Subject]}
+  updateMapRatio={[Function Function]}
 >
   <termo-header /><termo-map-location
     ng-reflect-loading="true"
@@ -39,6 +41,7 @@ exports[`MapComponent should render loading states 2`] = `
   locationsLoading$={[Function BehaviorSubject]}
   mapFacade={[Function MockMapFacade]}
   selectedLocation$={[Function Subject]}
+  updateMapRatio={[Function Function]}
 >
   <termo-header /><termo-map-location
     ng-reflect-loading="true"
@@ -59,6 +62,7 @@ exports[`MapComponent should render loading states 3`] = `
   locationsLoading$={[Function BehaviorSubject]}
   mapFacade={[Function MockMapFacade]}
   selectedLocation$={[Function Subject]}
+  updateMapRatio={[Function Function]}
 >
   <termo-header /><termo-map-location
     ng-reflect-loading="false"
@@ -79,6 +83,7 @@ exports[`MapComponent should render loading states 4`] = `
   locationsLoading$={[Function BehaviorSubject]}
   mapFacade={[Function MockMapFacade]}
   selectedLocation$={[Function Subject]}
+  updateMapRatio={[Function Function]}
 >
   <termo-header /><termo-map-location
     ng-reflect-loading="false"
@@ -99,6 +104,7 @@ exports[`MapComponent should render locations 1`] = `
   locationsLoading$={[Function BehaviorSubject]}
   mapFacade={[Function MockMapFacade]}
   selectedLocation$={[Function Subject]}
+  updateMapRatio={[Function Function]}
 >
   <termo-header /><termo-map-location
     ng-reflect-loading="false"
