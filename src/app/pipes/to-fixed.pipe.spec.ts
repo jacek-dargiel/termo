@@ -11,6 +11,11 @@ describe('ToFixedPipe', () => {
     let result = pipe.transform(Math.PI, 2, locale);
     expect(result).toEqual('3.14');
   });
+  it('should allow negative numbers', () => {
+    let pipe = new ToFixedPipe();
+    let result = pipe.transform(-1 * Math.PI, 2, locale);
+    expect(result).toEqual('-3.14');
+  });
   it('should pad round numbers to fixed number of decimals', () => {
     let pipe = new ToFixedPipe();
     let result = pipe.transform(3, 2, locale);
