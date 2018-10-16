@@ -22,7 +22,7 @@ import { MapFacade } from './containers/map/map.facade';
 import { MeasurmentService } from './services/measurment.service';
 import { IsLocationOutdatedPipe } from './pipes/is-location-outdated.pipe';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
-import { ToFixedPipe } from './to-fixed.pipe';
+import { ToFixedPipe } from './pipes/to-fixed.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { HeaderComponent } from './containers/header/header.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';

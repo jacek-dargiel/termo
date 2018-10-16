@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { MapLocationComponent } from './map-location.component';
-import { ToFixedPipe } from '../../to-fixed.pipe';
+import { ToFixedPipe } from '../../pipes/to-fixed.pipe';
 import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
 import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
 import { LocationWithKeyMeasurmentValues } from '../../state/location/location.model';
