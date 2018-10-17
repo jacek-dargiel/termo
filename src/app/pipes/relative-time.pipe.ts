@@ -10,7 +10,8 @@ import {
 import { TERMO_CURRENT_TIME_FACTORY, timeFactory } from './current-time.injection-token';
 
 @Pipe({
-  name: 'relativeTime'
+  name: 'relativeTime',
+  pure: false,
 })
 export class RelativeTimePipe implements PipeTransform {
   constructor(@Inject(TERMO_CURRENT_TIME_FACTORY) public currentTimeFactory: timeFactory) {}
