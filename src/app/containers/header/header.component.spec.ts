@@ -4,6 +4,8 @@ import { HeaderComponent } from './header.component';
 import { HeaderFacade } from './header.facade';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { RefreshButtonComponent } from '../../components/refresh-button/refresh-button.component';
 
 class MockHeaderFacade {
   public progress = new ReplaySubject<number>();
@@ -27,7 +29,8 @@ describe('HeaderComponent', () => {
       declarations: [ HeaderComponent ],
       providers: [
         { provide: HeaderFacade, useClass: MockHeaderFacade }
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
     .compileComponents();
     facade = TestBed.get(HeaderFacade);
@@ -44,27 +47,12 @@ describe('HeaderComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render header at initial state', () => {
-    expect(fixture).toMatchSnapshot();
-  });
-
-  it('should render header at 50%', () => {
-    facade.progress.next(0.5);
-    fixture.detectChanges();
-    expect(fixture).toMatchSnapshot();
-  });
-
-  it('should render header at refreshing state', () => {
-    facade.progress.next(1);
-    facade.refreshing.next(true);
-    fixture.detectChanges();
+  it('should render initial state', () => {
     expect(fixture).toMatchSnapshot();
   });
 
   it('should refresh when "Refresh" button clicked', () => {
-    let button = fixture.debugElement.query(By.css('button.refresh'));
-    button.nativeElement.click();
-    fixture.detectChanges();
+    component.refresh();
     expect(facade.refresh).toHaveBeenCalled();
   });
 

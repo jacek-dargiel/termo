@@ -1,79 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HeaderComponent should render header at 50% 1`] = `
+exports[`HeaderComponent should render initial state 1`] = `
 <termo-header
   headerFacade={[Function MockHeaderFacade]}
-  progress$={[Function AnonymousSubject]}
+  progress$={[Function ReplaySubject]}
   refreshing$={[Function ReplaySubject]}
 >
   <header>
-    <button
-      class="refresh"
-    >
-      <div
-        class="refresh__progress"
-        ng-reflect-klass="refresh__progress"
-        ng-reflect-ng-class="[object Object]"
-        style="width: 50%;"
-      />
-      <span
-        class="refresh__label"
-      >
-        Odśwież
-      </span>
-    </button>
-  </header>
-</termo-header>
-`;
-
-exports[`HeaderComponent should render header at initial state 1`] = `
-<termo-header
-  headerFacade={[Function MockHeaderFacade]}
-  progress$={[Function AnonymousSubject]}
-  refreshing$={[Function ReplaySubject]}
->
-  <header>
-    <button
-      class="refresh"
-    >
-      <div
-        class="refresh__progress"
-        ng-reflect-klass="refresh__progress"
-        ng-reflect-ng-class="[object Object]"
-        style="width: 0%;"
-      />
-      <span
-        class="refresh__label"
-      >
-        Odśwież
-      </span>
-    </button>
-  </header>
-</termo-header>
-`;
-
-exports[`HeaderComponent should render header at refreshing state 1`] = `
-<termo-header
-  headerFacade={[Function MockHeaderFacade]}
-  progress$={[Function AnonymousSubject]}
-  refreshing$={[Function ReplaySubject]}
->
-  <header>
-    <button
-      class="refresh"
-    >
-      <div
-        class="refresh__progress refresh__progress--refreshing"
-        ng-reflect-klass="refresh__progress"
-        ng-reflect-ng-class="[object Object]"
-        style="width: 100%;"
-      />
-      <span
-        class="refresh__label"
-      >
-        Odśwież
-      </span>
-    </button>
+    <termo-refresh-button>
+      Odśwież
+    </termo-refresh-button>
   </header>
 </termo-header>
 `;

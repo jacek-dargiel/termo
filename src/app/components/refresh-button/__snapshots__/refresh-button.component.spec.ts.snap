@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RefreshButtonComponent should render button at 50% 1`] = `
+<termo-refresh-button
+  progress={[Function Number]}
+  refresh={[Function EventEmitter]}
+>
+  <button
+    class="refresh"
+  >
+    <div
+      class="refresh__progress"
+      ng-reflect-klass="refresh__progress"
+      ng-reflect-ng-class="[object Object]"
+      style="width: 50%;"
+    />
+    <span
+      class="refresh__label"
+    />
+  </button>
+</termo-refresh-button>
+`;
+
+exports[`RefreshButtonComponent should render button at initial state 1`] = `
+<termo-refresh-button
+  refresh={[Function EventEmitter]}
+>
+  <button
+    class="refresh"
+  >
+    <div
+      class="refresh__progress"
+      ng-reflect-klass="refresh__progress"
+      ng-reflect-ng-class="[object Object]"
+    />
+    <span
+      class="refresh__label"
+    />
+  </button>
+</termo-refresh-button>
+`;
+
+exports[`RefreshButtonComponent should render button at refreshing state 1`] = `
+<termo-refresh-button
+  progress={[Function Number]}
+  refresh={[Function EventEmitter]}
+  refreshing={[Function Boolean]}
+>
+  <button
+    class="refresh"
+  >
+    <div
+      class="refresh__progress refresh__progress--refreshing"
+      ng-reflect-klass="refresh__progress"
+      ng-reflect-ng-class="[object Object]"
+      style="width: 100%;"
+    />
+    <span
+      class="refresh__label"
+    />
+  </button>
+</termo-refresh-button>
+`;

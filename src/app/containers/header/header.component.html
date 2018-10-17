@@ -1,13 +1,7 @@
 <header>
-  <button
-    class="refresh"
-    (click)="refresh()"
-  >
-    <div
-      class="refresh__progress"
-      [ngClass]="{ 'refresh__progress--refreshing': refreshing$ | async }"
-      [style.width.%]="progress$ | async"
-    ></div>
-    <span class="refresh__label">Odśwież</span>
-  </button>
+  <termo-refresh-button
+    [refreshing]="refreshing$ | async"
+    [progress]="progress$ | async"
+    (refresh)="refresh()"
+  >Odśwież</termo-refresh-button>
 </header>

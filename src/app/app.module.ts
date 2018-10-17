@@ -28,6 +28,7 @@ import { HeaderComponent } from './containers/header/header.component';
 import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { ChartComponent } from './containers/chart/chart.component';
 import { TERMO_CURRENT_TIME_FACTORY } from './pipes/current-time.injection-token';
+import { RefreshButtonComponent } from './components/refresh-button/refresh-button.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { TERMO_CURRENT_TIME_FACTORY } from './pipes/current-time.injection-token
     SpinnerComponent,
     HeaderComponent,
     SnackbarComponent,
-    ChartComponent
+    ChartComponent,
+    RefreshButtonComponent
   ],
   imports: [
     BrowserModule,
