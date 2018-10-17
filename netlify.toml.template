@@ -3,4 +3,3 @@
   to = "https://io.adafruit.com/api/v2/${TERMO_AIO_USER}/:splat"
   status = 200
   force = false
-  headers = {X-AIO-Key = "${TERMO_AIO_KEY}"}
