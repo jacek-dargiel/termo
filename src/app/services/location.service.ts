@@ -38,10 +38,15 @@ export class LocationService {
   }
 
   parseMapPosition(description: string): Point {
+    let position: Point;
     try {
-      return JSON.parse(description);
+      position = JSON.parse(description);
     } catch (e) {
       throw new Error('Failed parsing AIO feed description from JSON to map position');
     }
+    if (!position.hasOwnProperty('x') || !position.hasOwnProperty('y')) {
+      throw new Error('Feed description does not contain a location position');
+    }
+    return position;
   }
 }
