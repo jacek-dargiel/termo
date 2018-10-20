@@ -1,36 +1,43 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 
-import { of } from 'rxjs';
+import { of, isObservable } from 'rxjs';
 
 import { MeasurmentService } from './measurment.service';
 import { ApiService } from './api.service';
+import { Measurment } from 'app/state/measurment/measurment.model';
+
+import { cold } from 'jest-marbles';
 
 class MockApiSerivce {
-  get() {
-    return of([
-      {
-        id: '123',
-        value: '20.1',
-        feed_id: 1234,
-        feed_key: 'temperatura.gorny_tunel',
-        created_at: '2018-09-19T15:45:00Z',
-        created_epoch: 1537371900,
-      },
-      {
-        id: '124',
-        value: '20.2',
-        feed_id: 1234,
-        feed_key: 'temperatura.gorny_tunel',
-        created_at: '2018-09-19T15:48:00Z',
-        created_epoch: 1537372080,
-      }
-    ]);
-  }
+  get = jest.fn(url => {
+    if (url === '/feeds/1234/data') {
+      return of([
+        {
+          id: '123',
+          value: '20.1',
+          feed_id: 1234,
+          feed_key: 'temperatura.gorny_tunel',
+          created_at: '2018-09-19T15:45:00Z',
+          created_epoch: 1537371900,
+        },
+        {
+          id: '124',
+          value: '20.2',
+          feed_id: 1234,
+          feed_key: 'temperatura.gorny_tunel',
+          created_at: '2018-09-19T15:48:00Z',
+          created_epoch: 1537372080,
+        }
+      ]);
+    }
+    if (url === '/feeds/1000/data') {
+      return of([]);
+    }
+  });
 }
 
 describe('MeasurmentService', () => {
   let api: ApiService;
-  let service: MeasurmentService;
 
   beforeEach(() => {
     let bed = TestBed.configureTestingModule({
@@ -40,17 +47,44 @@ describe('MeasurmentService', () => {
       ]
     });
     api = bed.get(ApiService);
-    service = bed.get(MeasurmentService);
   });
 
-  it('should be created', () => {
+  it('should be created', inject([MeasurmentService], (service: MeasurmentService) => {
     expect(service).toBeTruthy();
-  });
-  it('should get measurments', (done) => {
-    service.getMeasurments('123')
-      .subscribe(measurments => {
-        expect(measurments.length).toBe(2);
-        done();
-      });
+  }));
+  describe('getMeasurments', () => {
+    it('should return observable', inject([MeasurmentService], (service: MeasurmentService) => {
+      let measurments$ = service.getMeasurments('1234');
+      expect(isObservable(measurments$)).toBeTruthy();
+    }));
+    it('should call the API', inject([MeasurmentService], (service: MeasurmentService) => {
+      service.getMeasurments('1234').subscribe();
+      expect((api.get as any).mock.calls[0][0]).toBe('/feeds/1234/data');
+    }));
+    it('should throw when 0 measurments recived', inject([MeasurmentService], (service: MeasurmentService) => {
+      let measurments$ = service.getMeasurments('1000');
+      (expect(measurments$) as any).toBeMarble('#');
+    }));
+    it('should emit parsed measurments', inject([MeasurmentService], (service: MeasurmentService) => {
+      let expected: Measurment[] = [
+        {
+          id: '123',
+          value: 20.1,
+          created_at: new Date('2018-09-19T15:45:00Z'),
+          feed_id: 1234,
+          feed_key: 'temperatura.gorny_tunel',
+        },
+        {
+          id: '124',
+          value: 20.2,
+          created_at: new Date('2018-09-19T15:48:00Z'),
+          feed_id: 1234,
+          feed_key: 'temperatura.gorny_tunel',
+        },
+      ];
+      let expected$ = cold('(a|)', { a: expected });
+      let measurments$ = service.getMeasurments('1234');
+      (expect(measurments$) as any).toBeObservable(expected$);
+    }));
   });
 });
