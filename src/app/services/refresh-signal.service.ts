@@ -6,7 +6,7 @@ import { environment } from 'environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class RefreshCounterService {
+export class RefreshSignalService {
   private trigger = new ReplaySubject<void>();
   public timer = this.trigger.asObservable().pipe(
     switchMap(() => interval(1000)),

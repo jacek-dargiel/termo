@@ -28,7 +28,7 @@ import {
   FetchMeasurmentsSuccess,
 } from './state/measurment/measurment.actions';
 import { subDays } from 'date-fns/esm';
-import { RefreshCounterService } from './services/refresh-counter.service';
+import { RefreshSignalService } from './services/refresh-signal.service';
 import { State } from './state/reducers';
 import { Store } from '@ngrx/store';
 import { selectAllLocations } from './state/selectors';
@@ -42,7 +42,7 @@ export class AppEffects {
     private store: Store<State>,
     private location: LocationService,
     private measurment: MeasurmentService,
-    private refreshCounter: RefreshCounterService,
+    private refreshSignal: RefreshSignalService,
     private errorHandling: ErrorHandlingService,
   ) {}
 
@@ -101,8 +101,8 @@ export class AppEffects {
   @Effect()
   timerRefresh$ = this.actions$.pipe(
     ofType(LocationActionTypes.RefreshMeasurmentsFinish),
-    tap(() => this.refreshCounter.restart()),
-    switchMap(() => this.refreshCounter.timer),
+    tap(() => this.refreshSignal.restart()),
+    switchMap(() => this.refreshSignal.timer),
     filter(countdownValue => countdownValue === 0),
     switchMap(() => {
       return this.store.select(selectAllLocations).pipe(

@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { RefreshCounterService } from './refresh-counter.service';
+import { RefreshSignalService } from './refresh-signal.service';
 
-describe('RefreshCounterService', () => {
+describe('RefreshSignalService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [RefreshCounterService]
+      providers: [RefreshSignalService]
     });
   });
 
-  it('should be created', inject([RefreshCounterService], (service: RefreshCounterService) => {
+  it('should be created', inject([RefreshSignalService], (service: RefreshSignalService) => {
     expect(service).toBeTruthy();
   }));
 });

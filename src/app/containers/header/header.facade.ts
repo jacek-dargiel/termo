@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { RefreshCounterService } from '../../services/refresh-counter.service';
+import { RefreshSignalService } from '../../services/refresh-signal.service';
 import { map, first } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { Store } from '@ngrx/store';
@@ -11,14 +11,14 @@ import { RefreshMeasurmentsStart } from '../../state/location/location.actions';
   providedIn: 'root',
 })
 export class HeaderFacade {
-  public progress = this.refreshCounter.timer.pipe(
+  public progress = this.refreshSignal.timer.pipe(
     map(timeLeft => timeLeft * 1000),
     map(timeLeft => (environment.refreshTimeout - timeLeft) / environment.refreshTimeout),
   );
   public refreshing = this.store.select(selectMeasurmentsLoading);
 
   constructor (
-    private refreshCounter: RefreshCounterService,
+    private refreshSignal: RefreshSignalService,
     private store: Store<State>
   ) {}
 
