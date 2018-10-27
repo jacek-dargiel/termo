@@ -1,17 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 
+import { ErrorHandlingService } from './error-handling.service';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { MDCSnackbarData } from '@material/snackbar/foundation';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SnackbarService {
-  public messages = new Subject<MDCSnackbarData>();
-  // public messages = this._messages.asObservable();
-  constructor() { }
+  public messages: Observable<MDCSnackbarData> = this.errorHandling.errors$.pipe(
+    map(error => this.errorToSnackbarData(error) as any)
+  );
 
-  show(dataObject: MDCSnackbarData) {
-    this.messages.next(dataObject);
+  constructor(private errorHandling: ErrorHandlingService) {}
+
+  errorToSnackbarData(error: Error): Partial<MDCSnackbarData> {
+    return {
+      message: error.message,
+      timeout: 5000,
+    };
   }
 }
