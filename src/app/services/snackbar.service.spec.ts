@@ -1,11 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { SnackbarService } from './snackbar.service';
+import { ErrorHandlingService } from './error-handling.service';
 
 describe('SnackbarService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SnackbarService]
+      providers: [
+        ErrorHandlingService,
+        SnackbarService,
+      ]
     });
   });
 
