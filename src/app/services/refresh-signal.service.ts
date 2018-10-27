@@ -8,13 +8,13 @@ import { environment } from 'environments/environment';
 })
 export class RefreshSignalService {
   private trigger = new ReplaySubject<void>();
-  public timer = this.trigger.asObservable().pipe(
+  public signal = this.trigger.asObservable().pipe(
     switchMap(() => interval(1000)),
     map(count => (environment.refreshTimeout / 1000) - count),
     filter(timeLeft => timeLeft >= 0),
     share()
   );
-  public timeouts = this.timer.pipe(
+  public timeouts = this.signal.pipe(
     takeWhile(value => value > 0),
   );
 

@@ -102,7 +102,7 @@ export class AppEffects {
   timerRefresh$ = this.actions$.pipe(
     ofType(LocationActionTypes.RefreshMeasurmentsFinish),
     tap(() => this.refreshSignal.restart()),
-    switchMap(() => this.refreshSignal.timer),
+    switchMap(() => this.refreshSignal.signal),
     filter(countdownValue => countdownValue === 0),
     switchMap(() => {
       return this.store.select(selectAllLocations).pipe(
