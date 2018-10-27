@@ -21,46 +21,6 @@ export function reducer(
   action: MeasurmentActions | LocationActions
 ): State {
   switch (action.type) {
-    case MeasurmentActionTypes.AddMeasurment: {
-      return adapter.addOne(action.payload.measurment, state);
-    }
-
-    case MeasurmentActionTypes.UpsertMeasurment: {
-      return adapter.upsertOne(action.payload.measurment, state);
-    }
-
-    case MeasurmentActionTypes.AddMeasurments: {
-      return adapter.addMany(action.payload.measurments, state);
-    }
-
-    case MeasurmentActionTypes.UpsertMeasurments: {
-      return adapter.upsertMany(action.payload.measurments, state);
-    }
-
-    case MeasurmentActionTypes.UpdateMeasurment: {
-      return adapter.updateOne(action.payload.measurment, state);
-    }
-
-    case MeasurmentActionTypes.UpdateMeasurments: {
-      return adapter.updateMany(action.payload.measurments, state);
-    }
-
-    case MeasurmentActionTypes.DeleteMeasurment: {
-      return adapter.removeOne(action.payload.id, state);
-    }
-
-    case MeasurmentActionTypes.DeleteMeasurments: {
-      return adapter.removeMany(action.payload.ids, state);
-    }
-
-    case MeasurmentActionTypes.LoadMeasurments: {
-      return adapter.addAll(action.payload.measurments, state);
-    }
-
-    case MeasurmentActionTypes.ClearMeasurments: {
-      return adapter.removeAll(state);
-    }
-
     case LocationActionTypes.RefreshMeasurmentsStart: {
       return {
         ...state,
