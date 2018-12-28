@@ -56,7 +56,7 @@
     "@types/lodash-es": "^4.17.1",
     "@types/material__snackbar": "^0.35.0",
     "@types/node": "~8.9.4",
-    "codelyzer": "~4.2.1",
+    "codelyzer": "4.5",
     "envsub": "^3.1.0",
     "jest": "^23.6.0",
     "jest-marbles": "^2.0.0",
