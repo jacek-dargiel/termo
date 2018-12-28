@@ -14,12 +14,9 @@ import {
   switchMap,
   catchError,
   mergeMap,
-  mergeAll,
-  filter,
-  tap,
   concat,
   first,
-  throttleTime
+  throttleTime,
 } from 'rxjs/operators';
 import { ErrorHandlingService } from './services/error-handling.service';
 import { MeasurmentService } from './services/measurment.service';
@@ -29,11 +26,11 @@ import {
   FetchMeasurmentsSuccess,
 } from './state/measurment/measurment.actions';
 import { subDays } from 'date-fns/esm';
-import { RefreshSignalService } from './services/refresh-signal.service';
 import { State } from './state/reducers';
 import { Store } from '@ngrx/store';
 import { selectAllLocations } from './state/selectors';
 import { environment } from 'environments/environment';
+import { MQTTClientService } from './services/mqtt.service';
 
 
 @Injectable()
@@ -44,7 +41,7 @@ export class AppEffects {
     private store: Store<State>,
     private location: LocationService,
     private measurment: MeasurmentService,
-    private refreshSignal: RefreshSignalService,
+    private mqttClient: MQTTClientService,
     private errorHandling: ErrorHandlingService,
   ) {}
 
@@ -79,45 +76,37 @@ export class AppEffects {
 
   @Effect()
   refreshMeasurmentsStart$ = this.actions$.pipe(
-    ofType(LocationActionTypes.FetchLocationsSuccess),
+    ofType<FetchLocationsSuccess>(LocationActionTypes.FetchLocationsSuccess),
     map((action: FetchLocationsSuccess) => action.payload.locations),
-    map(locations => new RefreshMeasurmentsStart({ locations })),
+    mergeMap(locations => {
+      return this.mqttClient.updates(locations.map(location => location.id));
+    }),
+    map(({location}) => location),
+    switchMap(locationId => {
+      return this.store.select(selectAllLocations)
+        .pipe(
+          map(locations => locations.find(location => location.id === locationId)),
+          first(),
+        );
+    }),
+    map(location => new RefreshMeasurmentsStart({location}))
   );
 
   @Effect()
   refreshMeasurments$ = this.actions$.pipe(
     ofType<RefreshMeasurmentsStart>(LocationActionTypes.RefreshMeasurmentsStart),
-    map(action => action.payload.locations),
-    switchMap(locations => {
-      return of(locations).pipe(
-        mergeAll(),
-        mergeMap(location => {
-          const start = subDays(new Date(), 1);
-          return this.measurment.getMeasurments(location.id, start).pipe(
-            map((measurments) => new FetchMeasurmentsSuccess({ measurments, location })),
-            catchError(error => {
-              console.error(error);
-              let readableError = new Error('Nie udało się pobrać najnowszych pomiarów temperatury.');
-              return of(new FetchMeasurmentsError({ error: readableError, location }));
-            }),
-          );
+    map(action => action.payload.location),
+    mergeMap(location => {
+      let start = subDays(new Date(), 1);
+      return this.measurment.getMeasurments(location.id, start).pipe(
+        map((measurments) => new FetchMeasurmentsSuccess({ measurments, location })),
+        catchError(error => {
+          console.error(error);
+          let readableError = new Error('Nie udało się pobrać najnowszych pomiarów temperatury.');
+          return of(new FetchMeasurmentsError({ error: readableError, location }));
         }),
-        concat(of(new RefreshMeasurmentsFinish())),
       );
     }),
-  );
-
-  @Effect()
-  timerRefresh$ = this.actions$.pipe(
-    ofType(LocationActionTypes.RefreshMeasurmentsFinish),
-    tap(() => this.refreshSignal.restart()),
-    switchMap(() => this.refreshSignal.signal),
-    filter(countdownValue => countdownValue === 0),
-    switchMap(() => {
-      return this.store.select(selectAllLocations).pipe(
-        first(),
-      );
-    }),
-    map(locations => new RefreshMeasurmentsStart({locations}))
+    concat(of(new RefreshMeasurmentsFinish())),
   );
 }

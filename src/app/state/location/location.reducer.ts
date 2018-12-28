@@ -9,7 +9,7 @@ import { last } from '../../helpers/lodash';
 
 export interface State extends EntityState<Location> {
   loading: boolean;
-  locationsLoadingMeasurments: string[] | number[];
+  locationsLoadingMeasurments: Set<string|number>;
   latestMeasurmentIDs: Dictionary<string>;
   selected: string;
 }
@@ -18,7 +18,7 @@ export let adapter: EntityAdapter<Location> = createEntityAdapter<Location>();
 
 export const INITIAL_STATE: State = adapter.getInitialState({
   loading: false,
-  locationsLoadingMeasurments: [],
+  locationsLoadingMeasurments: new Set(),
   latestMeasurmentIDs: {},
   selected: undefined,
 });
@@ -45,17 +45,20 @@ export function reducer(
     }
 
     case LocationActionTypes.RefreshMeasurmentsStart: {
+      let locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);
+      locationsLoadingMeasurments.add(action.payload.location.id);
       return {
         ...state,
-        locationsLoadingMeasurments: action.payload.locations.map(location => location.id),
+        locationsLoadingMeasurments,
       };
     }
 
     case MeasurmentActionTypes.FetchMeasurmentsError: {
-      let locations = state.locationsLoadingMeasurments as string[];
+      let locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);
+      locationsLoadingMeasurments.delete(action.payload.location.id);
       return {
         ...state,
-        locationsLoadingMeasurments: locations.filter(id => id !== action.payload.location.id),
+        locationsLoadingMeasurments,
       };
     }
 
@@ -81,8 +84,8 @@ export function reducer(
         };
       }
 
-      let locationsLoadingMeasurments = state.locationsLoadingMeasurments as string[];
-      locationsLoadingMeasurments = locationsLoadingMeasurments.filter(locationID => locationID !== action.payload.location.id);
+      let locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);
+      locationsLoadingMeasurments.delete(action.payload.location.id);
       return {
         ...locationsState,
         locationsLoadingMeasurments,

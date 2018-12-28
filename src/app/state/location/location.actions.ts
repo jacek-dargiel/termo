@@ -25,7 +25,7 @@ export class MapInitialized implements Action {
 
 export class RefreshMeasurmentsStart implements Action {
   readonly type = LocationActionTypes.RefreshMeasurmentsStart;
-  constructor(public payload: { locations: Location[] }) {}
+  constructor(public payload: { location: Location }) {}
 }
 
 export class RefreshMeasurmentsFinish implements Action {

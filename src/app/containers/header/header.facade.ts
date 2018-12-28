@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { RefreshSignalService } from '../../services/refresh-signal.service';
-import { map, first } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { Store } from '@ngrx/store';
 import { State } from '../../state/reducers';
-import { selectMeasurmentsLoading, selectAllLocations } from '../../state/selectors';
-import { RefreshMeasurmentsStart } from '../../state/location/location.actions';
+import { selectMeasurmentsLoading } from '../../state/selectors';
 
 @Injectable({
   providedIn: 'root',
@@ -23,9 +22,9 @@ export class HeaderFacade {
   ) {}
 
   refresh() {
-    this.store.select(selectAllLocations).pipe(
-      first(),
-    )
-      .subscribe(locations => this.store.dispatch(new RefreshMeasurmentsStart({ locations })));
+    // this.store.select(selectAllLocations).pipe(
+    //   first(),
+    // )
+    //   .subscribe(locations => this.store.dispatch(new RefreshMeasurmentsStart({ locations })));
   }
 }

@@ -42,6 +42,7 @@
     "date-fns": "^2.0.0-alpha.9",
     "lodash": "^4.17.10",
     "lodash-es": "^4.17.11",
+    "mqtt": "^2.18.8",
     "normalize.css": "^8.0.0",
     "rxjs": "^6.3.3",
     "tslib": "^1.9.0",
