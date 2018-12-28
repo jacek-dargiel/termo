@@ -4,6 +4,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
+    "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
