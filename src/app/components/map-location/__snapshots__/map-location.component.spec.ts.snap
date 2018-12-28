@@ -12,7 +12,12 @@ exports[`MapLocationComponent should display outdated warning 1`] = `
   >
     <header>
       <h2>
-        🌡Górny Tunel
+        🌡
+        <span
+          class="label"
+        >
+          Górny Tunel
+        </span>
       </h2>
     </header>
     <div
@@ -74,7 +79,12 @@ exports[`MapLocationComponent should properly render base state 1`] = `
   >
     <header>
       <h2>
-        🌡Górny Tunel
+        🌡
+        <span
+          class="label"
+        >
+          Górny Tunel
+        </span>
       </h2>
     </header>
     <div
@@ -144,7 +154,12 @@ exports[`MapLocationComponent should render selected state 1`] = `
   >
     <header>
       <h2>
-        🌡Górny Tunel
+        🌡
+        <span
+          class="label"
+        >
+          Górny Tunel
+        </span>
       </h2>
     </header>
     <div
