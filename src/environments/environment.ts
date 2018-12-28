@@ -2,11 +2,12 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
+export const environment = {  // tslint:disable-line:ext-variable-name
   production: false,
   API_URL: '/api',
   locationOutdatedThreshold: 900000,  // 15 min === 90000 ms
   refreshTimeout: 300000,             // 5 min === 30000 ms
+  snackbarDefaultTimeout: 5000,
   mapBackgroundUrl: '/assets/map.jpg',
   // refreshTimeout: 30000,
 };

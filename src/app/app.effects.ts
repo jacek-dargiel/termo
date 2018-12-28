@@ -18,7 +18,8 @@ import {
   filter,
   tap,
   concat,
-  first
+  first,
+  throttleTime
 } from 'rxjs/operators';
 import { ErrorHandlingService } from './services/error-handling.service';
 import { MeasurmentService } from './services/measurment.service';
@@ -32,6 +33,7 @@ import { RefreshSignalService } from './services/refresh-signal.service';
 import { State } from './state/reducers';
 import { Store } from '@ngrx/store';
 import { selectAllLocations } from './state/selectors';
+import { environment } from 'environments/environment';
 
 
 @Injectable()
@@ -47,12 +49,19 @@ export class AppEffects {
   ) {}
 
   @Effect({dispatch: false})
-  ajaxError$ = this.actions$.pipe(
+  genericAjaxErrors$ = this.actions$.pipe(
     ofType(
       LocationActionTypes.FetchLocationsError,
-      MeasurmentActionTypes.FetchMeasurmentsError
     ),
-    map((action: FetchLocationsError | FetchMeasurmentsError) => action.payload.error),
+    map((action: FetchLocationsError) => action.payload.error),
+    map(error => this.errorHandling.handle(error)),
+  );
+
+  @Effect({dispatch: false})
+  fetchMeasurmentsErrors$ = this.actions$.pipe(
+    ofType(MeasurmentActionTypes.FetchMeasurmentsError),
+    throttleTime(environment.snackbarDefaultTimeout),
+    map((action: FetchMeasurmentsError) => action.payload.error),
     map(error => this.errorHandling.handle(error)),
   );
 

@@ -4,6 +4,7 @@ import { ErrorHandlingService } from './error-handling.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MDCSnackbarData } from '@material/snackbar/foundation';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class SnackbarService {
   errorToSnackbarData(error: Error): Partial<MDCSnackbarData> {
     return {
       message: error.message,
-      timeout: 5000,
+      timeout: environment.snackbarDefaultTimeout,
     };
   }
 }
