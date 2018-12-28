@@ -7,6 +7,9 @@ export class ToFixedPipe implements PipeTransform {
 
   transform(value: number, precision = 2, locale?: string): any {
     let fixed;
+    if (typeof value !== 'number') {
+      return '–';
+    }
     try {
       let formatingOptions: Intl.NumberFormatOptions = {
         style: 'decimal',
