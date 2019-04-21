@@ -9,7 +9,7 @@ import { last } from '../../helpers/lodash';
 
 export interface State extends EntityState<Location> {
   loading: boolean;
-  locationsLoadingMeasurments: Set<string|number>;
+  locationsLoadingMeasurments: Set<string>;
   latestMeasurmentIDs: Dictionary<string>;
   selected: string;
 }
@@ -30,9 +30,16 @@ export function reducer(
   switch (action.type) {
 
     case LocationActionTypes.FetchLocationsSuccess: {
+      let locationsLoadingMeasurments = state.locationsLoadingMeasurments;
+      for (let location of action.payload.locations) {
+        if (!locationsLoadingMeasurments.has(location.id)) {
+          locationsLoadingMeasurments.add(location.id);
+        }
+      }
       let loadedState = {
         ...state,
         loading: false,
+        locationsLoadingMeasurments,
       };
       return adapter.addAll(action.payload.locations, loadedState);
     }
@@ -47,8 +54,11 @@ export function reducer(
     case LocationActionTypes.RefreshMeasurmentsOnBtnClick:
     case LocationActionTypes.RefreshMeasurmentsOnMQTTConnect:
     case LocationActionTypes.RefreshMeasurmentsOnMQTTMessage: {
-      let locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);
-      locationsLoadingMeasurments.add(action.payload.locationId);
+      let locationsLoadingMeasurments = state.locationsLoadingMeasurments;
+      if (!state.locationsLoadingMeasurments.has(action.payload.locationId)) {
+        locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);
+        locationsLoadingMeasurments.add(action.payload.locationId);
+      }
       return {
         ...state,
         locationsLoadingMeasurments,
