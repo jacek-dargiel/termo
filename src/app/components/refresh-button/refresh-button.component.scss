@@ -20,13 +20,10 @@
 
   &__progress {
     position: absolute;
-    width: 0;
-    background-color: lighten($colorPrimary, 20);
     height: 100%;
     top: 0;
     left: 0;
     z-index: 1;
-    transition: width 1s linear;
 
     &--refreshing {
       background-color: lighten($colorPrimary, 10);

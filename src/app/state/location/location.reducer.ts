@@ -9,7 +9,7 @@ import { last } from '../../helpers/lodash';
 
 export interface State extends EntityState<Location> {
   loading: boolean;
-  locationsLoadingMeasurments: string[] | number[];
+  locationsLoadingMeasurments: Set<string>;
   latestMeasurmentIDs: Dictionary<string>;
   selected: string;
 }
@@ -18,7 +18,7 @@ export let adapter: EntityAdapter<Location> = createEntityAdapter<Location>();
 
 export const INITIAL_STATE: State = adapter.getInitialState({
   loading: false,
-  locationsLoadingMeasurments: [],
+  locationsLoadingMeasurments: new Set(),
   latestMeasurmentIDs: {},
   selected: undefined,
 });
@@ -30,9 +30,16 @@ export function reducer(
   switch (action.type) {
 
     case LocationActionTypes.FetchLocationsSuccess: {
+      let locationsLoadingMeasurments = state.locationsLoadingMeasurments;
+      for (let location of action.payload.locations) {
+        if (!locationsLoadingMeasurments.has(location.id)) {
+          locationsLoadingMeasurments.add(location.id);
+        }
+      }
       let loadedState = {
         ...state,
         loading: false,
+        locationsLoadingMeasurments,
       };
       return adapter.addAll(action.payload.locations, loadedState);
     }
@@ -44,18 +51,26 @@ export function reducer(
       };
     }
 
-    case LocationActionTypes.RefreshMeasurmentsStart: {
+    case LocationActionTypes.RefreshMeasurmentsOnBtnClick:
+    case LocationActionTypes.RefreshMeasurmentsOnMQTTConnect:
+    case LocationActionTypes.RefreshMeasurmentsOnMQTTMessage: {
+      let locationsLoadingMeasurments = state.locationsLoadingMeasurments;
+      if (!state.locationsLoadingMeasurments.has(action.payload.locationId)) {
+        locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);
+        locationsLoadingMeasurments.add(action.payload.locationId);
+      }
       return {
         ...state,
-        locationsLoadingMeasurments: action.payload.locations.map(location => location.id),
+        locationsLoadingMeasurments,
       };
     }
 
     case MeasurmentActionTypes.FetchMeasurmentsError: {
-      let locations = state.locationsLoadingMeasurments as string[];
+      let locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);
+      locationsLoadingMeasurments.delete(action.payload.locationId);
       return {
         ...state,
-        locationsLoadingMeasurments: locations.filter(id => id !== action.payload.location.id),
+        locationsLoadingMeasurments,
       };
     }
 
@@ -71,18 +86,18 @@ export function reducer(
       if (action.payload.measurments.length > 0) {
         let sortedMeasurments = sortMeasurments(action.payload.measurments);
         let latestMeasurment = last(sortedMeasurments);
-        locationsState = adapter.updateOne({id: action.payload.location.id, changes: { updatedAt: latestMeasurment.created_at }}, state);
+        locationsState = adapter.updateOne({id: action.payload.locationId, changes: { updatedAt: latestMeasurment.created_at }}, state);
         locationsState = {
           ...locationsState,
           latestMeasurmentIDs: {
             ...locationsState.latestMeasurmentIDs,
-            [action.payload.location.id]: latestMeasurment.id,
+            [action.payload.locationId]: latestMeasurment.id,
           }
         };
       }
 
-      let locationsLoadingMeasurments = state.locationsLoadingMeasurments as string[];
-      locationsLoadingMeasurments = locationsLoadingMeasurments.filter(locationID => locationID !== action.payload.location.id);
+      let locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);
+      locationsLoadingMeasurments.delete(action.payload.locationId);
       return {
         ...locationsState,
         locationsLoadingMeasurments,

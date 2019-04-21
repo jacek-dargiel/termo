@@ -3,8 +3,11 @@ import { Location } from './location.model';
 
 export enum LocationActionTypes {
   MapInitialized = '[Map] Map Initialized',
-  RefreshMeasurmentsStart = '[Effect] Refresh Measurments Start',
-  RefreshMeasurmentsFinish = '[Effect] Refresh Measurments Finish',
+  MQTTConnected = '[MQTT] Connected',
+  RefreshMeasurmentsOnMQTTConnect = '[Effect] Refresh Measurments On MQTT Connect',
+  RefreshMeasurmentsOnMQTTMessage = '[Effect] Refresh Measurments On MQTT Message',
+  RefreshMeasurmentsOnBtnClick = '[Effect] Refresh Measurments On Button Click',
+  RefreshButtonClick = '[Header] Refresh button clicked',
   FetchLocationsSuccess = '[API] Fetch Locations Success',
   FetchLocationsError = '[API] Fetch Locations Error',
 
@@ -23,13 +26,27 @@ export class MapInitialized implements Action {
   readonly type = LocationActionTypes.MapInitialized;
 }
 
-export class RefreshMeasurmentsStart implements Action {
-  readonly type = LocationActionTypes.RefreshMeasurmentsStart;
-  constructor(public payload: { locations: Location[] }) {}
+export class MQTTConnected implements Action {
+  readonly type = LocationActionTypes.MQTTConnected;
 }
 
-export class RefreshMeasurmentsFinish implements Action {
-  readonly type = LocationActionTypes.RefreshMeasurmentsFinish;
+export class RefreshMeasurmentsOnMQTTConnect implements Action {
+  readonly type = LocationActionTypes.RefreshMeasurmentsOnMQTTConnect;
+  constructor(public payload: { locationId: string }) {}
+}
+
+export class RefreshMeasurmentsOnMQTTMessage implements Action {
+  readonly type = LocationActionTypes.RefreshMeasurmentsOnMQTTMessage;
+  constructor(public payload: { locationId: string }) {}
+}
+
+export class RefreshMeasurmentsOnBtnClick implements Action {
+  readonly type = LocationActionTypes.RefreshMeasurmentsOnBtnClick;
+  constructor(public payload: { locationId: string }) {}
+}
+
+export class RefreshButtonClick implements Action {
+  readonly type = LocationActionTypes.RefreshButtonClick;
 }
 
 export class FetchLocationsError implements Action {
@@ -45,8 +62,10 @@ export class SelectLocation implements Action {
 export type LocationActions =
  FetchLocationsSuccess
  | MapInitialized
- | RefreshMeasurmentsStart
- | RefreshMeasurmentsFinish
+ | RefreshMeasurmentsOnBtnClick
+ | RefreshMeasurmentsOnMQTTConnect
+ | RefreshMeasurmentsOnMQTTMessage
+ | RefreshButtonClick
  | FetchLocationsError
  | SelectLocation
  ;

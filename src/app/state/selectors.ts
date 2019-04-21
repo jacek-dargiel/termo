@@ -143,7 +143,7 @@ export let selectLocationsMappedWithKeyMeasurmentValues = createSelector(
 
 export let selectIdsOfLocationsLoadingMeasurments = createSelector(
   selectLocationState,
-  locationState => locationState.locationsLoadingMeasurments,
+  locationState => Array.from(locationState.locationsLoadingMeasurments),
 );
 
 function mapLocationWithKeyMeasurmentValues(
