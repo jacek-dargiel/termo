@@ -1,27 +1,26 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/409db545-73e5-4add-a29c-f1b1eedac165/deploy-status)](https://app.netlify.com/sites/jd-termo/deploys)
+
 # Termo
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1.
+Uses [Adafriut IO](https://io.adafruit.com) to monitor temperature from a weather station.
 
-## Development server
+## Install
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Use [Yarn](https://yarnpkg.com) to install dependencies:
 
-## Code scaffolding
+```
+$ yarn install
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Development
 
-## Build
+Use `yarn start` to run the app. Use `yarn test` to run Jest tests.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Required reading
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+* [Agnular](https://angular.io/)
+* [NgRx](https://ngrx.io/)
+* [Adafriut IO](https://io.adafruit.com)
+* [MQTT](http://mqtt.org/)
+* [Eclipse Paho MQTT Client](https://github.com/eclipse/paho.mqtt.javascript) (see also the [API docs](http://www.eclipse.org/paho/files/jsdoc/Paho.MQTT.Client.html))
+* [Adafruit IO MQTT documentation](https://learn.adafruit.com/adafruit-io/mqtt-api)
