@@ -21,6 +21,7 @@ export function reducer(
   action: MeasurmentActions | LocationActions
 ): State {
   switch (action.type) {
+    case LocationActionTypes.RefreshMeasurmentsOnBtnClick:
     case LocationActionTypes.RefreshMeasurmentsOnMQTTConnect:
     case LocationActionTypes.RefreshMeasurmentsOnMQTTMessage: {
       return {

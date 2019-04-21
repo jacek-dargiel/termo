@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '../../state/reducers';
 import { selectMeasurmentsLoading } from '../../state/selectors';
+import { RefreshButtonClick } from 'app/state/location/location.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +15,6 @@ export class HeaderFacade {
   ) {}
 
   refresh() {
-    // this.store.select(selectAllLocations).pipe(
-    //   first(),
-    // )
-    //   .subscribe(locations => this.store.dispatch(new RefreshMeasurmentsStart({ locations })));
+    this.store.dispatch(new RefreshButtonClick());
   }
 }

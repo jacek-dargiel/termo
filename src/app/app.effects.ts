@@ -26,6 +26,8 @@ import {
   MQTTConnected,
   RefreshMeasurmentsOnMQTTConnect,
   RefreshMeasurmentsOnMQTTMessage,
+  RefreshButtonClick,
+  RefreshMeasurmentsOnBtnClick,
 } from './state/location/location.actions';
 import {
   MeasurmentActionTypes,
@@ -119,10 +121,19 @@ export class AppEffects {
   );
 
   @Effect()
+  refreshOnButtonClick$ = this.actions$.pipe(
+    ofType<RefreshButtonClick>(LocationActionTypes.RefreshButtonClick),
+    switchMapTo(this.store.select(selectLocationIds)),
+    switchMap((ids: string[]) => from(ids)),
+    map(locationId => new RefreshMeasurmentsOnBtnClick({locationId})),
+  );
+
+  @Effect()
   refreshMeasurments$ = this.actions$.pipe(
-    ofType<RefreshMeasurmentsOnMQTTConnect | RefreshMeasurmentsOnMQTTMessage>(
+    ofType<RefreshMeasurmentsOnMQTTConnect | RefreshMeasurmentsOnMQTTMessage | RefreshMeasurmentsOnBtnClick>(
       LocationActionTypes.RefreshMeasurmentsOnMQTTConnect,
       LocationActionTypes.RefreshMeasurmentsOnMQTTMessage,
+      LocationActionTypes.RefreshMeasurmentsOnBtnClick,
     ),
     map(action => action.payload.locationId),
     mergeMap(locationId => {

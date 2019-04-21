@@ -6,6 +6,8 @@ export enum LocationActionTypes {
   MQTTConnected = '[MQTT] Connected',
   RefreshMeasurmentsOnMQTTConnect = '[Effect] Refresh Measurments On MQTT Connect',
   RefreshMeasurmentsOnMQTTMessage = '[Effect] Refresh Measurments On MQTT Message',
+  RefreshMeasurmentsOnBtnClick = '[Effect] Refresh Measurments On Button Click',
+  RefreshButtonClick = '[Header] Refresh button clicked',
   FetchLocationsSuccess = '[API] Fetch Locations Success',
   FetchLocationsError = '[API] Fetch Locations Error',
 
@@ -38,6 +40,15 @@ export class RefreshMeasurmentsOnMQTTMessage implements Action {
   constructor(public payload: { locationId: string }) {}
 }
 
+export class RefreshMeasurmentsOnBtnClick implements Action {
+  readonly type = LocationActionTypes.RefreshMeasurmentsOnBtnClick;
+  constructor(public payload: { locationId: string }) {}
+}
+
+export class RefreshButtonClick implements Action {
+  readonly type = LocationActionTypes.RefreshButtonClick;
+}
+
 export class FetchLocationsError implements Action {
   readonly type = LocationActionTypes.FetchLocationsError;
   constructor(public payload: { error: Error }) {}
@@ -51,8 +62,10 @@ export class SelectLocation implements Action {
 export type LocationActions =
  FetchLocationsSuccess
  | MapInitialized
+ | RefreshMeasurmentsOnBtnClick
  | RefreshMeasurmentsOnMQTTConnect
  | RefreshMeasurmentsOnMQTTMessage
+ | RefreshButtonClick
  | FetchLocationsError
  | SelectLocation
  ;

@@ -44,6 +44,7 @@ export function reducer(
       };
     }
 
+    case LocationActionTypes.RefreshMeasurmentsOnBtnClick:
     case LocationActionTypes.RefreshMeasurmentsOnMQTTConnect:
     case LocationActionTypes.RefreshMeasurmentsOnMQTTMessage: {
       let locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);
