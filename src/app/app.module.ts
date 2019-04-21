@@ -48,7 +48,7 @@ import { RefreshButtonComponent } from './components/refresh-button/refresh-butt
     BrowserModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers, { metaReducers }),
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    !environment.production ? StoreDevtoolsModule.instrument({ serialize: { options: { map: true, set: true } } }) : [],
     EffectsModule.forRoot([AppEffects]),
     StoreModule.forFeature('location', fromLocation.reducer),
     StoreModule.forFeature('measurment', fromMeasurment.reducer),
