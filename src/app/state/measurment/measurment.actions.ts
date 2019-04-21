@@ -1,6 +1,5 @@
 import { Action } from '@ngrx/store';
 import { Measurment } from './measurment.model';
-import { Location } from '../location/location.model';
 
 export enum MeasurmentActionTypes {
 
@@ -17,12 +16,12 @@ export class FetchMeasurments implements Action {
 export class FetchMeasurmentsSuccess implements Action {
   readonly type = MeasurmentActionTypes.FetchMeasurmentsSuccess;
 
-  constructor(public payload: { measurments: Measurment[], location: Location }) {}
+  constructor(public payload: { measurments: Measurment[], locationId: string }) {}
 }
 
 export class FetchMeasurmentsError implements Action {
   readonly type = MeasurmentActionTypes.FetchMeasurmentsError;
-  constructor(public payload: { error: Error, location: Location }) {}
+  constructor(public payload: { error: Error, locationId: string }) {}
 }
 
 export type MeasurmentActions =

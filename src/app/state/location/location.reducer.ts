@@ -44,9 +44,10 @@ export function reducer(
       };
     }
 
-    case LocationActionTypes.RefreshMeasurmentsStart: {
+    case LocationActionTypes.RefreshMeasurmentsOnMQTTConnect:
+    case LocationActionTypes.RefreshMeasurmentsOnMQTTMessage: {
       let locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);
-      locationsLoadingMeasurments.add(action.payload.location.id);
+      locationsLoadingMeasurments.add(action.payload.locationId);
       return {
         ...state,
         locationsLoadingMeasurments,
@@ -55,7 +56,7 @@ export function reducer(
 
     case MeasurmentActionTypes.FetchMeasurmentsError: {
       let locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);
-      locationsLoadingMeasurments.delete(action.payload.location.id);
+      locationsLoadingMeasurments.delete(action.payload.locationId);
       return {
         ...state,
         locationsLoadingMeasurments,
@@ -74,18 +75,18 @@ export function reducer(
       if (action.payload.measurments.length > 0) {
         let sortedMeasurments = sortMeasurments(action.payload.measurments);
         let latestMeasurment = last(sortedMeasurments);
-        locationsState = adapter.updateOne({id: action.payload.location.id, changes: { updatedAt: latestMeasurment.created_at }}, state);
+        locationsState = adapter.updateOne({id: action.payload.locationId, changes: { updatedAt: latestMeasurment.created_at }}, state);
         locationsState = {
           ...locationsState,
           latestMeasurmentIDs: {
             ...locationsState.latestMeasurmentIDs,
-            [action.payload.location.id]: latestMeasurment.id,
+            [action.payload.locationId]: latestMeasurment.id,
           }
         };
       }
 
       let locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);
-      locationsLoadingMeasurments.delete(action.payload.location.id);
+      locationsLoadingMeasurments.delete(action.payload.locationId);
       return {
         ...locationsState,
         locationsLoadingMeasurments,

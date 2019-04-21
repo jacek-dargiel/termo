@@ -1,36 +1,42 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { of } from 'rxjs';
-import {
-  FetchLocationsSuccess,
-  LocationActionTypes,
-  FetchLocationsError,
-  RefreshMeasurmentsStart,
-  RefreshMeasurmentsFinish,
-} from './state/location/location.actions';
+import { subDays } from 'date-fns/esm';
+
 import { LocationService } from './services/location.service';
+import { MeasurmentService } from './services/measurment.service';
+import { MQTTClientService } from './services/mqtt.service';
+import { ErrorHandlingService } from './services/error-handling.service';
+
+import { of, from } from 'rxjs';
 import {
   map,
   switchMap,
   catchError,
   mergeMap,
-  concat,
-  first,
   throttleTime,
+  switchMapTo,
+  filter,
 } from 'rxjs/operators';
-import { ErrorHandlingService } from './services/error-handling.service';
-import { MeasurmentService } from './services/measurment.service';
+
+import {
+  FetchLocationsSuccess,
+  LocationActionTypes,
+  FetchLocationsError,
+  MQTTConnected,
+  RefreshMeasurmentsOnMQTTConnect,
+  RefreshMeasurmentsOnMQTTMessage,
+} from './state/location/location.actions';
 import {
   MeasurmentActionTypes,
   FetchMeasurmentsError,
   FetchMeasurmentsSuccess,
 } from './state/measurment/measurment.actions';
-import { subDays } from 'date-fns/esm';
+import { selectLocationIds } from './state/selectors';
 import { State } from './state/reducers';
-import { Store } from '@ngrx/store';
-import { selectAllLocations } from './state/selectors';
+
 import { environment } from 'environments/environment';
-import { MQTTClientService } from './services/mqtt.service';
+import { retryBackoff } from 'backoff-rxjs';
 
 
 @Injectable()
@@ -75,38 +81,60 @@ export class AppEffects {
   );
 
   @Effect()
-  refreshMeasurmentsStart$ = this.actions$.pipe(
+  connectMQTT$ = this.actions$.pipe(
     ofType<FetchLocationsSuccess>(LocationActionTypes.FetchLocationsSuccess),
-    map((action: FetchLocationsSuccess) => action.payload.locations),
-    mergeMap(locations => {
-      return this.mqttClient.updates(locations.map(location => location.id));
+    switchMap(locations => {
+      return this.mqttClient.notifications$.pipe(
+        filter(notification => notification.type === 'CONNECT_SUCCESS')
+      );
     }),
-    map(({location}) => location),
-    switchMap(locationId => {
-      return this.store.select(selectAllLocations)
-        .pipe(
-          map(locations => locations.find(location => location.id === locationId)),
-          first(),
-        );
-    }),
-    map(location => new RefreshMeasurmentsStart({location}))
+    map(() => new MQTTConnected())
+  );
+
+  @Effect({dispatch: false})
+  subscribeFeeds$ = this.actions$.pipe(
+    ofType<MQTTConnected>(LocationActionTypes.MQTTConnected),
+    switchMapTo(this.store.select(selectLocationIds)),
+    switchMap((ids: string[]) => from(ids)),
+    switchMap(locationId => this.mqttClient.subscribeFeed(locationId)),
+    retryBackoff(1000),
+  );
+
+  @Effect()
+  refreshOnConnect$ = this.actions$.pipe(
+    ofType<MQTTConnected>(LocationActionTypes.MQTTConnected),
+    switchMapTo(this.store.select(selectLocationIds)),
+    switchMap((ids: string[]) => from(ids)),
+    map(locationId => new RefreshMeasurmentsOnMQTTConnect({locationId})),
+  );
+
+  @Effect()
+  refreshOnMessage$ = this.actions$.pipe(
+    ofType<MQTTConnected>(LocationActionTypes.MQTTConnected),
+    switchMapTo(this.mqttClient.notifications$),
+    filter(notification => notification.type === 'MESSAGE'),
+    map(notification => notification.message.topic),
+    map(topic => this.mqttClient.mapTopicToLocationID(topic)),
+    map(locationId => new RefreshMeasurmentsOnMQTTMessage({locationId})),
   );
 
   @Effect()
   refreshMeasurments$ = this.actions$.pipe(
-    ofType<RefreshMeasurmentsStart>(LocationActionTypes.RefreshMeasurmentsStart),
-    map(action => action.payload.location),
-    mergeMap(location => {
+    ofType<RefreshMeasurmentsOnMQTTConnect | RefreshMeasurmentsOnMQTTMessage>(
+      LocationActionTypes.RefreshMeasurmentsOnMQTTConnect,
+      LocationActionTypes.RefreshMeasurmentsOnMQTTMessage,
+    ),
+    map(action => action.payload.locationId),
+    mergeMap(locationId => {
       let start = subDays(new Date(), 1);
-      return this.measurment.getMeasurments(location.id, start).pipe(
-        map((measurments) => new FetchMeasurmentsSuccess({ measurments, location })),
+      return this.measurment.getMeasurments(locationId, start).pipe(
+        map((measurments) => new FetchMeasurmentsSuccess({ measurments, locationId })),
         catchError(error => {
           console.error(error);
           let readableError = new Error('Nie udało się pobrać najnowszych pomiarów temperatury.');
-          return of(new FetchMeasurmentsError({ error: readableError, location }));
+          return of(new FetchMeasurmentsError({ error: readableError, locationId }));
         }),
       );
     }),
-    concat(of(new RefreshMeasurmentsFinish())),
   );
 }
