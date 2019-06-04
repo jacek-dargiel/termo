@@ -73,13 +73,16 @@ export class AppEffects {
   @Effect()
   loadLocations$ = this.actions$.pipe(
     ofType(LocationActionTypes.MapInitialized),
-    switchMap(() => this.location.getLocations()),
-    map(locations => new FetchLocationsSuccess({locations})),
-    catchError(error => {
-      console.error(error);
-      let readableError = new Error('Nie udało się pobrać listy tuneli.');
-      return of(new FetchLocationsError({error: readableError}));
-    })
+    switchMap(() => this.location.getLocations()
+      .pipe(
+        map(locations => new FetchLocationsSuccess({locations})),
+        catchError(error => {
+          console.error(error);
+          let readableError = new Error('Nie udało się pobrać listy tuneli.');
+          return of(new FetchLocationsError({error: readableError}));
+        })
+      )
+    ),
   );
 
   @Effect()
