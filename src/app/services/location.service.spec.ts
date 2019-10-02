@@ -35,7 +35,7 @@ describe('LocationService', () => {
     }));
     it('should call the API', inject([LocationService], (service: LocationService) => {
       service.getLocations().subscribe();
-      expect(api.get).toHaveBeenCalledWith('/groups/temperatura/feeds');
+      expect(api.get).toHaveBeenCalledWith('/groups/tunele/feeds');
     }));
     it('should throw when 0 locations returned by feed', inject([LocationService], (service: LocationService) => {
       let locations$ = service.getLocations();
