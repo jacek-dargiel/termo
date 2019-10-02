@@ -16,7 +16,7 @@ export class LocationService {
   ) { }
 
   getLocations(): Observable<Location[]> {
-    return this.api.get<AIOFeed[]>(`/groups/temperatura/feeds`)
+    return this.api.get<AIOFeed[]>(`/groups/tunele/feeds`)
       .pipe(
         map(feeds => feeds.map(feed => this.mapFeedToLocation(feed))),
         tap(locations => {
