@@ -52,8 +52,7 @@ export function reducer(
     }
 
     case LocationActionTypes.RefreshMeasurmentsOnBtnClick:
-    case LocationActionTypes.RefreshMeasurmentsOnMQTTConnect:
-    case LocationActionTypes.RefreshMeasurmentsOnMQTTMessage: {
+    {
       let locationsLoadingMeasurments = state.locationsLoadingMeasurments;
       if (!state.locationsLoadingMeasurments.has(action.payload.locationId)) {
         locationsLoadingMeasurments = new Set(state.locationsLoadingMeasurments);

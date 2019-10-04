@@ -5,7 +5,6 @@ import { subDays } from 'date-fns/esm';
 
 import { LocationService } from './services/location.service';
 import { MeasurmentService } from './services/measurment.service';
-import { MQTTClientService } from './services/mqtt.service';
 import { ErrorHandlingService } from './services/error-handling.service';
 
 import { of, from } from 'rxjs';
@@ -16,16 +15,12 @@ import {
   mergeMap,
   throttleTime,
   switchMapTo,
-  filter,
 } from 'rxjs/operators';
 
 import {
   FetchLocationsSuccess,
   LocationActionTypes,
   FetchLocationsError,
-  MQTTConnected,
-  RefreshMeasurmentsOnMQTTConnect,
-  RefreshMeasurmentsOnMQTTMessage,
   RefreshButtonClick,
   RefreshMeasurmentsOnBtnClick,
 } from './state/location/location.actions';
@@ -38,7 +33,6 @@ import { selectLocationIds } from './state/selectors';
 import { State } from './state/reducers';
 
 import { environment } from 'environments/environment';
-import { retryBackoff } from 'backoff-rxjs';
 
 
 @Injectable()
@@ -49,7 +43,6 @@ export class AppEffects {
     private store: Store<State>,
     private location: LocationService,
     private measurment: MeasurmentService,
-    private mqttClient: MQTTClientService,
     private errorHandling: ErrorHandlingService,
   ) {}
 
@@ -86,44 +79,6 @@ export class AppEffects {
   );
 
   @Effect()
-  connectMQTT$ = this.actions$.pipe(
-    ofType<FetchLocationsSuccess>(LocationActionTypes.FetchLocationsSuccess),
-    switchMap(locations => {
-      return this.mqttClient.notifications$.pipe(
-        filter(notification => notification.type === 'CONNECT_SUCCESS')
-      );
-    }),
-    map(() => new MQTTConnected())
-  );
-
-  @Effect({dispatch: false})
-  subscribeFeeds$ = this.actions$.pipe(
-    ofType<MQTTConnected>(LocationActionTypes.MQTTConnected),
-    switchMapTo(this.store.select(selectLocationIds)),
-    switchMap((ids: string[]) => from(ids)),
-    switchMap(locationId => this.mqttClient.subscribeFeed(locationId)),
-    retryBackoff(1000),
-  );
-
-  @Effect()
-  refreshOnConnect$ = this.actions$.pipe(
-    ofType<MQTTConnected>(LocationActionTypes.MQTTConnected),
-    switchMapTo(this.store.select(selectLocationIds)),
-    switchMap((ids: string[]) => from(ids)),
-    map(locationId => new RefreshMeasurmentsOnMQTTConnect({locationId})),
-  );
-
-  @Effect()
-  refreshOnMessage$ = this.actions$.pipe(
-    ofType<MQTTConnected>(LocationActionTypes.MQTTConnected),
-    switchMapTo(this.mqttClient.notifications$),
-    filter(notification => notification.type === 'MESSAGE'),
-    map(notification => notification.message.topic),
-    map(topic => this.mqttClient.mapTopicToLocationID(topic)),
-    map(locationId => new RefreshMeasurmentsOnMQTTMessage({locationId})),
-  );
-
-  @Effect()
   refreshOnButtonClick$ = this.actions$.pipe(
     ofType<RefreshButtonClick>(LocationActionTypes.RefreshButtonClick),
     switchMapTo(this.store.select(selectLocationIds)),
@@ -133,9 +88,7 @@ export class AppEffects {
 
   @Effect()
   refreshMeasurments$ = this.actions$.pipe(
-    ofType<RefreshMeasurmentsOnMQTTConnect | RefreshMeasurmentsOnMQTTMessage | RefreshMeasurmentsOnBtnClick>(
-      LocationActionTypes.RefreshMeasurmentsOnMQTTConnect,
-      LocationActionTypes.RefreshMeasurmentsOnMQTTMessage,
+    ofType<RefreshMeasurmentsOnBtnClick>(
       LocationActionTypes.RefreshMeasurmentsOnBtnClick,
     ),
     map(action => action.payload.locationId),

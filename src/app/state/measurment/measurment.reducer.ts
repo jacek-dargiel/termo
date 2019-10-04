@@ -22,8 +22,7 @@ export function reducer(
 ): State {
   switch (action.type) {
     case LocationActionTypes.RefreshMeasurmentsOnBtnClick:
-    case LocationActionTypes.RefreshMeasurmentsOnMQTTConnect:
-    case LocationActionTypes.RefreshMeasurmentsOnMQTTMessage: {
+    {
       return {
         ...state,
         loading: true,

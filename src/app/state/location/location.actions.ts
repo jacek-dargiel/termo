@@ -4,8 +4,6 @@ import { Location } from './location.model';
 export enum LocationActionTypes {
   MapInitialized = '[Map] Map Initialized',
   MQTTConnected = '[MQTT] Connected',
-  RefreshMeasurmentsOnMQTTConnect = '[Effect] Refresh Measurments On MQTT Connect',
-  RefreshMeasurmentsOnMQTTMessage = '[Effect] Refresh Measurments On MQTT Message',
   RefreshMeasurmentsOnBtnClick = '[Effect] Refresh Measurments On Button Click',
   RefreshButtonClick = '[Header] Refresh button clicked',
   FetchLocationsSuccess = '[API] Fetch Locations Success',
@@ -24,20 +22,6 @@ export class FetchLocationsSuccess implements Action {
 
 export class MapInitialized implements Action {
   readonly type = LocationActionTypes.MapInitialized;
-}
-
-export class MQTTConnected implements Action {
-  readonly type = LocationActionTypes.MQTTConnected;
-}
-
-export class RefreshMeasurmentsOnMQTTConnect implements Action {
-  readonly type = LocationActionTypes.RefreshMeasurmentsOnMQTTConnect;
-  constructor(public payload: { locationId: string }) {}
-}
-
-export class RefreshMeasurmentsOnMQTTMessage implements Action {
-  readonly type = LocationActionTypes.RefreshMeasurmentsOnMQTTMessage;
-  constructor(public payload: { locationId: string }) {}
 }
 
 export class RefreshMeasurmentsOnBtnClick implements Action {
@@ -63,8 +47,6 @@ export type LocationActions =
  FetchLocationsSuccess
  | MapInitialized
  | RefreshMeasurmentsOnBtnClick
- | RefreshMeasurmentsOnMQTTConnect
- | RefreshMeasurmentsOnMQTTMessage
  | RefreshButtonClick
  | FetchLocationsError
  | SelectLocation
