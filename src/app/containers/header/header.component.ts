@@ -7,6 +7,7 @@ import { HeaderFacade } from './header.facade';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+  public progress$ = this.headerFacade.progress;
   public refreshing$ = this.headerFacade.refreshing;
 
   constructor(

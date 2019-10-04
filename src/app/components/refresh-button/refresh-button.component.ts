@@ -6,6 +6,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./refresh-button.component.scss']
 })
 export class RefreshButtonComponent {
+  @Input() progress: number;
   @Input() refreshing: boolean;
   @Output() refresh = new EventEmitter<void>();
 
