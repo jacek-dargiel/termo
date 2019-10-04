@@ -23,6 +23,7 @@ import {
   FetchLocationsError,
   RefreshButtonClick,
   RefreshMeasurmentsOnBtnClick,
+  RefreshMeasurmentsOnLocationsLoaded,
 } from './state/location/location.actions';
 import {
   MeasurmentActionTypes,
@@ -79,6 +80,14 @@ export class AppEffects {
   );
 
   @Effect()
+  refreshOnLocationsLoaded$ = this.actions$.pipe(
+    ofType<FetchLocationsSuccess>(LocationActionTypes.FetchLocationsSuccess),
+    switchMap(action => from(action.payload.locations)),
+    map(location => new RefreshMeasurmentsOnLocationsLoaded({locationId: location.id})),
+  );
+
+
+  @Effect()
   refreshOnButtonClick$ = this.actions$.pipe(
     ofType<RefreshButtonClick>(LocationActionTypes.RefreshButtonClick),
     switchMapTo(this.store.select(selectLocationIds)),
@@ -88,8 +97,9 @@ export class AppEffects {
 
   @Effect()
   refreshMeasurments$ = this.actions$.pipe(
-    ofType<RefreshMeasurmentsOnBtnClick>(
+    ofType<RefreshMeasurmentsOnBtnClick | RefreshMeasurmentsOnLocationsLoaded>(
       LocationActionTypes.RefreshMeasurmentsOnBtnClick,
+      LocationActionTypes.RefreshMeasurmentsOnLocationsLoaded,
     ),
     map(action => action.payload.locationId),
     mergeMap(locationId => {

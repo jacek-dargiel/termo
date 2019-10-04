@@ -52,6 +52,7 @@ export function reducer(
     }
 
     case LocationActionTypes.RefreshMeasurmentsOnBtnClick:
+    case LocationActionTypes.RefreshMeasurmentsOnLocationsLoaded:
     {
       let locationsLoadingMeasurments = state.locationsLoadingMeasurments;
       if (!state.locationsLoadingMeasurments.has(action.payload.locationId)) {
