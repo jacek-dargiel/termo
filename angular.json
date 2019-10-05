@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "termo"
+  "defaultProject": "termo",
+  "cli": {
+    "packageManager": "yarn"
+  }
 }
