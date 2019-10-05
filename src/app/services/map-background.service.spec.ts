@@ -4,12 +4,10 @@ import { MapBackgroundService } from './map-background.service';
 import { isObservable } from 'rxjs';
 
 describe('MapBackgroundService', () => {
-  let oService: MapBackgroundService;
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [MapBackgroundService]
     });
-    oService = TestBed.get(MapBackgroundService);
   });
 
   it('should be created', inject([MapBackgroundService], (service: MapBackgroundService) => {

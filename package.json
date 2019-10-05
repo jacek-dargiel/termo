@@ -17,9 +17,15 @@
   "private": true,
   "jest": {
     "preset": "jest-preset-angular",
-    "setupTestFrameworkScriptFile": "<rootDir>/src/setupJest.ts",
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupJest.ts"
+    ],
+    
     "transformIgnorePatterns": [
       "<rootDir>/node_modules/(?!(lodash-es|date-fns|@material)/)"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/src/test.ts"
     ]
   },
   "dependencies": {
@@ -54,14 +60,15 @@
     "@angular/compiler-cli": "^8.2.9",
     "@angular/language-service": "^8.2.9",
     "@ngrx/schematics": "8.3.0",
+    "@types/jest": "^24.0.18",
     "@types/lodash-es": "^4.17.1",
     "@types/material__snackbar": "^0.35.0",
     "@types/node": "^11.13.6",
     "codelyzer": "^5.0.1",
     "envsub": "^3.1.0",
-    "jest": "^23.6.0",
+    "jest": "^24.0.0",
     "jest-marbles": "^2.0.0",
-    "jest-preset-angular": "^6.0.0",
+    "jest-preset-angular": "^7.0.0",
     "ts-node": "~5.0.1",
     "tslint": "~5.9.1",
     "typescript": "3.5.3",

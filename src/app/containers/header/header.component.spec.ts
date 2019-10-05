@@ -2,10 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
 import { HeaderFacade } from './header.facade';
-import { Observable, of, ReplaySubject } from 'rxjs';
-import { By } from '@angular/platform-browser';
+import { ReplaySubject } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { RefreshButtonComponent } from '../../components/refresh-button/refresh-button.component';
 
 class MockHeaderFacade {
   public progress = new ReplaySubject<number>();
