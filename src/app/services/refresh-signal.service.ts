@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { interval, ReplaySubject } from 'rxjs';
-import { switchMap, map, share, filter, takeWhile } from 'rxjs/operators';
+import { interval, ReplaySubject, fromEvent, merge } from 'rxjs';
+import { switchMap, map, share, filter, startWith, tap, switchMapTo } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 
 @Injectable({
@@ -8,14 +8,25 @@ import { environment } from 'environments/environment';
 })
 export class RefreshSignalService {
   private trigger = new ReplaySubject<void>();
-  public signal = this.trigger.asObservable().pipe(
+  public counter = this.trigger.asObservable().pipe(
     switchMap(() => interval(1000)),
     map(count => (environment.refreshTimeout / 1000) - count),
     filter(timeLeft => timeLeft >= 0),
     share()
   );
-  public timeouts = this.signal.pipe(
-    takeWhile(value => value > 0),
+  private visibility = merge(
+    fromEvent(document, 'visibilitychange'),
+    fromEvent(window, 'focus'),
+  )
+    .pipe(
+      startWith(''),
+      map(() => !document.hidden)
+    );
+  public signal = this.counter.pipe(
+    filter(value => value === 0),
+    switchMapTo(this.visibility),
+    tap(visible => console.log({visible})),
+    filter(visible => visible === true),
   );
 
   constructor() { }

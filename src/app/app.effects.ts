@@ -17,7 +17,6 @@ import {
   switchMapTo,
   concat,
   tap,
-  filter,
 } from 'rxjs/operators';
 
 import * as locationActions from './state/location/location.actions';
@@ -123,7 +122,6 @@ export class AppEffects {
     ofType<locationActions.RefreshMeasurmentsFinished>(locationActions.LocationActionTypes.RefreshMeasurmentsFinished),
     tap(() => this.refreshSignal.restart()),
     switchMapTo(this.refreshSignal.signal),
-    filter(countdown => countdown === 0),
     map(() => new locationActions.RefreshSignal()),
   );
 

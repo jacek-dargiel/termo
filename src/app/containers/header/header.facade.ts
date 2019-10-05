@@ -11,7 +11,7 @@ import { RefreshButtonClick } from 'app/state/location/location.actions';
   providedIn: 'root',
 })
 export class HeaderFacade {
-  public progress = this.refreshSignal.signal.pipe(
+  public progress = this.refreshSignal.counter.pipe(
     map(timeLeft => timeLeft * 1000),
     map(timeLeft => (environment.refreshTimeout - timeLeft) / environment.refreshTimeout),
   );
