@@ -114,7 +114,6 @@ export class AppEffects {
           concat(of(new locationActions.RefreshMeasurmentsFinished())),
         );
     }),
-    tap(action => console.log(action.type)),
   );
 
   @Effect()
