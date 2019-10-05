@@ -3,8 +3,8 @@
 exports[`MapComponent should properly render initial state 1`] = `
 <termo-map
   el={[Function ElementRef]}
+  loading$="undefined"
   locations$={[Function BehaviorSubject]}
-  locationsLoading$={[Function BehaviorSubject]}
   mapFacade={[Function MockMapFacade]}
   selectedLocation$={[Function Subject]}
   updateMapRatio={[Function Function]}
@@ -16,18 +16,16 @@ exports[`MapComponent should properly render initial state 1`] = `
 exports[`MapComponent should render loading states 1`] = `
 <termo-map
   el={[Function ElementRef]}
+  loading$="undefined"
   locations$={[Function BehaviorSubject]}
-  locationsLoading$={[Function BehaviorSubject]}
   mapFacade={[Function MockMapFacade]}
   selectedLocation$={[Function Subject]}
   updateMapRatio={[Function Function]}
 >
   <termo-header /><termo-map-location
-    ng-reflect-loading="true"
     ng-reflect-location="[object Object]"
     ng-reflect-selected="false"
   /><termo-map-location
-    ng-reflect-loading="true"
     ng-reflect-location="[object Object]"
     ng-reflect-selected="false"
   />
@@ -37,18 +35,16 @@ exports[`MapComponent should render loading states 1`] = `
 exports[`MapComponent should render loading states 2`] = `
 <termo-map
   el={[Function ElementRef]}
+  loading$="undefined"
   locations$={[Function BehaviorSubject]}
-  locationsLoading$={[Function BehaviorSubject]}
   mapFacade={[Function MockMapFacade]}
   selectedLocation$={[Function Subject]}
   updateMapRatio={[Function Function]}
 >
   <termo-header /><termo-map-location
-    ng-reflect-loading="true"
     ng-reflect-location="[object Object]"
     ng-reflect-selected="false"
   /><termo-map-location
-    ng-reflect-loading="false"
     ng-reflect-location="[object Object]"
     ng-reflect-selected="false"
   />
@@ -58,18 +54,16 @@ exports[`MapComponent should render loading states 2`] = `
 exports[`MapComponent should render loading states 3`] = `
 <termo-map
   el={[Function ElementRef]}
+  loading$="undefined"
   locations$={[Function BehaviorSubject]}
-  locationsLoading$={[Function BehaviorSubject]}
   mapFacade={[Function MockMapFacade]}
   selectedLocation$={[Function Subject]}
   updateMapRatio={[Function Function]}
 >
   <termo-header /><termo-map-location
-    ng-reflect-loading="false"
     ng-reflect-location="[object Object]"
     ng-reflect-selected="false"
   /><termo-map-location
-    ng-reflect-loading="true"
     ng-reflect-location="[object Object]"
     ng-reflect-selected="false"
   />
@@ -79,18 +73,16 @@ exports[`MapComponent should render loading states 3`] = `
 exports[`MapComponent should render loading states 4`] = `
 <termo-map
   el={[Function ElementRef]}
+  loading$="undefined"
   locations$={[Function BehaviorSubject]}
-  locationsLoading$={[Function BehaviorSubject]}
   mapFacade={[Function MockMapFacade]}
   selectedLocation$={[Function Subject]}
   updateMapRatio={[Function Function]}
 >
   <termo-header /><termo-map-location
-    ng-reflect-loading="false"
     ng-reflect-location="[object Object]"
     ng-reflect-selected="false"
   /><termo-map-location
-    ng-reflect-loading="false"
     ng-reflect-location="[object Object]"
     ng-reflect-selected="false"
   />
@@ -100,18 +92,16 @@ exports[`MapComponent should render loading states 4`] = `
 exports[`MapComponent should render locations 1`] = `
 <termo-map
   el={[Function ElementRef]}
+  loading$="undefined"
   locations$={[Function BehaviorSubject]}
-  locationsLoading$={[Function BehaviorSubject]}
   mapFacade={[Function MockMapFacade]}
   selectedLocation$={[Function Subject]}
   updateMapRatio={[Function Function]}
 >
   <termo-header /><termo-map-location
-    ng-reflect-loading="false"
     ng-reflect-location="[object Object]"
     ng-reflect-selected="false"
   /><termo-map-location
-    ng-reflect-loading="false"
     ng-reflect-location="[object Object]"
     ng-reflect-selected="false"
   />

@@ -12,6 +12,7 @@ exports[`RefreshButtonComponent should render button at 50% 1`] = `
       class="refresh__progress"
       ng-reflect-klass="refresh__progress"
       ng-reflect-ng-class="[object Object]"
+      style="width: 50%;"
     />
     <span
       class="refresh__label"
@@ -52,6 +53,7 @@ exports[`RefreshButtonComponent should render button at refreshing state 1`] = `
       class="refresh__progress refresh__progress--refreshing"
       ng-reflect-klass="refresh__progress"
       ng-reflect-ng-class="[object Object]"
+      style="width: 100%;"
     />
     <span
       class="refresh__label"

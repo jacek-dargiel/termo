@@ -3,6 +3,7 @@
 exports[`HeaderComponent should render initial state 1`] = `
 <termo-header
   headerFacade={[Function MockHeaderFacade]}
+  progress$={[Function ReplaySubject]}
   refreshing$={[Function ReplaySubject]}
 >
   <header>
