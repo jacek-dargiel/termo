@@ -13,7 +13,7 @@ export class SnackbarComponent implements AfterViewInit, OnDestroy {
   snackbar: MDCSnackbar;
   messagesSub = this.snackbarService.messages
     .subscribe((dataObject: MDCSnackbarData) => this.showSnackbar(dataObject));
-  @ViewChild('snackbarRef') el: ElementRef<HTMLElement>;
+  @ViewChild('snackbarRef', { static: true }) el: ElementRef<HTMLElement>;
 
   constructor(
     private snackbarService: SnackbarService,
