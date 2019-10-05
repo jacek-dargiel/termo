@@ -13,7 +13,16 @@ export interface State extends EntityState<Location> {
   selected: string;
 }
 
-export let adapter: EntityAdapter<Location> = createEntityAdapter<Location>();
+function locationPositionComparer(a: Location, b: Location) {
+  let aOffset = a.mapPosition.x + a.mapPosition.y;
+  let bOffset = b.mapPosition.x + b.mapPosition.y;
+
+  return aOffset - bOffset;
+}
+
+export let adapter: EntityAdapter<Location> = createEntityAdapter<Location>({
+  sortComparer: locationPositionComparer,
+});
 
 export const INITIAL_STATE: State = adapter.getInitialState({
   loading: false,
