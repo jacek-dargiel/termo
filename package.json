@@ -20,7 +20,6 @@
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupJest.ts"
     ],
-    
     "transformIgnorePatterns": [
       "<rootDir>/node_modules/(?!(lodash-es|date-fns|@material)/)"
     ],
