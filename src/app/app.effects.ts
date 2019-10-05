@@ -20,21 +20,8 @@ import {
   filter,
 } from 'rxjs/operators';
 
-import {
-  FetchLocationsSuccess,
-  LocationActionTypes,
-  FetchLocationsError,
-  RefreshButtonClick,
-  RefreshMeasurmentsOnBtnClick,
-  RefreshMeasurmentsOnLocationsLoaded,
-  RefreshMeasurmentsFinished,
-  RefreshSignal,
-} from './state/location/location.actions';
-import {
-  MeasurmentActionTypes,
-  FetchMeasurmentsError,
-  FetchMeasurmentsSuccess,
-} from './state/measurment/measurment.actions';
+import * as locationActions from './state/location/location.actions';
+import * as measurmentActions from './state/measurment/measurment.actions';
 import { selectLocationIds, } from './state/selectors';
 import { State } from './state/reducers';
 
@@ -57,30 +44,30 @@ export class AppEffects {
   @Effect({dispatch: false})
   genericAjaxErrors$ = this.actions$.pipe(
     ofType(
-      LocationActionTypes.FetchLocationsError,
+      locationActions.LocationActionTypes.FetchLocationsError,
     ),
-    map((action: FetchLocationsError) => action.payload.error),
+    map((action: locationActions.FetchLocationsError) => action.payload.error),
     map(error => this.errorHandling.handle(error)),
   );
 
   @Effect({dispatch: false})
   fetchMeasurmentsErrors$ = this.actions$.pipe(
-    ofType(MeasurmentActionTypes.FetchMeasurmentsError),
+    ofType(measurmentActions.MeasurmentActionTypes.FetchMeasurmentsError),
     throttleTime(environment.snackbarDefaultTimeout),
-    map((action: FetchMeasurmentsError) => action.payload.error),
+    map((action: measurmentActions.FetchMeasurmentsError) => action.payload.error),
     map(error => this.errorHandling.handle(error)),
   );
 
   @Effect()
   loadLocations$ = this.actions$.pipe(
-    ofType(LocationActionTypes.MapInitialized),
+    ofType(locationActions.LocationActionTypes.MapInitialized),
     switchMap(() => this.location.getLocations()
       .pipe(
-        map(locations => new FetchLocationsSuccess({locations})),
+        map(locations => new locationActions.FetchLocationsSuccess({locations})),
         catchError(error => {
           console.error(error);
           let readableError = new Error('Nie udało się pobrać listy tuneli.');
-          return of(new FetchLocationsError({error: readableError}));
+          return of(new locationActions.FetchLocationsError({error: readableError}));
         })
       )
     ),
@@ -88,26 +75,26 @@ export class AppEffects {
 
   @Effect()
   refreshOnLocationsLoaded$ = this.actions$.pipe(
-    ofType<FetchLocationsSuccess>(LocationActionTypes.FetchLocationsSuccess),
+    ofType<locationActions.FetchLocationsSuccess>(locationActions.LocationActionTypes.FetchLocationsSuccess),
     switchMap(action => from(action.payload.locations)),
-    map(location => new RefreshMeasurmentsOnLocationsLoaded({locationId: location.id})),
+    map(location => new locationActions.RefreshMeasurmentsOnLocationsLoaded({locationId: location.id})),
   );
 
 
   @Effect()
   refreshOnButtonClick$ = this.actions$.pipe(
-    ofType<RefreshButtonClick>(LocationActionTypes.RefreshButtonClick),
+    ofType<locationActions.RefreshButtonClick>(locationActions.LocationActionTypes.RefreshButtonClick),
     switchMapTo(this.store.select(selectLocationIds)),
     switchMap((ids: string[]) => from(ids)),
-    map(locationId => new RefreshMeasurmentsOnBtnClick({locationId})),
+    map(locationId => new locationActions.RefreshMeasurmentsOnBtnClick({locationId})),
   );
 
   @Effect()
   refreshMeasurments$ = this.actions$.pipe(
-    ofType<RefreshButtonClick | FetchLocationsSuccess | RefreshSignal>(
-      LocationActionTypes.RefreshButtonClick,
-      LocationActionTypes.FetchLocationsSuccess,
-      LocationActionTypes.RefreshSignal,
+    ofType<locationActions.RefreshButtonClick | locationActions.FetchLocationsSuccess | locationActions.RefreshSignal>(
+      locationActions.LocationActionTypes.RefreshButtonClick,
+      locationActions.LocationActionTypes.FetchLocationsSuccess,
+      locationActions.LocationActionTypes.RefreshSignal,
     ),
     switchMap(() => this.store.pipe(select(selectLocationIds))),
     mergeMap(locationIds => {
@@ -117,15 +104,15 @@ export class AppEffects {
           mergeMap((locationId: string) => {
             return this.measurment.getMeasurments(locationId, start)
               .pipe(
-                map((measurments) => new FetchMeasurmentsSuccess({ measurments, locationId })),
+                map((measurments) => new measurmentActions.FetchMeasurmentsSuccess({ measurments, locationId })),
                 catchError(error => {
                   console.error(error);
                   let readableError = new Error('Nie udało się pobrać najnowszych pomiarów temperatury.');
-                  return of(new FetchMeasurmentsError({ error: readableError, locationId }));
+                  return of(new measurmentActions.FetchMeasurmentsError({ error: readableError, locationId }));
                 }),
               );
           }),
-          concat(of(new RefreshMeasurmentsFinished())),
+          concat(of(new locationActions.RefreshMeasurmentsFinished())),
         );
     }),
     tap(action => console.log(action.type)),
@@ -133,11 +120,11 @@ export class AppEffects {
 
   @Effect()
   resetSignalOnMeasurmentsFinished$ = this.actions$.pipe(
-    ofType<RefreshMeasurmentsFinished>(LocationActionTypes.RefreshMeasurmentsFinished),
+    ofType<locationActions.RefreshMeasurmentsFinished>(locationActions.LocationActionTypes.RefreshMeasurmentsFinished),
     tap(() => this.refreshSignal.restart()),
     switchMapTo(this.refreshSignal.signal),
     filter(countdown => countdown === 0),
-    map(() => new RefreshSignal()),
+    map(() => new locationActions.RefreshSignal()),
   );
 
 }
