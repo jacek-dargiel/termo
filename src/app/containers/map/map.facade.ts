@@ -12,7 +12,7 @@ import { tap, first } from 'rxjs/operators';
 
 @Injectable()
 export class MapFacade {
-  public locationsLoading$ = this.store.select(selectors.selectIdsOfLocationsLoadingMeasurments);
+  public loading$ = this.store.select(selectors.selectLocationLoading);
   public locations$ = this.store.select(selectors.selectLocationsMappedWithKeyMeasurmentValues);
   public selectedLocation$ = this.store.select(selectors.selectSelectedLocation);
 

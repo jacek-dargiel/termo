@@ -7,6 +7,10 @@ export enum LocationActionTypes {
   RefreshMeasurmentsOnBtnClick = '[Effect] Refresh Measurments On Button Click',
   RefreshMeasurmentsOnLocationsLoaded = '[Effect] Refresh Measurments On Locations Loaded',
   RefreshButtonClick = '[Header] Refresh button clicked',
+  RefreshSignal = '[Effect] Refresh Signal',
+
+  RefreshMeasurmentsFinished = '[Effect] Refresh Measurments finished',
+
   FetchLocationsSuccess = '[API] Fetch Locations Success',
   FetchLocationsError = '[API] Fetch Locations Error',
 
@@ -39,6 +43,14 @@ export class RefreshButtonClick implements Action {
   readonly type = LocationActionTypes.RefreshButtonClick;
 }
 
+export class RefreshSignal implements Action {
+  readonly type = LocationActionTypes.RefreshSignal;
+}
+
+export class RefreshMeasurmentsFinished implements Action {
+  readonly type = LocationActionTypes.RefreshMeasurmentsFinished;
+}
+
 export class FetchLocationsError implements Action {
   readonly type = LocationActionTypes.FetchLocationsError;
   constructor(public payload: { error: Error }) {}
@@ -55,6 +67,8 @@ export type LocationActions =
  | RefreshMeasurmentsOnBtnClick
  | RefreshMeasurmentsOnLocationsLoaded
  | RefreshButtonClick
+ | RefreshMeasurmentsFinished
+ | RefreshSignal
  | FetchLocationsError
  | SelectLocation
  ;

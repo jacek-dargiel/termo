@@ -8,7 +8,7 @@ import { Location } from '../../state/location/location.model';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
-  public locationsLoading$ = this.mapFacade.locationsLoading$;
+  public loading$ = this.mapFacade.loading$;
   public locations$ = this.mapFacade.locations$;
   public selectedLocation$ = this.mapFacade.selectedLocation$;
 
