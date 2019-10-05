@@ -322,9 +322,10 @@
     semver "5.6.0"
     semver-intersect "1.4.0"
 
-"@swimlane/ngx-charts@10":
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/@swimlane/ngx-charts/-/ngx-charts-10.0.0.tgz#8b5555d8244f5dd2cc91fb423a57e8a4d31c7ed5"
+"@swimlane/ngx-charts@12":
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-charts/-/ngx-charts-12.0.1.tgz#ad7200d2bd7255e9dc64d13bfca412e7d4569ad0"
+  integrity sha512-Dmm46eTtyKtTkku1ZIB39q/AHvUGdGIRJc7jPUucJLoSPWeD7AjvE6OFiIZYP48IkPwV0R3OI/ZmKyNA3DPkRQ==
   dependencies:
     d3 "^4.10.2"
     d3-array "^1.2.1"
