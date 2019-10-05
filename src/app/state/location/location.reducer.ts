@@ -17,7 +17,6 @@ export let adapter: EntityAdapter<Location> = createEntityAdapter<Location>();
 
 export const INITIAL_STATE: State = adapter.getInitialState({
   loading: false,
-  locationsLoadingMeasurments: new Set(),
   latestMeasurmentIDs: {},
   selected: undefined,
 });
