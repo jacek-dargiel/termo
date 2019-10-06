@@ -126,6 +126,6 @@
   },
   "defaultProject": "termo",
   "cli": {
-    "packageManager": "yarn"
+    "packageManager": "npm"
   }
 }
