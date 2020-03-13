@@ -1,0 +1,10 @@
+dist: bionic
+language: node_js
+node_js:
+  - 12
+before_install:
+  - npm i -g npm@latest
+install:
+  - npm ci
+script:
+  - npm test
