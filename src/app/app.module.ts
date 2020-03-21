@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 
 import { LineChartModule } from '@swimlane/ngx-charts';
 
@@ -29,6 +29,7 @@ import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { ChartComponent } from './containers/chart/chart.component';
 import { TERMO_CURRENT_TIME_FACTORY } from './pipes/current-time.injection-token';
 import { RefreshButtonComponent } from './components/refresh-button/refresh-button.component';
+import { SentryErrorHandler } from './services/sentry.error-handler';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { RefreshButtonComponent } from './components/refresh-button/refresh-butt
     MeasurmentService,
     MapFacade,
     {provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => new Date()},
+    { provide: ErrorHandler, useClass: SentryErrorHandler },
   ],
   bootstrap: [AppComponent]
 })
