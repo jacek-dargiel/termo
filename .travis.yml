@@ -10,8 +10,10 @@ script:
   - npm test
 before_deploy:
   - npm run build
+  - npm install -g @sentry/cli
 deploy:
   provider: netlify
   dir: dist/
   prod: true
   edge: true
+after_deploy: ./travis/sentry-release.sh
