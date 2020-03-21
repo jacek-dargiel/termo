@@ -10,7 +10,9 @@ script:
   - npm test
 before_deploy:
   - npm run build
+  - envsubst < ./dist/index.html > ./dist/index.html
   - npm install -g @sentry/cli
+  - envsubst < ./netlify.toml.template > ./netlify.toml
 deploy:
   provider: netlify
   dir: dist/
