@@ -9,8 +9,9 @@ install:
 script:
   - npm test
 before_deploy:
-  - npm install -g netlify-cli
   - npm run build
 deploy:
-  provider: script
-  script: netlify deploy --dir ./dist
+  provider: netlify
+  site: NETLIFY_SITE
+  auth: NETLIFY_AUTH
+  dir: dist/
