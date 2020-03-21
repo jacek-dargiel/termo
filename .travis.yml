@@ -13,4 +13,5 @@ before_deploy:
 deploy:
   provider: netlify
   dir: dist/
+  prod: true
   edge: true
