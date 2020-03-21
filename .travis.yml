@@ -12,7 +12,5 @@ before_deploy:
   - npm run build
 deploy:
   provider: netlify
-  site: NETLIFY_SITE
-  auth: NETLIFY_AUTH
   dir: dist/
   edge: true
