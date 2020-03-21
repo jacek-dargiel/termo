@@ -2,6 +2,8 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { MapFacade } from './map.facade';
 import { Location } from '../../state/location/location.model';
 
+import * as Sentry from '@sentry/browser';
+
 @Component({
   selector: 'termo-map',
   templateUrl: './map.component.html',
@@ -18,6 +20,7 @@ export class MapComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    Sentry.captureMessage('Init');
     this.mapFacade.dispatchMapInit();
     this.mapFacade.getImageDimentions()
       .subscribe(dimentions => this.updateMapRatio(dimentions));
