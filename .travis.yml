@@ -10,7 +10,8 @@ script:
   - npm test
 before_deploy:
   - npm run build
-  - envsubst < ./dist/index.html | tee ./dist/index.html    # use tee to perform in-place substitution on same file
+  - envsubst < ./dist/index.html > ./dist/substituted.html
+  - mv ./dist/substituted.html ./dist/index.html
   - npm install -g @sentry/cli
   - envsubst < ./netlify.toml.template > ./netlify.toml
 deploy:
