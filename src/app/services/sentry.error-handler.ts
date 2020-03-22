@@ -10,8 +10,8 @@ export class SentryErrorHandler implements ErrorHandler {
       let linkEl = document.querySelector('head link[rel="DC.Identifier"]');
       let link = linkEl.getAttribute('href');
 
-      let commitIdRegex = /https:\/\/github.com\/.+\/commit\/(?<commitId>[\da-f]+)/;
-      return link.match(commitIdRegex).groups.commitId;
+      let commitIdRegex = /https:\/\/github.com\/.+\/commit\/([\da-f]+)/;
+      return link.match(commitIdRegex)[1];
     } catch (error) {
       return undefined;
     }
