@@ -3,14 +3,27 @@ import * as Sentry from '@sentry/browser';
 
 import { environment } from '../../environments/environment';
 
-Sentry.init({
-  dsn: environment.sentryDsn
-});
-
 @Injectable()
 export class SentryErrorHandler implements ErrorHandler {
+  static getReleaseId() {
+    try {
+      let linkEl = document.querySelector('head link[rel="DC.Identifier"]');
+      let link = linkEl.getAttribute('href');
+
+      let commitIdRegex = /https:\/\/github.com\/.+\/commit\/(?<commitId>[\da-f]+)/;
+      return link.match(commitIdRegex).groups.commitId;
+    } catch (error) {
+      return undefined;
+    }
+  }
+
   handleError(error: any) {
     Sentry.captureException(error.originalError || error);
     // Sentry.showReportDialog({ eventId });
   }
 }
+
+Sentry.init({
+  dsn: environment.sentryDsn,
+  release: SentryErrorHandler.getReleaseId()
+});
