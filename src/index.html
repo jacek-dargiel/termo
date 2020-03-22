@@ -1,13 +1,16 @@
 <!doctype html>
 <html lang="en">
-<head>
+<head profile="http://dublincore.org/specifications/dublin-core/dcq-html/">
+
   <meta charset="utf-8">
   <title>Termo</title>
   <base href="/">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/png" href="/assets/favicon-192.png" sizes="192x192">
-  <meta name="DC.Source" content="https://github.com/${TRAVIS_REPO_SLUG}/commit/${TRAVIS_COMMIT}">
+  
+  <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" />
+  <link rel="DC.identifier" href="https://github.com/${TRAVIS_REPO_SLUG}/commit/${TRAVIS_COMMIT}">
 </head>
 <body>
   <termo-root></termo-root>
