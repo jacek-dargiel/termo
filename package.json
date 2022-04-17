@@ -11,7 +11,9 @@
     "test-watch": "jest --watchAll",
     "deploy": "npm run test && npm run build",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "ngcc": "ngcc",
+    "postinstall": "ngcc --properties es2015"
   },
   "private": true,
   "jest": {
