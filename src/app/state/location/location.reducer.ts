@@ -40,7 +40,7 @@ export function reducer(
       let loadedState = {
         ...state,
       };
-      return adapter.addAll(action.payload.locations, loadedState);
+      return adapter.setAll(action.payload.locations, loadedState);
     }
 
     case LocationActionTypes.MapInitialized: {
