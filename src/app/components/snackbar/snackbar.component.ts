@@ -1,8 +1,7 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { MDCSnackbar } from '@material/snackbar';
-import { MDCSnackbarData } from '@material/snackbar/foundation';
 
-import { SnackbarService } from '../../services/snackbar.service';
+import { SnackbarData, SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'termo-snackbar',
@@ -12,7 +11,7 @@ import { SnackbarService } from '../../services/snackbar.service';
 export class SnackbarComponent implements AfterViewInit, OnDestroy {
   snackbar: MDCSnackbar;
   messagesSub = this.snackbarService.messages
-    .subscribe((dataObject: MDCSnackbarData) => this.showSnackbar(dataObject));
+    .subscribe((dataObject) => this.showSnackbar(dataObject));
   @ViewChild('snackbarRef', { static: true }) el: ElementRef<HTMLElement>;
 
   constructor(
@@ -27,12 +26,14 @@ export class SnackbarComponent implements AfterViewInit, OnDestroy {
     this.messagesSub.unsubscribe();
   }
 
-  showSnackbar(dataObject: MDCSnackbarData) {
+  showSnackbar(dataObject: SnackbarData) {
     if (!this.snackbar) {
       console.error('Can\'t show snackbar before view init.', dataObject);
       return;
     }
-    this.snackbar.show(dataObject);
+    this.snackbar.labelText = dataObject.message;
+    this.snackbar.timeoutMs = dataObject.timeout;
+    this.snackbar.open();
   }
 
 }
