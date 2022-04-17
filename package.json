@@ -50,8 +50,8 @@
     "normalize.css": "^8.0.0",
     "paho-mqtt": "^1.1.0",
     "rxjs": "^6.5.3",
-    "tslib": "^1.9.0",
-    "zone.js": "~0.10.3"
+    "tslib": "^1.10.0",
+    "zone.js": "~0.10.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.15",
@@ -62,8 +62,8 @@
     "@types/jest": "^24.0.18",
     "@types/lodash-es": "^4.17.1",
     "@types/material__snackbar": "^0.35.0",
-    "@types/node": "^11.13.6",
-    "codelyzer": "^5.0.1",
+    "@types/node": "^12.11.1",
+    "codelyzer": "^5.1.2",
     "envsub": "^3.1.0",
     "jest": "^24.0.0",
     "jest-marbles": "^2.0.0",
