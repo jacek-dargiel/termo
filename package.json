@@ -43,7 +43,6 @@
     "@sentry/browser": "^6.19.6",
     "@swimlane/ngx-charts": "^14.0.0",
     "backoff-rxjs": "^6.5.7",
-    "core-js": "^2.5.4",
     "date-fns": "^2.0.0-alpha.9",
     "lodash": "^4.17.15",
     "lodash-es": "^4.17.15",
