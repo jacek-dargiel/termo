@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Component, Input, HostBinding, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { MapComponent } from './map.component';
@@ -64,7 +64,7 @@ describe('MapComponent', () => {
   let fixture: ComponentFixture<MapComponent>;
   let facade: MockMapFacade;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         MapComponent,
