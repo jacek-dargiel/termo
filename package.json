@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --progress=false --prod --aot",
+    "build": "ng build --progress=false --configuration production --aot",
     "get-stats": "npm run build -- --stats-json",
     "bundle-analyze": "npx webpack-bundle-analyzer dist/stats.json",
     "test": "jest --ci",
