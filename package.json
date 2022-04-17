@@ -64,7 +64,7 @@
     "@types/jest": "^24.0.18",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^12.11.1",
-    "codelyzer": "^5.1.2",
+    "codelyzer": "^6.0.0",
     "envsub": "^4.0.7",
     "jest": "^24.0.0",
     "jest-marbles": "^2.0.0",
