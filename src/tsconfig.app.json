@@ -7,10 +7,13 @@
     "noUnusedLocals": true
   },
   "angularCompilerOptions": {
-    "enableIvy": false
+    "enableIvy": true
   },
-  "exclude": [
-    "src/test.ts",
-    "**/*.spec.ts"
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
   ]
 }

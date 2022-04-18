@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { MapLocationComponent } from './map-location.component';
@@ -12,7 +12,7 @@ describe('MapLocationComponent', () => {
   let component: MapLocationComponent;
   let fixture: ComponentFixture<MapLocationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     let since = new Date('2018-09-19T22:15:00');
     TestBed.configureTestingModule({
       declarations: [

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { ChartComponent } from './chart.component';
@@ -61,7 +61,7 @@ describe('ChartComponent', () => {
   let fixture: ComponentFixture<ChartComponent>;
   let facade: MockChartFacade;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ChartComponent ],
       providers: [

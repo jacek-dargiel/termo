@@ -2,16 +2,15 @@
 
 exports[`RefreshButtonComponent should render button at 50% 1`] = `
 <termo-refresh-button
+  __ngContext__={[Function LRootView]}
   progress={[Function Number]}
-  refresh={[Function EventEmitter]}
+  refresh={[Function EventEmitter_]}
 >
   <button
     class="refresh"
   >
     <div
       class="refresh__progress"
-      ng-reflect-klass="refresh__progress"
-      ng-reflect-ng-class="[object Object]"
       style="width: 50%;"
     />
     <span
@@ -23,15 +22,14 @@ exports[`RefreshButtonComponent should render button at 50% 1`] = `
 
 exports[`RefreshButtonComponent should render button at initial state 1`] = `
 <termo-refresh-button
-  refresh={[Function EventEmitter]}
+  __ngContext__={[Function LRootView]}
+  refresh={[Function EventEmitter_]}
 >
   <button
     class="refresh"
   >
     <div
       class="refresh__progress"
-      ng-reflect-klass="refresh__progress"
-      ng-reflect-ng-class="[object Object]"
     />
     <span
       class="refresh__label"
@@ -42,8 +40,9 @@ exports[`RefreshButtonComponent should render button at initial state 1`] = `
 
 exports[`RefreshButtonComponent should render button at refreshing state 1`] = `
 <termo-refresh-button
+  __ngContext__={[Function LRootView]}
   progress={[Function Number]}
-  refresh={[Function EventEmitter]}
+  refresh={[Function EventEmitter_]}
   refreshing={[Function Boolean]}
 >
   <button
@@ -51,8 +50,6 @@ exports[`RefreshButtonComponent should render button at refreshing state 1`] = `
   >
     <div
       class="refresh__progress refresh__progress--refreshing"
-      ng-reflect-klass="refresh__progress"
-      ng-reflect-ng-class="[object Object]"
       style="width: 100%;"
     />
     <span

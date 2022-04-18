@@ -2,59 +2,52 @@
 
 exports[`SnackbarComponent should render a snackbar when message recived 1`] = `
 <termo-snackbar
+  __ngContext__={[Function LRootView]}
   el={[Function ElementRef]}
   messagesSub={[Function Subscriber]}
-  snackbar={[Function MDCSnackbar]}
+  snackbar={[Function MDCSnackbar2]}
   snackbarService={[Function MockSnapshotService]}
 >
-  <div
-    aria-atomic="true"
-    aria-live="assertive"
-    class="mdc-snackbar mdc-snackbar--align-start mdc-snackbar--active"
+  <aside
+    class="mdc-snackbar"
   >
     <div
-      class="mdc-snackbar__text"
+      aria-relevant="additions"
+      class="mdc-snackbar__surface"
+      role="status"
     >
-      Something is wrong
+      <div
+        aria-atomic="false"
+        class="mdc-snackbar__label"
+      >
+        Something is wrong
+      </div>
     </div>
-    <div
-      class="mdc-snackbar__action-wrapper"
-    >
-      <button
-        aria-hidden="true"
-        class="mdc-snackbar__action-button"
-        type="button"
-      />
-    </div>
-  </div>
+  </aside>
 </termo-snackbar>
 `;
 
 exports[`SnackbarComponent should render the snackbar component 1`] = `
 <termo-snackbar
+  __ngContext__={[Function LRootView]}
   el={[Function ElementRef]}
   messagesSub={[Function Subscriber]}
-  snackbar={[Function MDCSnackbar]}
+  snackbar={[Function MDCSnackbar2]}
   snackbarService={[Function MockSnapshotService]}
 >
-  <div
-    aria-atomic="true"
-    aria-hidden="true"
-    aria-live="assertive"
-    class="mdc-snackbar mdc-snackbar--align-start"
+  <aside
+    class="mdc-snackbar"
   >
     <div
-      class="mdc-snackbar__text"
-    />
-    <div
-      class="mdc-snackbar__action-wrapper"
+      aria-relevant="additions"
+      class="mdc-snackbar__surface"
+      role="status"
     >
-      <button
-        aria-hidden="true"
-        class="mdc-snackbar__action-button"
-        type="button"
+      <div
+        aria-atomic="false"
+        class="mdc-snackbar__label"
       />
     </div>
-  </div>
+  </aside>
 </termo-snackbar>
 `;

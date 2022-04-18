@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SpinnerComponent should render spinner 1`] = `
-<termo-spinner>
+<termo-spinner
+  __ngContext__={[Function LRootView]}
+>
   <div
     class="spinner"
   >
