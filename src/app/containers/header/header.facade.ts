@@ -5,7 +5,7 @@ import { environment } from 'environments/environment';
 import { Store } from '@ngrx/store';
 import { State } from '../../state/reducers';
 import { selectMeasurmentsLoading } from '../../state/selectors';
-import { RefreshButtonClick } from 'app/state/location/location.actions';
+import { RefreshButtonClick } from '../../state/location/location.actions';
 
 @Injectable({
   providedIn: 'root',

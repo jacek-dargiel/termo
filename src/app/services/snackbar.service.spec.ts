@@ -1,8 +1,7 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { SnackbarService } from './snackbar.service';
+import { SnackbarData, SnackbarService } from './snackbar.service';
 import { ErrorHandlingService } from './error-handling.service';
-import { MDCSnackbarData } from '@material/snackbar/foundation';
 
 describe('SnackbarService', () => {
   beforeEach(() => {
@@ -27,7 +26,7 @@ describe('SnackbarService', () => {
       let subscription = snackbarService.messages.subscribe(handler);
       errorHandlingService.handle(error);
 
-      let expected: Partial<MDCSnackbarData> = { message: error.message, timeout: 5000 };
+      let expected: Partial<SnackbarData> = { message: error.message, timeout: 5000 };
       expect(handler).toHaveBeenCalledWith(expected);
 
       subscription.unsubscribe();
