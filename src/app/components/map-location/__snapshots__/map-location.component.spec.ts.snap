@@ -2,10 +2,11 @@
 
 exports[`MapLocationComponent should display outdated warning 1`] = `
 <termo-map-location
+  __ngContext__={[Function LRootView]}
   bottom={[Function Number]}
   location={[Function Object]}
   right={[Function Number]}
-  select={[Function EventEmitter]}
+  select={[Function EventEmitter_]}
 >
   <div
     class="temperature-box"
@@ -37,7 +38,6 @@ exports[`MapLocationComponent should display outdated warning 1`] = `
           °C
         </span>
       </div>
-      
       <div
         class="temperature temperature--minimal"
       >
@@ -53,7 +53,6 @@ exports[`MapLocationComponent should display outdated warning 1`] = `
         </span>
       </div>
     </div>
-    
     <div
       class="footer footer--warning footer--warning-outdated"
     >
@@ -69,10 +68,11 @@ exports[`MapLocationComponent should display outdated warning 1`] = `
 
 exports[`MapLocationComponent should properly render base state 1`] = `
 <termo-map-location
+  __ngContext__={[Function LRootView]}
   bottom={[Function Number]}
   location={[Function Object]}
   right={[Function Number]}
-  select={[Function EventEmitter]}
+  select={[Function EventEmitter_]}
 >
   <div
     class="temperature-box"
@@ -104,7 +104,6 @@ exports[`MapLocationComponent should properly render base state 1`] = `
           °C
         </span>
       </div>
-      
       <div
         class="temperature temperature--minimal"
       >
@@ -120,7 +119,6 @@ exports[`MapLocationComponent should properly render base state 1`] = `
         </span>
       </div>
     </div>
-    
   </div><div
     class="arrow"
   />
@@ -129,11 +127,12 @@ exports[`MapLocationComponent should properly render base state 1`] = `
 
 exports[`MapLocationComponent should render loading state 1`] = `
 <termo-map-location
+  __ngContext__={[Function LRootView]}
   bottom={[Function Number]}
   loading={[Function Boolean]}
   location={[Function Object]}
   right={[Function Number]}
-  select={[Function EventEmitter]}
+  select={[Function EventEmitter_]}
 >
   <termo-spinner /><div
     class="arrow"
@@ -143,10 +142,11 @@ exports[`MapLocationComponent should render loading state 1`] = `
 
 exports[`MapLocationComponent should render selected state 1`] = `
 <termo-map-location
+  __ngContext__={[Function LRootView]}
   bottom={[Function Number]}
   location={[Function Object]}
   right={[Function Number]}
-  select={[Function EventEmitter]}
+  select={[Function EventEmitter_]}
   selected={[Function Boolean]}
 >
   <div
@@ -179,7 +179,6 @@ exports[`MapLocationComponent should render selected state 1`] = `
           °C
         </span>
       </div>
-      
       <div
         class="temperature temperature--minimal"
       >
@@ -195,7 +194,6 @@ exports[`MapLocationComponent should render selected state 1`] = `
         </span>
       </div>
     </div>
-    
   </div><div
     class="arrow"
   />

@@ -2,6 +2,7 @@
 
 exports[`HeaderComponent should render initial state 1`] = `
 <termo-header
+  __ngContext__={[Function LRootView]}
   headerFacade={[Function MockHeaderFacade]}
   progress$={[Function ReplaySubject]}
   refreshing$={[Function ReplaySubject]}
