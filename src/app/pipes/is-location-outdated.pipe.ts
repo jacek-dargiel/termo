@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform, Inject } from '@angular/core';
-import { subMilliseconds, isBefore } from 'date-fns/esm';
+import { subMilliseconds, isBefore } from 'date-fns';
 import { environment } from 'environments/environment';
 import { TERMO_CURRENT_TIME_FACTORY, timeFactory } from './current-time.injection-token';
 

@@ -6,7 +6,7 @@ import {
   differenceInCalendarDays,
   differenceInHours,
   differenceInMinutes,
-} from 'date-fns/esm';
+} from 'date-fns';
 import { TERMO_CURRENT_TIME_FACTORY, timeFactory } from './current-time.injection-token';
 
 @Pipe({

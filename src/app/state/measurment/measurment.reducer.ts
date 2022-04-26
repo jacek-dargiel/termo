@@ -2,7 +2,7 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Measurment } from './measurment.model';
 import { MeasurmentActions, MeasurmentActionTypes } from './measurment.actions';
 import { LocationActionTypes, LocationActions } from '../location/location.actions';
-import { compareAsc } from 'date-fns/esm';
+import { compareAsc } from 'date-fns';
 
 export interface State extends EntityState<Measurment> {
   loading: boolean;

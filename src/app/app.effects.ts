@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { subDays } from 'date-fns/esm';
+import { subDays } from 'date-fns';
 
 import { LocationService } from './services/location.service';
 import { MeasurmentService } from './services/measurment.service';

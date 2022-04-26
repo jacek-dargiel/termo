@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { Location } from '../../state/location/location.model';
 import { map, filter } from 'rxjs/operators';
 import { Measurment } from '../../state/measurment/measurment.model';
-import { format } from 'date-fns/esm';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'termo-chart',

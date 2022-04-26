@@ -3,7 +3,7 @@ import { Location } from './location.model';
 import { LocationActions, LocationActionTypes } from './location.actions';
 import { MeasurmentActionTypes, MeasurmentActions } from '../measurment/measurment.actions';
 import { Measurment } from '../measurment/measurment.model';
-import { compareAsc } from 'date-fns/esm';
+import { compareAsc } from 'date-fns';
 import { Dictionary } from '@ngrx/entity/src/models';
 import { last } from '../../helpers/lodash';
 

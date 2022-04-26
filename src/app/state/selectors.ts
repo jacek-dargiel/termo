@@ -3,7 +3,7 @@ import * as fromLocation from './location/location.reducer';
 import * as fromMeasurment from './measurment/measurment.reducer';
 import { Dictionary } from '@ngrx/entity/src/models';
 import { Measurment } from './measurment/measurment.model';
-import { isAfter, subHours } from 'date-fns/esm';
+import { isAfter, subHours } from 'date-fns';
 import { LocationWithKeyMeasurmentValues, Location } from './location/location.model';
 import { mapToObject } from '../helpers/utils';
 
