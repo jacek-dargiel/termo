@@ -1,7 +1,6 @@
-dist: bionic
 language: node_js
 node_js:
-  - 12
+  - 14
 before_install:
   - npm i -g npm@latest
 install:
