@@ -13,7 +13,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "ngcc": "ngcc",
-    "postinstall": "ngcc --properties es2015"
+    "postinstall": "ngcc --properties es2015 main"
   },
   "private": true,
   "jest": {
