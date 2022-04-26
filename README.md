@@ -5,8 +5,10 @@
 
 Uses [Adafriut IO](https://io.adafruit.com) to monitor temperature from a weather station.
 
-## Required reading
+## Uses
 
-* [Agnular](https://angular.io/)
+* [Angular](https://angular.io/)
 * [NgRx](https://ngrx.io/)
+* [date-fns](https://date-fns.org/)
+* [Sentry](https://sentry.io/)
 * [Adafriut IO](https://io.adafruit.com)
