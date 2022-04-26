@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { subDays } from 'date-fns/esm';
 
 import { LocationService } from './services/location.service';
@@ -40,25 +40,22 @@ export class AppEffects {
     private refreshSignal: RefreshSignalService,
   ) {}
 
-  @Effect({dispatch: false})
-  genericAjaxErrors$ = this.actions$.pipe(
+  genericAjaxErrors$ = createEffect(() => this.actions$.pipe(
     ofType(
       locationActions.LocationActionTypes.FetchLocationsError,
     ),
     map((action: locationActions.FetchLocationsError) => action.payload.error),
     map(error => this.errorHandling.handle(error)),
-  );
+  ), {dispatch: false});
 
-  @Effect({dispatch: false})
-  fetchMeasurmentsErrors$ = this.actions$.pipe(
+  fetchMeasurmentsErrors$ = createEffect(() => this.actions$.pipe(
     ofType(measurmentActions.MeasurmentActionTypes.FetchMeasurmentsError),
     throttleTime(environment.snackbarDefaultTimeout),
     map((action: measurmentActions.FetchMeasurmentsError) => action.payload.error),
     map(error => this.errorHandling.handle(error)),
-  );
+  ), {dispatch: false});
 
-  @Effect()
-  loadLocations$ = this.actions$.pipe(
+  loadLocations$ = createEffect(() => this.actions$.pipe(
     ofType(locationActions.LocationActionTypes.MapInitialized),
     switchMap(() => this.location.getLocations()
       .pipe(
@@ -70,26 +67,23 @@ export class AppEffects {
         })
       )
     ),
-  );
+  ));
 
-  @Effect()
-  refreshOnLocationsLoaded$ = this.actions$.pipe(
+  refreshOnLocationsLoaded$ = createEffect(() => this.actions$.pipe(
     ofType<locationActions.FetchLocationsSuccess>(locationActions.LocationActionTypes.FetchLocationsSuccess),
     switchMap(action => from(action.payload.locations)),
     map(location => new locationActions.RefreshMeasurmentsOnLocationsLoaded({locationId: location.id})),
-  );
+  ));
 
 
-  @Effect()
-  refreshOnButtonClick$ = this.actions$.pipe(
+  refreshOnButtonClick$ = createEffect(() => this.actions$.pipe(
     ofType<locationActions.RefreshButtonClick>(locationActions.LocationActionTypes.RefreshButtonClick),
     switchMapTo(this.store.select(selectLocationIds)),
     switchMap((ids: string[]) => from(ids)),
     map(locationId => new locationActions.RefreshMeasurmentsOnBtnClick({locationId})),
-  );
+  ));
 
-  @Effect()
-  refreshMeasurments$ = this.actions$.pipe(
+  refreshMeasurments$ = createEffect(() => this.actions$.pipe(
     ofType<locationActions.RefreshButtonClick | locationActions.FetchLocationsSuccess | locationActions.RefreshSignal>(
       locationActions.LocationActionTypes.RefreshButtonClick,
       locationActions.LocationActionTypes.FetchLocationsSuccess,
@@ -114,14 +108,13 @@ export class AppEffects {
           concat(of(new locationActions.RefreshMeasurmentsFinished())),
         );
     }),
-  );
+  ));
 
-  @Effect()
-  resetSignalOnMeasurmentsFinished$ = this.actions$.pipe(
+  resetSignalOnMeasurmentsFinished$ = createEffect(() => this.actions$.pipe(
     ofType<locationActions.RefreshMeasurmentsFinished>(locationActions.LocationActionTypes.RefreshMeasurmentsFinished),
     tap(() => this.refreshSignal.restart()),
     switchMapTo(this.refreshSignal.signal),
     map(() => new locationActions.RefreshSignal()),
-  );
+  ));
 
 }
