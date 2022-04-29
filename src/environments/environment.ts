@@ -10,6 +10,7 @@ export const environment = {  // tslint:disable-line:ext-variable-name
   refreshTimeout: 300000,             // 5 min === 30000 ms
   snackbarDefaultTimeout: 5000,
   mapBackgroundUrl: '/assets/map.jpg',
+  feedDataLimit: 1000,
   // refreshTimeout: 30000,
   sentryDsn: 'https://ffefcdedb2c3409a99c1e740056a54e2@sentry.io/5169978',
 };

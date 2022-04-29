@@ -7,6 +7,7 @@ import { HttpParams } from '@angular/common/http';
 
 import { Measurment } from '../state/measurment/measurment.model';
 import { AIOFeedData } from '../interfaces';
+import { environment } from 'environments/environment';
 
 @Injectable()
 export class MeasurmentService {
@@ -17,6 +18,7 @@ export class MeasurmentService {
 
   getMeasurments(locationKey: string, start?: Date, end?: Date) {
     let params = new HttpParams();
+    params = params.append('limit', environment.feedDataLimit);
     if (start) {
       params = params.append('start_time', start.toISOString());
     }
