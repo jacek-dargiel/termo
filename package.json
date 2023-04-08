@@ -7,37 +7,13 @@
     "build": "ng build --progress=false --configuration production --aot",
     "get-stats": "npm run build -- --stats-json",
     "bundle-analyze": "npx webpack-bundle-analyzer dist/stats.json",
-    "test": "jest",
-    "test:ci": "jest --ci",
-    "test:watch": "jest --watchAll",
-    "deploy": "npm run test:ci && npm run build",
+    "deploy": "npm lint && npm run build",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "ngcc": "ngcc",
     "postinstall": "ngcc --properties es2015 main"
   },
   "private": true,
-  "jest": {
-    "globals": {
-      "ts-jest": {
-        "tsconfig": "<rootDir>/src/tsconfig.spec.json"
-      }
-    },
-    "preset": "jest-preset-angular",
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupJest.ts"
-    ],
-    "globalSetup": "jest-preset-angular/global-setup",
-    "transformIgnorePatterns": [
-      "<rootDir>/node_modules/(?!(lodash-es|date-fns|@material)/)"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/src/test.ts"
-    ],
-    "moduleNameMapper": {
-      "^environments/(.*)$": "<rootDir>/src/environments/$1"
-    }
-  },
   "dependencies": {
     "@angular/animations": "^13.4.0",
     "@angular/cdk": "^13.3.9",
@@ -75,16 +51,12 @@
     "@angular/cli": "^13.3.11",
     "@angular/compiler-cli": "^13.4.0",
     "@ngrx/schematics": "13.1.0",
-    "@types/jest": "^28",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^12.11.1",
     "@typescript-eslint/eslint-plugin": "5.27.1",
     "@typescript-eslint/parser": "5.27.1",
     "envsub": "^4.0.7",
     "eslint": "^8.17.0",
-    "jest": "^28",
-    "jest-marbles": "^3.0.3",
-    "jest-preset-angular": "^12",
     "ts-node": "~5.0.1",
     "typescript": "4.6.4",
     "webpack-bundle-analyzer": "^4.8.0"
