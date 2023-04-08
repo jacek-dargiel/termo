@@ -2,7 +2,6 @@
 
 exports[`MapLocationComponent should display outdated warning 1`] = `
 <termo-map-location
-  __ngContext__={[Function LRootView]}
   bottom={[Function Number]}
   location={[Function Object]}
   right={[Function Number]}
@@ -30,7 +29,7 @@ exports[`MapLocationComponent should display outdated warning 1`] = `
         <span
           class="value"
         >
-          21.12
+          21,12
         </span>
         <span
           class="unit"
@@ -44,7 +43,7 @@ exports[`MapLocationComponent should display outdated warning 1`] = `
         <span
           class="value"
         >
-          Min: 19.50
+          Min: 19,50
         </span>
         <span
           class="unit"
@@ -68,7 +67,6 @@ exports[`MapLocationComponent should display outdated warning 1`] = `
 
 exports[`MapLocationComponent should properly render base state 1`] = `
 <termo-map-location
-  __ngContext__={[Function LRootView]}
   bottom={[Function Number]}
   location={[Function Object]}
   right={[Function Number]}
@@ -96,7 +94,7 @@ exports[`MapLocationComponent should properly render base state 1`] = `
         <span
           class="value"
         >
-          21.12
+          21,12
         </span>
         <span
           class="unit"
@@ -110,7 +108,7 @@ exports[`MapLocationComponent should properly render base state 1`] = `
         <span
           class="value"
         >
-          Min: 19.50
+          Min: 19,50
         </span>
         <span
           class="unit"
@@ -127,7 +125,6 @@ exports[`MapLocationComponent should properly render base state 1`] = `
 
 exports[`MapLocationComponent should render loading state 1`] = `
 <termo-map-location
-  __ngContext__={[Function LRootView]}
   bottom={[Function Number]}
   loading={[Function Boolean]}
   location={[Function Object]}
@@ -142,7 +139,6 @@ exports[`MapLocationComponent should render loading state 1`] = `
 
 exports[`MapLocationComponent should render selected state 1`] = `
 <termo-map-location
-  __ngContext__={[Function LRootView]}
   bottom={[Function Number]}
   location={[Function Object]}
   right={[Function Number]}
@@ -171,7 +167,7 @@ exports[`MapLocationComponent should render selected state 1`] = `
         <span
           class="value"
         >
-          21.12
+          21,12
         </span>
         <span
           class="unit"
@@ -185,7 +181,7 @@ exports[`MapLocationComponent should render selected state 1`] = `
         <span
           class="value"
         >
-          Min: 19.50
+          Min: 19,50
         </span>
         <span
           class="unit"

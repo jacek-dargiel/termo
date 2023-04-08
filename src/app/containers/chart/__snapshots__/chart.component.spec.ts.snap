@@ -2,7 +2,6 @@
 
 exports[`ChartComponent should hide chart when closed 1`] = `
 <termo-chart
-  __ngContext__={[Function LRootView]}
   chartData={[Function Array]}
   chartFacade={[Function MockChartFacade]}
   location="undefined"
@@ -15,7 +14,6 @@ exports[`ChartComponent should hide chart when closed 1`] = `
 
 exports[`ChartComponent should render chart 1`] = `
 <termo-chart
-  __ngContext__={[Function LRootView]}
   chartData={[Function Array]}
   chartFacade={[Function MockChartFacade]}
   location={[Function Object]}
@@ -56,7 +54,6 @@ exports[`ChartComponent should render chart 1`] = `
 
 exports[`ChartComponent should render new location when location changes 1`] = `
 <termo-chart
-  __ngContext__={[Function LRootView]}
   chartData={[Function Array]}
   chartFacade={[Function MockChartFacade]}
   location={[Function Object]}

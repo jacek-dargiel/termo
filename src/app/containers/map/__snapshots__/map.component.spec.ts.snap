@@ -2,7 +2,6 @@
 
 exports[`MapComponent should properly render initial state 1`] = `
 <termo-map
-  __ngContext__={[Function LRootView]}
   el={[Function ElementRef]}
   loading$="undefined"
   locations$={[Function BehaviorSubject]}
@@ -16,7 +15,6 @@ exports[`MapComponent should properly render initial state 1`] = `
 
 exports[`MapComponent should render loading states 1`] = `
 <termo-map
-  __ngContext__={[Function LRootView]}
   el={[Function ElementRef]}
   loading$="undefined"
   locations$={[Function BehaviorSubject]}
@@ -30,7 +28,6 @@ exports[`MapComponent should render loading states 1`] = `
 
 exports[`MapComponent should render loading states 2`] = `
 <termo-map
-  __ngContext__={[Function LRootView]}
   el={[Function ElementRef]}
   loading$="undefined"
   locations$={[Function BehaviorSubject]}
@@ -44,7 +41,6 @@ exports[`MapComponent should render loading states 2`] = `
 
 exports[`MapComponent should render loading states 3`] = `
 <termo-map
-  __ngContext__={[Function LRootView]}
   el={[Function ElementRef]}
   loading$="undefined"
   locations$={[Function BehaviorSubject]}
@@ -58,7 +54,6 @@ exports[`MapComponent should render loading states 3`] = `
 
 exports[`MapComponent should render loading states 4`] = `
 <termo-map
-  __ngContext__={[Function LRootView]}
   el={[Function ElementRef]}
   loading$="undefined"
   locations$={[Function BehaviorSubject]}
@@ -72,7 +67,6 @@ exports[`MapComponent should render loading states 4`] = `
 
 exports[`MapComponent should render locations 1`] = `
 <termo-map
-  __ngContext__={[Function LRootView]}
   el={[Function ElementRef]}
   loading$="undefined"
   locations$={[Function BehaviorSubject]}

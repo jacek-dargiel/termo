@@ -2,7 +2,6 @@
 
 exports[`RefreshButtonComponent should render button at 50% 1`] = `
 <termo-refresh-button
-  __ngContext__={[Function LRootView]}
   progress={[Function Number]}
   refresh={[Function EventEmitter_]}
 >
@@ -22,7 +21,6 @@ exports[`RefreshButtonComponent should render button at 50% 1`] = `
 
 exports[`RefreshButtonComponent should render button at initial state 1`] = `
 <termo-refresh-button
-  __ngContext__={[Function LRootView]}
   refresh={[Function EventEmitter_]}
 >
   <button
@@ -40,7 +38,6 @@ exports[`RefreshButtonComponent should render button at initial state 1`] = `
 
 exports[`RefreshButtonComponent should render button at refreshing state 1`] = `
 <termo-refresh-button
-  __ngContext__={[Function LRootView]}
   progress={[Function Number]}
   refresh={[Function EventEmitter_]}
   refreshing={[Function Boolean]}
