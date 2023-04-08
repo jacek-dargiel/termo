@@ -14,7 +14,7 @@ describe('MapBackgroundService', () => {
     expect(service).toBeTruthy();
   }));
   describe('getImageDimentions', () => {
-    // tslint:disable-next-line:max-line-length
+    // eslint-disable-next-line max-len
     let imageUrl = 'data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7';
     it('should return a observable', inject([MapBackgroundService], (service: MapBackgroundService) => {
       let dimentions$ = service.getImageDimentions(imageUrl);

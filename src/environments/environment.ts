@@ -2,7 +2,7 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {  // tslint:disable-line:ext-variable-name
+export const environment = {
   production: false,
   API_URL: '/api',
   MQTT_BROKER_URL: 'wss://io.adafruit.com:443/mqtt/',
