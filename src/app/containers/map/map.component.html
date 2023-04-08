@@ -4,5 +4,5 @@
   [location]="location"
   [loading]="loading$ | async"
   [selected]="(selectedLocation$ | async)?.id === location.id"
-  (select)="onLocationSelect(location)"
+  (selectLocation)="onLocationSelect(location)"
 ></termo-map-location>

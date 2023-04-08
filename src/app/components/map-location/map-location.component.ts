@@ -12,7 +12,7 @@ export class MapLocationComponent implements OnInit {
   @Input()
   @HostBinding('class.location--selected')
   selected: boolean;
-  @Output() select = new EventEmitter<Location>();
+  @Output() selectLocation = new EventEmitter<Location>();
   @HostBinding('style.bottom.%') bottom;
   @HostBinding('style.right.%') right;
 
@@ -30,7 +30,7 @@ export class MapLocationComponent implements OnInit {
 
   @HostListener('click')
   selectLocationEntities() {
-    this.select.emit(this.location);
+    this.selectLocation.emit(this.location);
   }
 
 }

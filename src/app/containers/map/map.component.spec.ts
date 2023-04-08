@@ -55,7 +55,7 @@ export class MockMapLocationComponent {
   @Input()
   @HostBinding('class.location--selected')
   selected: boolean;
-  @Output() select = new EventEmitter<Location>();
+  @Output() selectLocation = new EventEmitter<Location>();
 }
 
 
