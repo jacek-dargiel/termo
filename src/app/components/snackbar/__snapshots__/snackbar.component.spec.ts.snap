@@ -3,7 +3,7 @@
 exports[`SnackbarComponent should render a snackbar when message recived 1`] = `
 <termo-snackbar
   el={[Function ElementRef]}
-  messagesSub={[Function Subscriber]}
+  messagesSub={[Function SafeSubscriber]}
   snackbar={[Function MDCSnackbar]}
   snackbarService={[Function MockSnapshotService]}
 >
@@ -29,7 +29,7 @@ exports[`SnackbarComponent should render a snackbar when message recived 1`] = `
 exports[`SnackbarComponent should render the snackbar component 1`] = `
 <termo-snackbar
   el={[Function ElementRef]}
-  messagesSub={[Function Subscriber]}
+  messagesSub={[Function SafeSubscriber]}
   snackbar={[Function MDCSnackbar]}
   snackbarService={[Function MockSnapshotService]}
 >
