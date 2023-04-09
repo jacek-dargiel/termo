@@ -2,12 +2,11 @@
 
 exports[`ChartComponent should hide chart when closed 1`] = `
 <termo-chart
-  __ngContext__={[Function LRootView]}
   chartData={[Function Array]}
   chartFacade={[Function MockChartFacade]}
   location="undefined"
-  locationMeasurmentsSub={[Function Subscriber]}
-  selectedLocationSub={[Function Subscriber]}
+  locationMeasurmentsSub={[Function SafeSubscriber]}
+  selectedLocationSub={[Function SafeSubscriber]}
   visible="false"
 >
 </termo-chart>
@@ -15,12 +14,11 @@ exports[`ChartComponent should hide chart when closed 1`] = `
 
 exports[`ChartComponent should render chart 1`] = `
 <termo-chart
-  __ngContext__={[Function LRootView]}
   chartData={[Function Array]}
   chartFacade={[Function MockChartFacade]}
   location={[Function Object]}
-  locationMeasurmentsSub={[Function Subscriber]}
-  selectedLocationSub={[Function Subscriber]}
+  locationMeasurmentsSub={[Function SafeSubscriber]}
+  selectedLocationSub={[Function SafeSubscriber]}
   visible={[Function Boolean]}
 >
   <div
@@ -56,12 +54,11 @@ exports[`ChartComponent should render chart 1`] = `
 
 exports[`ChartComponent should render new location when location changes 1`] = `
 <termo-chart
-  __ngContext__={[Function LRootView]}
   chartData={[Function Array]}
   chartFacade={[Function MockChartFacade]}
   location={[Function Object]}
-  locationMeasurmentsSub={[Function Subscriber]}
-  selectedLocationSub={[Function Subscriber]}
+  locationMeasurmentsSub={[Function SafeSubscriber]}
+  selectedLocationSub={[Function SafeSubscriber]}
   visible={[Function Boolean]}
 >
   <div

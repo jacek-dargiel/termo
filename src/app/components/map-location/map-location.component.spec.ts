@@ -87,7 +87,7 @@ describe('MapLocationComponent', () => {
   });
 
   it('should emit `select` event on click', () => {
-    let fakeSelectOutput = jest.spyOn(component.select, 'emit');
+    let fakeSelectOutput = jest.spyOn(component.selectLocation, 'emit');
     fixture.debugElement.nativeElement.click();
     expect(fakeSelectOutput).toHaveBeenCalled();
   });

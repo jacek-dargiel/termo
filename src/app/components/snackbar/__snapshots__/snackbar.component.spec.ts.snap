@@ -2,10 +2,9 @@
 
 exports[`SnackbarComponent should render a snackbar when message recived 1`] = `
 <termo-snackbar
-  __ngContext__={[Function LRootView]}
   el={[Function ElementRef]}
-  messagesSub={[Function Subscriber]}
-  snackbar={[Function MDCSnackbar2]}
+  messagesSub={[Function SafeSubscriber]}
+  snackbar={[Function MDCSnackbar]}
   snackbarService={[Function MockSnapshotService]}
 >
   <aside
@@ -29,10 +28,9 @@ exports[`SnackbarComponent should render a snackbar when message recived 1`] = `
 
 exports[`SnackbarComponent should render the snackbar component 1`] = `
 <termo-snackbar
-  __ngContext__={[Function LRootView]}
   el={[Function ElementRef]}
-  messagesSub={[Function Subscriber]}
-  snackbar={[Function MDCSnackbar2]}
+  messagesSub={[Function SafeSubscriber]}
+  snackbar={[Function MDCSnackbar]}
   snackbarService={[Function MockSnapshotService]}
 >
   <aside
