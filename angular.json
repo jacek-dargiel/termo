@@ -124,6 +124,8 @@
   "defaultProject": "termo",
   "cli": {
     "packageManager": "npm",
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }
