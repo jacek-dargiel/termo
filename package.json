@@ -7,7 +7,7 @@
     "build": "ng build --progress=false --configuration production --aot",
     "get-stats": "npm run build -- --stats-json",
     "bundle-analyze": "npx webpack-bundle-analyzer dist/stats.json",
-    "deploy": "npm lint && npm run build",
+    "deploy": "npm run lint && npm run build",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "ngcc": "ngcc",
