@@ -7,7 +7,6 @@
     "noUnusedLocals": true
   },
   "angularCompilerOptions": {
-    "enableIvy": true
   },
   "files": [
     "main.ts",
