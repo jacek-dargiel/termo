@@ -49,7 +49,7 @@ import { SentryErrorHandler } from './services/sentry.error-handler';
     BrowserModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers, { metaReducers }),
-    !environment.production ? StoreDevtoolsModule.instrument({ serialize: { options: { map: true, set: true } } }) : [],
+    !environment.production ? StoreDevtoolsModule.instrument({ serialize: { options: { map: true, set: true } } , connectInZone: true}) : [],
     EffectsModule.forRoot([AppEffects]),
     StoreModule.forFeature('location', fromLocation.reducer),
     StoreModule.forFeature('measurment', fromMeasurment.reducer),
