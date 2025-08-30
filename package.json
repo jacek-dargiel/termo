@@ -13,8 +13,7 @@
     "post-deploy": "envsub ./dist/index.html && envsub netlify.toml.template netlify.toml && npm run sentry-release",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "ngcc": "ngcc",
-    "postinstall": "ngcc --properties es2015 main"
+
   },
   "private": true,
   "dependencies": {
