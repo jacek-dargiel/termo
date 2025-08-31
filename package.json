@@ -17,7 +17,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^19.2.14",
-    "@angular/cdk": "^18.2.14",
+    "@angular/cdk": "^19.2.19",
     "@angular/common": "^19.2.14",
     "@angular/compiler": "^19.2.14",
     "@angular/core": "^19.2.14",
@@ -26,10 +26,10 @@
     "@angular/platform-browser-dynamic": "^19.2.14",
     "@angular/router": "^19.2.14",
     "@material/snackbar": "^14.0.0",
-    "@ngrx/effects": "18.1.1",
-    "@ngrx/entity": "18.1.1",
-    "@ngrx/store": "18.1.1",
-    "@ngrx/store-devtools": "18.1.1",
+    "@ngrx/effects": "19.2.1",
+    "@ngrx/entity": "19.2.1",
+    "@ngrx/store": "19.2.1",
+    "@ngrx/store-devtools": "19.2.1",
     "@sentry/browser": "^7.47.0",
     "@swimlane/ngx-charts": "^20.1.2",
     "backoff-rxjs": "^7.0.0",
@@ -41,7 +41,7 @@
     "rxjs": "^7.8.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.15.1",
-    "@ngrx/operators": "^18.0.0"
+    "@ngrx/operators": "^19.2.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.15",
@@ -52,7 +52,7 @@
     "@angular-eslint/template-parser": "19.8.1",
     "@angular/cli": "^19.2.15",
     "@angular/compiler-cli": "^19.2.14",
-    "@ngrx/schematics": "18.1.1",
+    "@ngrx/schematics": "19.2.1",
     "@sentry/cli": "^2.17.0",
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^16.13.0",
