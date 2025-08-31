@@ -1,4 +1,4 @@
-@import '../../../styles/variables';
+@use '../../../styles/variables' as vars;
 
 .spinner {
   margin: 20px auto;
@@ -9,7 +9,7 @@
 }
 
 .spinner > div {
-  background-color: $colorPrimary;
+  background-color: vars.$colorPrimary;
   height: 100%;
   width: 6px;
   display: inline-block;

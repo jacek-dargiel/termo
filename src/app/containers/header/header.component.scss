@@ -1,4 +1,4 @@
-@import '../../../styles/variables';
+@use '../../../styles/variables' as vars;
 
 :host {
   display: block;
@@ -8,7 +8,7 @@
 
 header {
   padding: 0 1.5rem;
-  height: $headerHeight;
+  height: vars.$headerHeight;
   // background: $colorPrimary;
   display: flex;
   flex-direction: column;

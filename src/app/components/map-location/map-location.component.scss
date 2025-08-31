@@ -1,12 +1,13 @@
-@import '../../../styles/variables';
+@use 'sass:color';
+@use '../../../styles/variables' as vars;
 
 $activeColor: #eede25;
-$mutedColor: mix(#777, $colorPrimary, 80%);
+$mutedColor: color.mix(#777, vars.$colorPrimary, 80%);
 
 :host {
   position: absolute;
   background: #fff;
-  outline: 1px solid mix(#bbb, $colorPrimary, 85%);
+  outline: 1px solid color.mix(#bbb, vars.$colorPrimary, 85%);
   box-shadow: 0.3rem 0.3rem 1rem rgba(#000, 0.5);
   padding: 0.4rem 1rem;
   overflow: hidden;
@@ -17,7 +18,7 @@ $mutedColor: mix(#777, $colorPrimary, 80%);
   cursor: pointer;
 
   &.location--selected {
-    border-bottom: 0.2rem solid $colorPrimary;
+    border-bottom: 0.2rem solid vars.$colorPrimary;
   }
 
   &:focus,
@@ -37,7 +38,7 @@ $mutedColor: mix(#777, $colorPrimary, 80%);
     }
   }
   
-  @media (max-width: $breakpointMobile) {
+  @media (max-width: vars.$breakpointMobile) {
     box-sizing: border-box;
     position: relative;
     margin: 1rem auto;
@@ -54,10 +55,10 @@ $mutedColor: mix(#777, $colorPrimary, 80%);
   height: $size;
   bottom: -1*$size*0.5;
   right: -1*$size*0.5;
-  background: $colorPrimary;
+  background: vars.$colorPrimary;
   transform: rotate(0.125turn);
 
-  @media (max-width: $breakpointMobile) {
+  @media (max-width: vars.$breakpointMobile) {
     display: none;
   }
 }
@@ -74,11 +75,11 @@ header h2 {
   margin-bottom: 0.5rem;
 
   &--primary {
-    color: $colorPrimary;
+    color: vars.$colorPrimary;
     font-size: 3rem;
   }
   &--minimal {
-    border-top: 1px solid mix(#555, $colorPrimary, 80%);
+    border-top: 1px solid color.mix(#555, vars.$colorPrimary, 80%);
     width: 9rem;
     margin: 0.2rem auto 0.5rem auto;
     padding-top: 0.2rem;
