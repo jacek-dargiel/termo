@@ -7,9 +7,10 @@ import { Measurment } from '../../state/measurment/measurment.model';
 import { format } from 'date-fns';
 
 @Component({
-  selector: 'termo-chart',
-  templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.scss']
+    selector: 'termo-chart',
+    templateUrl: './chart.component.html',
+    styleUrls: ['./chart.component.scss'],
+    standalone: false
 })
 export class ChartComponent implements OnInit, OnDestroy {
   @HostBinding('class.chart--visible') visible = false;

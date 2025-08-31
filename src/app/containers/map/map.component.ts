@@ -3,9 +3,10 @@ import { MapFacade } from './map.facade';
 import { Location } from '../../state/location/location.model';
 
 @Component({
-  selector: 'termo-map',
-  templateUrl: './map.component.html',
-  styleUrls: ['./map.component.scss']
+    selector: 'termo-map',
+    templateUrl: './map.component.html',
+    styleUrls: ['./map.component.scss'],
+    standalone: false
 })
 export class MapComponent implements OnInit {
   public loading$ = this.mapFacade.loading$;

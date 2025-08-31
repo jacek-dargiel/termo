@@ -1,5 +1,6 @@
-@import '../../../styles/variables';
-@import '../../../../node_modules/@material/animation/_functions.scss';
+@use 'sass:color';
+@use '../../../styles/variables' as vars;
+@use '../../../../node_modules/@material/animation' as mdc;
 
 $chartHeight: 15rem;
 
@@ -11,13 +12,13 @@ $chartHeight: 15rem;
   right: 1.5rem;
   height: 15rem;
   background: #fff;
-  border: 1px solid mix(#bbb, $colorPrimary, 85%);
+  border: 1px solid color.mix(#bbb, vars.$colorPrimary, 85%);
   box-shadow: 0.3rem 0.3rem 1rem rgba(#000, 0.5);
-  transition: mdc-animation-exit-temporary(transform, 175ms);
+  transition: mdc.exit-temporary(transform, 175ms);
   display: flex;
-  
+
   &.chart--visible {
-    transition: mdc-animation-enter(transform, 175ms);
+    transition: mdc.enter(transform, 175ms);
     transform: translateY(0);
   }
 }
@@ -42,7 +43,7 @@ $chartHeight: 15rem;
     margin: 0;
     font-size: 1rem;
     text-transform: uppercase;
-    color: mix(#777, $colorPrimary, 80%);
+    color: color.mix(#777, vars.$colorPrimary, 80%);
   }
 
   &__actions {

@@ -4,9 +4,10 @@ import { MDCSnackbar } from '@material/snackbar';
 import { SnackbarData, SnackbarService } from '../../services/snackbar.service';
 
 @Component({
-  selector: 'termo-snackbar',
-  templateUrl: './snackbar.component.html',
-  styleUrls: ['./snackbar.component.scss']
+    selector: 'termo-snackbar',
+    templateUrl: './snackbar.component.html',
+    styleUrls: ['./snackbar.component.scss'],
+    standalone: false
 })
 export class SnackbarComponent implements AfterViewInit, OnDestroy {
   snackbar: MDCSnackbar;

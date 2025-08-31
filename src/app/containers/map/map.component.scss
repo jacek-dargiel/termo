@@ -1,4 +1,5 @@
-@import '../../../styles/variables';
+@use 'sass:color';
+@use '../../../styles/variables' as vars;
 
 :root {
     --mapBackgroundRatio: 9/16;
@@ -7,15 +8,15 @@
 :host {
     position: relative;
     display: block;
-    background: url($mapBackground);
+    background: url(vars.$mapBackground);
     background-size: cover;
     background-position: bottom right;
     margin-top: 1vw;
     width: 98vw;
     height: calc(98vw * var(--mapBackgroundRatio));
-    box-shadow: 0 0 2rem 0.5rem rgba(darken($mapBackgroundColor, 80), 0.35);
+    box-shadow: 0 0 2rem 0.5rem rgba(color.adjust(vars.$mapBackgroundColor, $lightness: -80%), 0.35);
 
-    @media (max-width: $breakpointMobile) {
+    @media (max-width: vars.$breakpointMobile) {
         height: auto;
         width: 100vw;
         margin: 0;

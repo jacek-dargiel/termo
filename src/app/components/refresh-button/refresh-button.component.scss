@@ -1,9 +1,10 @@
 
-@import '../../../styles/variables';
+@use 'sass:color';
+@use '../../../styles/variables' as vars;
 
 .refresh {
-  background: lighten($colorPrimary, 10);
-  box-shadow: 0 0 2rem 0.5rem rgba(darken($colorPrimary, 30), 0.5);
+  background: color.adjust(vars.$colorPrimary, $lightness: 10%);
+  box-shadow: 0 0 2rem 0.5rem rgba(color.adjust(vars.$colorPrimary, $lightness: -30%), 0.5);
   border: 0;
   color: #fff;
   text-transform: uppercase;
@@ -21,7 +22,7 @@
   &__progress {
     position: absolute;
     width: 0;
-    background-color: lighten($colorPrimary, 20);
+    background-color: color.adjust(vars.$colorPrimary, $lightness: 20%);
     height: 100%;
     top: 0;
     left: 0;
@@ -29,7 +30,7 @@
     transition: width 1s linear;
 
     &--refreshing {
-      background-color: lighten($colorPrimary, 10);
+      background-color: color.adjust(vars.$colorPrimary, $lightness: 10%);
       background-image: linear-gradient(-45deg, rgba(255, 255, 255, 0.35) 25%, rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0.35) 75%, rgba(255, 255, 255, 0) 75%, rgba(255, 255, 255, 0));
       background-size: 20px 20px;
       animation: candystripe 1s linear infinite;
