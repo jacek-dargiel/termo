@@ -64,19 +64,19 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "termo:build",
-            "proxyConfig": "./proxy.conf.json"
+            "proxyConfig": "./proxy.conf.json",
+            "buildTarget": "termo:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "termo:build:production"
+              "buildTarget": "termo:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "termo:build"
+            "buildTarget": "termo:build"
           }
         },
         "test": {
