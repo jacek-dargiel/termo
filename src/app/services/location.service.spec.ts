@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { LocationService } from './location.service';
 import { of, isObservable } from 'rxjs';
@@ -15,12 +15,13 @@ describe('LocationService', () => {
   let api: MockApiService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [
+    imports: [],
+    providers: [
         LocationService,
         { provide: ApiService, useClass: MockApiService },
-      ],
-    });
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+});
     api = TestBed.get(ApiService);
   });
 
