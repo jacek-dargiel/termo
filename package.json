@@ -55,7 +55,7 @@
     "@ngrx/schematics": "19.2.1",
     "@sentry/cli": "^2.17.0",
     "@types/lodash-es": "^4.17.7",
-    "@types/node": "^16.13.0",
+    "@types/node": "^22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "envsub": "^4.1.0",
