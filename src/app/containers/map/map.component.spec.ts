@@ -46,8 +46,9 @@ let mockLocations: LocationWithKeyMeasurmentValues[] = [
 ];
 
 @Component({
-  selector: 'termo-map-location',
-  template: ``,
+    selector: 'termo-map-location',
+    template: ``,
+    standalone: false
 })
 export class MockMapLocationComponent {
   @Input() location: LocationWithKeyMeasurmentValues;

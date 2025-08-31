@@ -4,7 +4,8 @@ import { environment } from 'environments/environment';
 import { TERMO_CURRENT_TIME_FACTORY, timeFactory } from './current-time.injection-token';
 
 @Pipe({
-  name: 'isLocationOutdated'
+    name: 'isLocationOutdated',
+    standalone: false
 })
 export class IsLocationOutdatedPipe implements PipeTransform {
   constructor(@Inject(TERMO_CURRENT_TIME_FACTORY) public currentTimeFactory: timeFactory) {}

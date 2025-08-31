@@ -2,9 +2,10 @@ import { Component, Input, HostBinding, OnInit, HostListener, Output, EventEmitt
 import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/location.model';
 
 @Component({
-  selector: 'termo-map-location',
-  templateUrl: './map-location.component.html',
-  styleUrls: ['./map-location.component.scss']
+    selector: 'termo-map-location',
+    templateUrl: './map-location.component.html',
+    styleUrls: ['./map-location.component.scss'],
+    standalone: false
 })
 export class MapLocationComponent implements OnInit {
   @Input() location: LocationWithKeyMeasurmentValues;
