@@ -138,7 +138,7 @@ describe('MapComponent', () => {
     facade.locations$.next(mockLocations);
     fixture.detectChanges();
     let locationComp: MockMapLocationComponent = fixture.debugElement.query(By.css('termo-map-location')).componentInstance;
-    locationComp.select.emit();
+    locationComp.selectLocation.emit();
     fixture.detectChanges();
     expect(facade.selectLocation).toHaveBeenCalledWith(locationComp.location);
   });
