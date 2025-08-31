@@ -16,7 +16,7 @@ import * as fromMeasurment from './state/measurment/measurment.reducer';
 import { MapComponent } from './containers/map/map.component';
 import { MapLocationComponent } from './components/map-location/map-location.component';
 import { LocationService } from './services/location.service';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ErrorHandlingService } from './services/error-handling.service';
 import { MapFacade } from './containers/map/map.facade';
 import { MeasurmentService } from './services/measurment.service';
@@ -31,39 +31,33 @@ import { TERMO_CURRENT_TIME_FACTORY } from './pipes/current-time.injection-token
 import { RefreshButtonComponent } from './components/refresh-button/refresh-button.component';
 import { SentryErrorHandler } from './services/sentry.error-handler';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    MapComponent,
-    MapLocationComponent,
-    IsLocationOutdatedPipe,
-    RelativeTimePipe,
-    ToFixedPipe,
-    SpinnerComponent,
-    HeaderComponent,
-    SnackbarComponent,
-    ChartComponent,
-    RefreshButtonComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
-    !environment.production ? StoreDevtoolsModule.instrument({ serialize: { options: { map: true, set: true } } , connectInZone: true}) : [],
-    EffectsModule.forRoot([AppEffects]),
-    StoreModule.forFeature('location', fromLocation.reducer),
-    StoreModule.forFeature('measurment', fromMeasurment.reducer),
-    HttpClientModule,
-    LineChartModule,
-  ],
-  providers: [
-    ErrorHandlingService,
-    LocationService,
-    MeasurmentService,
-    MapFacade,
-    {provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => new Date()},
-    { provide: ErrorHandler, useClass: SentryErrorHandler },
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        MapComponent,
+        MapLocationComponent,
+        IsLocationOutdatedPipe,
+        RelativeTimePipe,
+        ToFixedPipe,
+        SpinnerComponent,
+        HeaderComponent,
+        SnackbarComponent,
+        ChartComponent,
+        RefreshButtonComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        BrowserAnimationsModule,
+        StoreModule.forRoot(reducers, { metaReducers }),
+        !environment.production ? StoreDevtoolsModule.instrument({ serialize: { options: { map: true, set: true } }, connectInZone: true }) : [],
+        EffectsModule.forRoot([AppEffects]),
+        StoreModule.forFeature('location', fromLocation.reducer),
+        StoreModule.forFeature('measurment', fromMeasurment.reducer),
+        LineChartModule], providers: [
+        ErrorHandlingService,
+        LocationService,
+        MeasurmentService,
+        MapFacade,
+        { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => new Date() },
+        { provide: ErrorHandler, useClass: SentryErrorHandler },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule { }
