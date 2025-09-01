@@ -2,7 +2,10 @@
 [x] Add selector tests
 [x] Add reducer tests
 [ ] Add sentry error handler tests
-[ ] Reevaluate the tests
+[x] Reevaluate the tests
+[ ] Effects tests
+    [ ] Unignore refreshMeasurments$ tests
+    [ ] Write resetSignalOnMeasurmentsFinished$ tests
 [ ] Lodash - check if there's better ways to include it, to not trigger optimization bailouts
 [ ] Check for swimlane charts update (also optimization bailouts)
 [ ] Add playwright
@@ -11,3 +14,4 @@
 [ ] Update to A20
 [ ] Evaluate package.json packages, update.
 [ ] Hide locations delayed by several days.
+[ ] Fix measurments typo.
