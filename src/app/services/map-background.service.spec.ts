@@ -64,7 +64,7 @@ describe('MapBackgroundService', () => {
     });
 
     it('should emit dimensions for a square image', done => {
-      const service: MapBackgroundService = TestBed.get(MapBackgroundService);
+      const service: MapBackgroundService = TestBed.inject(MapBackgroundService);
       service.getImageDimentions('data:square').subscribe({
         next: dims => {
           expect(dims).toEqual({ width: 400, height: 400 });
@@ -75,7 +75,7 @@ describe('MapBackgroundService', () => {
     });
 
     it('should emit dimensions for a wide image', done => {
-      const service: MapBackgroundService = TestBed.get(MapBackgroundService);
+      const service: MapBackgroundService = TestBed.inject(MapBackgroundService);
       service.getImageDimentions('data:wide').subscribe({
         next: dims => {
           expect(dims).toEqual({ width: 800, height: 200 });
@@ -86,7 +86,7 @@ describe('MapBackgroundService', () => {
     });
 
     it('should emit dimensions for a tall image', done => {
-      const service: MapBackgroundService = TestBed.get(MapBackgroundService);
+      const service: MapBackgroundService = TestBed.inject(MapBackgroundService);
       service.getImageDimentions('data:tall').subscribe({
         next: dims => {
           expect(dims).toEqual({ width: 200, height: 800 });
@@ -97,7 +97,7 @@ describe('MapBackgroundService', () => {
     });
 
     it('should emit error for invalid URL', done => {
-      const service: MapBackgroundService = TestBed.get(MapBackgroundService);
+      const service: MapBackgroundService = TestBed.inject(MapBackgroundService);
       service.getImageDimentions('data:error').subscribe({
         next: () => done.fail('should not emit next'),
         error: err => {

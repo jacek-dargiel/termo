@@ -20,7 +20,7 @@ class MockHeaderFacade {
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
-  let facade: MockHeaderFacade;
+  let facade: HeaderFacade;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -31,7 +31,7 @@ describe('HeaderComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     })
     .compileComponents();
-    facade = TestBed.get(HeaderFacade);
+    facade = TestBed.inject(HeaderFacade);
   }));
 
   beforeEach(() => {

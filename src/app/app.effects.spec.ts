@@ -16,7 +16,7 @@ xdescribe('AppEffects', () => {
       ]
     });
 
-    effects = TestBed.get(AppEffects);
+  effects = TestBed.inject(AppEffects);
   });
 
   it('should be created', () => {

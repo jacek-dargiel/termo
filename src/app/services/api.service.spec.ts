@@ -17,7 +17,7 @@ describe('ApiService', () => {
         { provide: HttpClient, useClass: MockClient },
       ]
     });
-    client = TestBed.get(HttpClient);
+  client = TestBed.inject(HttpClient);
   });
 
   it('should be created', inject([ApiService], (service: ApiService) => {
