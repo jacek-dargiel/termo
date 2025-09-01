@@ -12,6 +12,8 @@
     "deploy": "npm run lint && npm run build && npm run post-deploy",
     "post-deploy": "envsub ./dist/index.html && envsub netlify.toml.template netlify.toml && npm run sentry-release",
     "lint": "ng lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "e2e": "ng e2e"
   },
   "private": true,
@@ -28,6 +30,7 @@
     "@material/snackbar": "^14.0.0",
     "@ngrx/effects": "19.2.1",
     "@ngrx/entity": "19.2.1",
+    "@ngrx/operators": "^19.2.1",
     "@ngrx/store": "19.2.1",
     "@ngrx/store-devtools": "19.2.1",
     "@sentry/browser": "^7.47.0",
@@ -40,8 +43,7 @@
     "normalize.css": "^8.0.0",
     "rxjs": "^7.8.0",
     "tslib": "^2.0.0",
-    "zone.js": "~0.15.1",
-    "@ngrx/operators": "^19.2.1"
+    "zone.js": "~0.15.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.15",
@@ -54,17 +56,26 @@
     "@angular/compiler-cli": "^19.2.14",
     "@ngrx/schematics": "19.2.1",
     "@sentry/cli": "^2.17.0",
+    "@types/jest": "^30.0.0",
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "envsub": "^4.1.0",
     "eslint": "^8.57.0",
+    "jest": "^30.1.1",
+    "jest-marbles": "^3.1.1",
+    "jest-preset-angular": "^15.0.0",
+    "ng-mocks": "^14.13.5",
     "ts-node": "~5.0.1",
     "typescript": "5.8.3",
     "webpack-bundle-analyzer": "^4.8.0"
   },
   "overrides": {
+    "@angular-devkit/build-angular": {
+      "jest": "^30.0",
+      "jest-environment-jsdom": "^30.0"
+    },
     "d3-color": "npm:d3-color-2-fix@2.0.1"
   }
 }

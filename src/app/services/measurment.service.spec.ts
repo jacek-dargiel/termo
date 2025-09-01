@@ -63,7 +63,12 @@ describe('MeasurmentService', () => {
     }));
     it('should throw when 0 measurments recived', inject([MeasurmentService], (service: MeasurmentService) => {
       let measurments$ = service.getMeasurments('1000');
-      (expect(measurments$) as any).toBeMarble('#');
+      measurments$.subscribe({
+        next: () => fail('Should not emit a value'),
+        error: (error) => {
+          expect(error.message).toBe('0 Measurments recived from API.');
+        }
+      });
     }));
     it('should emit parsed measurments', inject([MeasurmentService], (service: MeasurmentService) => {
       let expected: Measurment[] = [

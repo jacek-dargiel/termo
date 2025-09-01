@@ -1,4 +1,4 @@
-import * as convert from 'lodash/fp/convert';
+import convert from 'lodash/fp/convert';
 
 import _flow from 'lodash-es/flow';
 import _fromPairs from 'lodash-es/fromPairs';

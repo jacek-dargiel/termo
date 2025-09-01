@@ -40,7 +40,12 @@ describe('LocationService', () => {
     }));
     it('should throw when 0 locations returned by feed', inject([LocationService], (service: LocationService) => {
       let locations$ = service.getLocations();
-      (expect(locations$) as any).toBeMarble('#');
+      locations$.subscribe({
+        next: () => fail('Should not emit a value'),
+        error: (error) => {
+          expect(error.message).toBe('0 Locations recived from API.');
+        }
+      });
     }));
   });
 
