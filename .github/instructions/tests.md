@@ -1,6 +1,10 @@
 ---
 applyTo: "**/*.spec.ts"
 ---
+# Writing tests
+
+## Type safety
+Use strict types for better type safety. Import types and interfaces defined in the project whenever needed. Avoid using `any`.
 
 ## Using jest-marbles
 
