@@ -1,4 +1,4 @@
-[ ] map.facade.spec.ts - Write more comprehensive tests for selectLocation
+[x] map.facade.spec.ts - Write more comprehensive tests for selectLocation
 [ ] Add selector tests
 [ ] Add reducer tests
 [ ] Add sentry error handler tests
