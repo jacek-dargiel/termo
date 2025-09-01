@@ -1,6 +1,6 @@
 [x] map.facade.spec.ts - Write more comprehensive tests for selectLocation
 [x] Add selector tests
-[ ] Add reducer tests
+[x] Add reducer tests
 [ ] Add sentry error handler tests
 [ ] Reevaluate the tests
 [ ] Lodash - check if there's better ways to include it, to not trigger optimization bailouts
