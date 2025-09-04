@@ -163,7 +163,7 @@ describe('AppEffects', () => {
 		});
 	});
 
-  xdescribe('refreshMeasurments$', () => {
+  describe('refreshMeasurments$', () => {
 		it('should emit FetchMeasurmentsSuccess for each location then RefreshMeasurmentsFinished', () => {
 			const action = new locationActions.RefreshButtonClick();
 			// actions trigger
@@ -176,8 +176,8 @@ describe('AppEffects', () => {
 
 			// mock measurment.getMeasurments per id
 			const mockGet = jest.fn((id: string, start: any) => {
-				if (id === 'loc1') return cold('--a|', { a: meas1 });
-				if (id === 'loc2') return cold('---b|', { b: meas2 });
+				if (id === 'loc1') return cold('-a|', { a: meas1 });
+				if (id === 'loc2') return cold('--b|', { b: meas2 });
 				return cold('|');
 			});
 			TestBed.inject(MeasurmentService).getMeasurments = mockGet;
@@ -186,8 +186,7 @@ describe('AppEffects', () => {
 			const expected2 = new measurmentActions.FetchMeasurmentsSuccess({ measurments: meas2, locationId: 'loc2' });
 			const expectedFinished = new locationActions.RefreshMeasurmentsFinished();
 
-			// timings: action at 1, store emits at 3, meas1 emits at 5, meas2 at 6, finished at 7
-			const expected = cold('-----a-b-c', { a: expected1, b: expected2, c: expectedFinished });
+			const expected = cold('--abc', { a: expected1, b: expected2, c: expectedFinished });
 
 			expect(effects.refreshMeasurments$).toBeObservable(expected);
 		});
@@ -206,7 +205,7 @@ describe('AppEffects', () => {
 			const expectedFinished = new locationActions.RefreshMeasurmentsFinished();
 
 			// expected timeline: action 1, store 3, error at 5, finished at 6
-			const expected = cold('-----a-b', { a: expectedErrAction, b: expectedFinished });
+			const expected = cold('---(ab)', { a: expectedErrAction, b: expectedFinished });
 
 			expect(effects.refreshMeasurments$).toBeObservable(expected);
 		});
