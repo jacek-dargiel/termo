@@ -3,7 +3,7 @@
 [x] Add reducer tests
 [ ] Add sentry error handler tests
 [x] Reevaluate the tests
-[ ] Effects tests
+[x] Effects tests
     [x] Unignore refreshMeasurments$ tests
     [x] Write resetSignalOnMeasurmentsFinished$ tests
 [ ] Lodash - check if there's better ways to include it, to not trigger optimization bailouts
