@@ -33,7 +33,7 @@ describe('AppEffects', () => {
 				{ provide: ErrorHandlingService, useValue: mockErrorHandling },
 				{ provide: LocationService, useValue: mockLocationService },
         { provide: MeasurmentService, useValue: {} },
-        { provide: RefreshSignalService, useValue: { restart: jest.fn(), signal: {} } },
+        { provide: RefreshSignalService, useValue: { restart: jest.fn(), signal: of(true) } },
       ],
     });
 
@@ -213,13 +213,23 @@ describe('AppEffects', () => {
 
   });
 
-  xdescribe('resetSignalOnMeasurmentsFinished$', () => {
+  describe('resetSignalOnMeasurmentsFinished$', () => {
 		it('should call restart on RefreshSignalService when RefreshMeasurmentsFinished is dispatched', () => {
+      const action = new locationActions.RefreshMeasurmentsFinished();
+      actions$ = hot('-a', { a: action });
+      const refreshSignalService = TestBed.inject(RefreshSignalService);
+
+      expect(effects.resetSignalOnMeasurmentsFinished$).toSatisfyOnFlush(() => {
+        expect(refreshSignalService.restart).toHaveBeenCalled();
+      });
 
 		});
 
     it('should emit RefreshSignal action', () => {
-
+      const action = new locationActions.RefreshMeasurmentsFinished();
+      actions$ = hot('-a', { a: action });
+      const expected = cold('-b', { b: new locationActions.RefreshSignal() });
+      expect(effects.resetSignalOnMeasurmentsFinished$).toBeObservable(expected);
     });
 	});
 
