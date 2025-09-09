@@ -8,7 +8,7 @@
     [x] Write resetSignalOnMeasurmentsFinished$ tests
 [x] Lodash - check if there's better ways to include it, to not trigger optimization bailouts
 [x] Lodash - remove it altogether. It's 2025.
-[ ] Check for swimlane charts update (also optimization bailouts)
+[x] Check for swimlane charts update (also optimization bailouts)
     [x] Check if it still requires d3-color@2
 [ ] Add playwright
 [ ] Implement some playwright E2E tests
