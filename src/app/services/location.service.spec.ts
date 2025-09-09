@@ -22,7 +22,7 @@ describe('LocationService', () => {
         provideHttpClient(withInterceptorsFromDi()),
     ]
 });
-    api = TestBed.get(ApiService);
+  api = TestBed.inject(ApiService) as unknown as MockApiService;
   });
 
   it('should be created', inject([LocationService], (service: LocationService) => {

@@ -12,7 +12,7 @@
     "deploy": "npm run lint && npm run build && npm run post-deploy",
     "post-deploy": "envsub ./dist/index.html && envsub netlify.toml.template netlify.toml && npm run sentry-release",
     "lint": "ng lint",
-    "test": "jest",
+    "test": "jest --silent",
     "test:watch": "jest --watch",
     "e2e": "ng e2e"
   },
@@ -34,9 +34,8 @@
     "@ngrx/store": "19.2.1",
     "@ngrx/store-devtools": "19.2.1",
     "@sentry/browser": "^7.47.0",
-    "@swimlane/ngx-charts": "^20.1.2",
+    "@swimlane/ngx-charts": "^20.5",
     "backoff-rxjs": "^7.0.0",
-    "d3-color-2-fix": "2.0.1",
     "date-fns": "^2.28.3",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
@@ -75,7 +74,6 @@
     "@angular-devkit/build-angular": {
       "jest": "^30.0",
       "jest-environment-jsdom": "^30.0"
-    },
-    "d3-color": "npm:d3-color-2-fix@2.0.1"
+    }
   }
 }

@@ -14,9 +14,8 @@ import {
   catchError,
   mergeMap,
   throttleTime,
-  switchMapTo,
-  concat,
   tap,
+  concatWith,
 } from 'rxjs/operators';
 
 import * as locationActions from './state/location/location.actions';
@@ -78,7 +77,7 @@ export class AppEffects {
 
   refreshOnButtonClick$ = createEffect(() => this.actions$.pipe(
     ofType<locationActions.RefreshButtonClick>(locationActions.LocationActionTypes.RefreshButtonClick),
-    switchMapTo(this.store.select(selectLocationIds)),
+    switchMap(() => this.store.select(selectLocationIds)),
     switchMap((ids: string[]) => from(ids)),
     map(locationId => new locationActions.RefreshMeasurmentsOnBtnClick({locationId})),
   ));
@@ -105,7 +104,7 @@ export class AppEffects {
                 }),
               );
           }),
-          concat(of(new locationActions.RefreshMeasurmentsFinished())),
+          concatWith(of(new locationActions.RefreshMeasurmentsFinished())),
         );
     }),
   ));
@@ -113,7 +112,7 @@ export class AppEffects {
   resetSignalOnMeasurmentsFinished$ = createEffect(() => this.actions$.pipe(
     ofType<locationActions.RefreshMeasurmentsFinished>(locationActions.LocationActionTypes.RefreshMeasurmentsFinished),
     tap(() => this.refreshSignal.restart()),
-    switchMapTo(this.refreshSignal.signal),
+    switchMap(() =>this.refreshSignal.signal),
     map(() => new locationActions.RefreshSignal()),
   ));
 
