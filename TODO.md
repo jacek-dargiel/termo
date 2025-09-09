@@ -6,7 +6,8 @@
 [x] Effects tests
     [x] Unignore refreshMeasurments$ tests
     [x] Write resetSignalOnMeasurmentsFinished$ tests
-[ ] Lodash - check if there's better ways to include it, to not trigger optimization bailouts
+[x] Lodash - check if there's better ways to include it, to not trigger optimization bailouts
+[x] Lodash - remove it altogether. It's 2025.
 [ ] Check for swimlane charts update (also optimization bailouts)
     [x] Check if it still requires d3-color@2
 [ ] Add playwright

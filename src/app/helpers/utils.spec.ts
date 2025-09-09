@@ -4,7 +4,7 @@ describe('mapToObject', () => {
   it('Should map provided array using the iteratee', () => {
     let arr = ['abc', 'xyz', '123'];
     let iteratee = (key: string) => key.split('');
-    let mapped = mapToObject(iteratee, arr);
+    let mapped = mapToObject(arr, iteratee);
     let expected = {
       abc: ['a', 'b', 'c'],
       xyz: ['x', 'y', 'z'],

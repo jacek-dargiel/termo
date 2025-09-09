@@ -6,6 +6,8 @@ import { MapFacade } from './map.facade';
 import { MapBackgroundService } from '../../services/map-background.service';
 import { ErrorHandlingService } from '../../services/error-handling.service';
 import { MapInitialized, SelectLocation } from '../../state/location/location.actions';
+import { Dictionary } from '@ngrx/entity';
+import { Measurment } from 'app/state/measurment/measurment.model';
 
 describe('MapFacade', () => {
   let facade: MapFacade;
@@ -84,15 +86,14 @@ describe('MapFacade', () => {
     });
 
     it('should call error handler and not dispatch when there are no measurements', () => {
-      const mockEmpty = {};
-
+      const mockEmpty = { test: [] };
       const ts = new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
 
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       const errorSpy = jest.spyOn(errorHandlingService, 'handle');
 
       ts.run(({ cold, expectObservable }) => {
-        (facade as any).measurmentsByLocation$ = cold('a|', { a: mockEmpty });
+        (facade as any).measurmentsByLocation$ = cold<Dictionary<Measurment[]>>('a|', { a: mockEmpty });
 
         const result = facade.selectLocation(location);
 

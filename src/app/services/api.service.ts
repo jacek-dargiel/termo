@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { tap } from 'rxjs/operators';
-import { isEmpty } from '../helpers/lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +15,7 @@ export class ApiService {
     return this.http.get<T>(`${environment.API_URL}${url}`, options)
       .pipe(
         tap(response => {
-          if (isEmpty(response)) {
+          if (Array.isArray(response) && response.length === 0) {
             console.warn('API response is empty. Is this AIO feed public?');
           }
         })
