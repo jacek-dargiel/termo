@@ -5,7 +5,6 @@ import { MeasurmentActionTypes, MeasurmentActions } from '../measurment/measurme
 import { Measurment } from '../measurment/measurment.model';
 import { compareAsc } from 'date-fns';
 import { Dictionary } from '@ngrx/entity/src/models';
-import { last } from '../../helpers/lodash';
 
 export interface State extends EntityState<Location> {
   loading: boolean;
@@ -85,7 +84,8 @@ export function reducer(
       let locationsState = state;
       if (action.payload.measurments.length > 0) {
         let sortedMeasurments = sortMeasurments(action.payload.measurments);
-        let latestMeasurment = last(sortedMeasurments);
+        // let latestMeasurment = last(sortedMeasurments);
+        let latestMeasurment = sortedMeasurments.at(-1);
         locationsState = adapter.updateOne({id: action.payload.locationId, changes: { updatedAt: latestMeasurment.created_at }}, state);
         locationsState = {
           ...locationsState,
@@ -122,5 +122,5 @@ export const {
 } = adapter.getSelectors();
 
 function sortMeasurments(measurments: Measurment[]) {
-  return [...measurments].sort((a: Measurment, b: Measurment) => compareAsc(a.created_at, b.created_at));
+  return measurments.toSorted((a: Measurment, b: Measurment) => compareAsc(a.created_at, b.created_at));
 }

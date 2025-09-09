@@ -5,9 +5,7 @@ import { Dictionary } from '@ngrx/entity/src/models';
 import { Measurment } from './measurment/measurment.model';
 import { isAfter, subHours } from 'date-fns';
 import { LocationWithKeyMeasurmentValues, Location } from './location/location.model';
-import { mapToObject } from '../helpers/utils';
-
-import { mapValuesWithKey, groupBy, sortBy } from '../helpers/lodash';
+import { mapToObject, mapValuesWithKey } from '../helpers/utils';
 
 export let selectLocationState = createFeatureSelector<fromLocation.State>('location');
 export let selectMeasurmentState = createFeatureSelector<fromMeasurment.State>('measurment');
@@ -64,10 +62,10 @@ export let selectMeasurmentsByLocation = createSelector(
   selectLocationIds,
   selectAllMeasurments,
   (locationIDs: string[], measurments): Dictionary<Measurment[]> => {
-    let grouped: Dictionary<Measurment[]> = groupBy('feed_key', measurments);
+    let grouped: Dictionary<Measurment[]> = Object.groupBy(measurments, measurment => measurment.feed_key);
     return mapToObject<Measurment[]>(
-      locationID => grouped[locationID] || [],
       locationIDs,
+      locationID => grouped[locationID] || [],
     );
   }
 );
@@ -89,8 +87,8 @@ export let selectLastMeasurmentsByLocation = createSelector(
   selectMeasurmentEntities,
   (locationIDs, latestMeasurmentIDs, measurmentEntities): Dictionary<Measurment> => {
     return mapToObject(
+      locationIDs,
       locationID => measurmentEntities[latestMeasurmentIDs[locationID]],
-      locationIDs
     );
   }
 );
@@ -113,8 +111,8 @@ export let selectMeasurmentsFromMinimumRangeByLocation = createSelector(
   selectMeasurmentsByLocation,
   (measurmentsByLocation): Dictionary<Measurment[]> => {
     return mapValuesWithKey(
-      (measurments: Measurment[], locationID: string) => measurmentsByLocation[locationID].filter(isMeasurmentInMinimumRange),
       measurmentsByLocation,
+      (measurments: Measurment[], locationID: string) => measurmentsByLocation[locationID].filter(isMeasurmentInMinimumRange),
     );
   }
 );
@@ -123,11 +121,11 @@ export let selectMinimalMeasurmentsByLocation = createSelector(
   selectMeasurmentsFromMinimumRangeByLocation,
   (todaysMeasurmentsByLocation): Dictionary<Measurment> => {
     return mapValuesWithKey(
+      todaysMeasurmentsByLocation,
       (measurments: Measurment[], locationID: string) => {
-        let sorted: Measurment[] = sortBy('value', todaysMeasurmentsByLocation[locationID]);
+        let sorted: Measurment[] = todaysMeasurmentsByLocation[locationID].toSorted((a, b) => a.value - b.value);
         return sorted[0];
       },
-      todaysMeasurmentsByLocation,
     );
   }
 );

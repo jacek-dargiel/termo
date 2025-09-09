@@ -1,14 +1,13 @@
-import {
-  flow,
-  fromPairs,
-  map,
-} from './lodash';
+export function mapValuesWithKey<T, R>(
+  record: Record<string, T>,
+  iterator: (value: T, key: string) => R
+): Record<string, R> {
+  return Object.fromEntries(
+    Object.entries(record).map(([key, value]) => [key, iterator(value, key)])
+  );
+}
 
-import { Dictionary } from '@ngrx/entity/src/models';
 
-export function mapToObject<T>(iteratee: ((v: any) => T), arr: Array<any>): Dictionary<T> {
-  return flow(
-    list => map(key => ([key.toString(), iteratee(key)]), list),
-    fromPairs,
-  )(arr);
+export function mapToObject<T>(arr: Array<any>, iterator: (v: any) => T): Record<string, T> {
+  return Object.fromEntries(arr.map(key => [key.toString(), iterator(key)]));
 }
