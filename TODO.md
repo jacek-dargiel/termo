@@ -18,10 +18,10 @@
     [ ] Standalone components
         [ ] Reenable ESLint rule @angular-eslint/prefer-standalone
     [x] Control Flow syntax
-    [ ] inject() function
-    [ ] input() API
-    [ ] output() function
-    [ ] Queries as signals
+    [x] inject() function
+    [x] input() API
+    [x] output() function
+    [x] Queries as signals
     [ ] Self-closing tags
     [ ] Unused import
 [ ] Update ESLint to v9 with flat config.
