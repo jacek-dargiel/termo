@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { ApiService } from './api.service';
 
@@ -10,10 +10,8 @@ import { Location } from '../state/location/location.model';
 
 @Injectable()
 export class LocationService {
+  private api = inject(ApiService);
 
-  constructor(
-    private api: ApiService,
-  ) { }
 
   getLocations(): Observable<Location[]> {
     return this.api.get<AIOFeed[]>(`/groups/tunele/feeds`)

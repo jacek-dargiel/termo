@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HeaderFacade } from './header.facade';
 
 @Component({
@@ -8,12 +8,10 @@ import { HeaderFacade } from './header.facade';
     standalone: false
 })
 export class HeaderComponent {
+  private headerFacade = inject(HeaderFacade);
+
   public progress$ = this.headerFacade.progress;
   public refreshing$ = this.headerFacade.refreshing;
-
-  constructor(
-    private headerFacade: HeaderFacade,
-  ) { }
 
   public refresh () {
     this.headerFacade.refresh();

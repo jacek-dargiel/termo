@@ -1,8 +1,20 @@
+import { TestBed } from '@angular/core/testing';
 import { RelativeTimePipe } from './relative-time.pipe';
+import { TERMO_CURRENT_TIME_FACTORY } from './current-time.injection-token';
 
 describe('RelativeTimePipe', () => {
   let since = new Date('2018-09-19T15:25:00');
-  let pipe = new RelativeTimePipe(() => since);
+  let pipe: RelativeTimePipe;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        RelativeTimePipe,
+        { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => since }
+      ]
+    });
+    pipe = TestBed.inject(RelativeTimePipe);
+  });
   it('create an instance', () => {
     expect(pipe).toBeTruthy();
   });

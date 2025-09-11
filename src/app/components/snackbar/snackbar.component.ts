@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, OnDestroy, inject } from '@angular/core';
 import { MDCSnackbar } from '@material/snackbar';
 
 import { SnackbarData, SnackbarService } from '../../services/snackbar.service';
@@ -10,14 +10,12 @@ import { SnackbarData, SnackbarService } from '../../services/snackbar.service';
     standalone: false
 })
 export class SnackbarComponent implements AfterViewInit, OnDestroy {
+  private snackbarService = inject(SnackbarService);
+
   snackbar: MDCSnackbar;
   messagesSub = this.snackbarService.messages
     .subscribe((dataObject) => this.showSnackbar(dataObject));
   @ViewChild('snackbarRef', { static: true }) el: ElementRef<HTMLElement>;
-
-  constructor(
-    private snackbarService: SnackbarService,
-  ) { }
 
   ngAfterViewInit() {
     this.snackbar = new MDCSnackbar(this.el.nativeElement);

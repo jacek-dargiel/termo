@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { subDays } from 'date-fns';
@@ -29,15 +29,13 @@ import { RefreshSignalService } from './services/refresh-signal.service';
 
 @Injectable()
 export class AppEffects {
+  private actions$ = inject(Actions);
+  private store = inject<Store<State>>(Store);
+  private location = inject(LocationService);
+  private measurment = inject(MeasurmentService);
+  private errorHandling = inject(ErrorHandlingService);
+  private refreshSignal = inject(RefreshSignalService);
 
-  constructor(
-    private actions$: Actions,
-    private store: Store<State>,
-    private location: LocationService,
-    private measurment: MeasurmentService,
-    private errorHandling: ErrorHandlingService,
-    private refreshSignal: RefreshSignalService,
-  ) {}
 
   genericAjaxErrors$ = createEffect(() => this.actions$.pipe(
     ofType(
