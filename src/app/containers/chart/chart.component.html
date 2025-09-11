@@ -1,22 +1,25 @@
-<div class="chart" *ngIf="location">
-  <header class="header">
-    <h3 class="header__location-name">🌡{{location?.name}}</h3>
-    <div class="header__actions">
-      <button
-        type="button"
-        class="btn btn--icon"
-        (click)="close()"
-      >️✖</button>
+@if (location) {
+  <div class="chart">
+    <header class="header">
+      <h3 class="header__location-name">🌡{{location?.name}}</h3>
+      <div class="header__actions">
+        <button
+          type="button"
+          class="btn btn--icon"
+          (click)="close()"
+        >️✖</button>
+      </div>
+    </header>
+    <div class="chart__container">
+      @if (location && chartData) {
+        <ngx-charts-line-chart
+          [results]="chartData"
+          [xAxis]="true"
+          [yAxis]="true"
+          [roundDomains]="true"
+          [xAxisTickFormatting]="formatTime"
+        ></ngx-charts-line-chart>
+      }
     </div>
-  </header>
-  <div class="chart__container">
-    <ngx-charts-line-chart
-      *ngIf="location && chartData"
-      [results]="chartData"
-      [xAxis]="true"
-      [yAxis]="true"
-      [roundDomains]="true"
-      [xAxisTickFormatting]="formatTime"
-    ></ngx-charts-line-chart>
   </div>
-</div>
+}
