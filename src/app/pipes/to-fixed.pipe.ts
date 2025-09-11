@@ -1,9 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({
-    name: 'toFixed',
-    standalone: false
-})
+@Pipe({ name: 'toFixed' })
 export class ToFixedPipe implements PipeTransform {
 
   transform(value: number, precision = 2, locale?: string): any {

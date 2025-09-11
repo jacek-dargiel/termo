@@ -1,12 +1,15 @@
 import { Component, OnInit, ElementRef, inject } from '@angular/core';
 import { MapFacade } from './map.facade';
 import { Location } from '../../state/location/location.model';
+import { HeaderComponent } from '../header/header.component';
+import { MapLocationComponent } from '../../components/map-location/map-location.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'termo-map',
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.scss'],
-    standalone: false
+    imports: [HeaderComponent, MapLocationComponent, AsyncPipe]
 })
 export class MapComponent implements OnInit {
   private mapFacade = inject(MapFacade);

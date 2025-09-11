@@ -11,8 +11,7 @@ import { TERMO_CURRENT_TIME_FACTORY, timeFactory } from './current-time.injectio
 
 @Pipe({
     name: 'relativeTime',
-    pure: false,
-    standalone: false
+    pure: false
 })
 export class RelativeTimePipe implements PipeTransform {
   currentTimeFactory = inject<timeFactory>(TERMO_CURRENT_TIME_FACTORY);

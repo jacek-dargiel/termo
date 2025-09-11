@@ -1,11 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { HeaderFacade } from './header.facade';
+import { RefreshButtonComponent } from '../../components/refresh-button/refresh-button.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'termo-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
-    standalone: false
+    imports: [RefreshButtonComponent, AsyncPipe]
 })
 export class HeaderComponent {
   private headerFacade = inject(HeaderFacade);

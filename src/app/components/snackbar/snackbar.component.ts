@@ -6,8 +6,7 @@ import { SnackbarData, SnackbarService } from '../../services/snackbar.service';
 @Component({
     selector: 'termo-snackbar',
     templateUrl: './snackbar.component.html',
-    styleUrls: ['./snackbar.component.scss'],
-    standalone: false
+    styleUrls: ['./snackbar.component.scss']
 })
 export class SnackbarComponent implements AfterViewInit, OnDestroy {
   private snackbarService = inject(SnackbarService);

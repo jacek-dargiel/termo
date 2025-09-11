@@ -1,11 +1,15 @@
 import { Component, Input, HostBinding, OnInit, HostListener, input, output } from '@angular/core';
 import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/location.model';
+import { SpinnerComponent } from '../spinner/spinner.component';
+import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
+import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
+import { ToFixedPipe } from '../../pipes/to-fixed.pipe';
 
 @Component({
     selector: 'termo-map-location',
     templateUrl: './map-location.component.html',
     styleUrls: ['./map-location.component.scss'],
-    standalone: false
+    imports: [SpinnerComponent, IsLocationOutdatedPipe, RelativeTimePipe, ToFixedPipe]
 })
 export class MapLocationComponent implements OnInit {
   readonly location = input<LocationWithKeyMeasurmentValues>();
