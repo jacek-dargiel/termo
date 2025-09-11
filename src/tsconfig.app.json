@@ -7,6 +7,7 @@
     "noUnusedLocals": true
   },
   "angularCompilerOptions": {
+    "strictTemplates": true
   },
   "files": [
     "main.ts",

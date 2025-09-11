@@ -12,7 +12,7 @@
     [x] Check if it still requires d3-color@2
 [ ] Add playwright
 [ ] Implement some playwright E2E tests
-[ ] Evaluate usage of strictTemplates
+[x] Evaluate usage of strictTemplates
 [x] Run A19 migrations and test
     [x] Build system migration
     [x] Standalone components
