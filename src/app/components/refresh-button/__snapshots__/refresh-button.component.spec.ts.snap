@@ -3,7 +3,7 @@
 exports[`RefreshButtonComponent should render button at 50% 1`] = `
 <termo-refresh-button
   progress={[Function Function]}
-  refresh={[Function EventEmitter_]}
+  refresh={[Function OutputEmitterRef]}
   refreshing={[Function Function]}
 >
   <button
@@ -23,7 +23,7 @@ exports[`RefreshButtonComponent should render button at 50% 1`] = `
 exports[`RefreshButtonComponent should render button at initial state 1`] = `
 <termo-refresh-button
   progress={[Function Function]}
-  refresh={[Function EventEmitter_]}
+  refresh={[Function OutputEmitterRef]}
   refreshing={[Function Function]}
 >
   <button
@@ -42,7 +42,7 @@ exports[`RefreshButtonComponent should render button at initial state 1`] = `
 exports[`RefreshButtonComponent should render button at refreshing state 1`] = `
 <termo-refresh-button
   progress={[Function Function]}
-  refresh={[Function EventEmitter_]}
+  refresh={[Function OutputEmitterRef]}
   refreshing={[Function Function]}
 >
   <button
