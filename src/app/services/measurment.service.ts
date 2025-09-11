@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ApiService } from './api.service';
 
 import { map, tap } from 'rxjs/operators';
@@ -11,10 +11,8 @@ import { environment } from 'environments/environment';
 
 @Injectable()
 export class MeasurmentService {
+  private api = inject(ApiService);
 
-  constructor(
-    private api: ApiService,
-  ) { }
 
   getMeasurments(locationKey: string, start?: Date, end?: Date) {
     let params = new HttpParams();

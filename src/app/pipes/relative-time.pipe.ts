@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform, Inject } from '@angular/core';
+import { Pipe, PipeTransform, inject } from '@angular/core';
 import {
   isBefore,
   subDays,
@@ -15,7 +15,8 @@ import { TERMO_CURRENT_TIME_FACTORY, timeFactory } from './current-time.injectio
     standalone: false
 })
 export class RelativeTimePipe implements PipeTransform {
-  constructor(@Inject(TERMO_CURRENT_TIME_FACTORY) public currentTimeFactory: timeFactory) {}
+  currentTimeFactory = inject<timeFactory>(TERMO_CURRENT_TIME_FACTORY);
+
 
   transform(value: Date): any {
     let since = this.currentTimeFactory();

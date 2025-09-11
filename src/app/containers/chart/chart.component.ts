@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, OnDestroy } from '@angular/core';
+import { Component, OnInit, HostBinding, OnDestroy, inject } from '@angular/core';
 import { ChartFacade } from './chart.facade';
 import { Subscription } from 'rxjs';
 import { Location } from '../../state/location/location.model';
@@ -13,16 +13,14 @@ import { format } from 'date-fns';
     standalone: false
 })
 export class ChartComponent implements OnInit, OnDestroy {
+  private chartFacade = inject(ChartFacade);
+
   @HostBinding('class.chart--visible') visible = false;
   selectedLocationSub: Subscription;
   locationMeasurmentsSub: Subscription;
   measurmentsSub: Subscription;
   location: Location;
   chartData;
-
-  constructor(
-    private chartFacade: ChartFacade,
-  ) { }
 
   ngOnInit() {
     this.selectedLocationSub = this.chartFacade.selectedLocation$

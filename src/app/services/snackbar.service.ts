@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { ErrorHandlingService } from './error-handling.service';
 import { map } from 'rxjs/operators';
@@ -14,11 +14,11 @@ export interface SnackbarData {
   providedIn: 'root'
 })
 export class SnackbarService {
+  private errorHandling = inject(ErrorHandlingService);
+
   public messages: Observable<SnackbarData> = this.errorHandling.errors$.pipe(
     map(error => this.errorToSnackbarData(error) as any)
   );
-
-  constructor(private errorHandling: ErrorHandlingService) {}
 
   errorToSnackbarData(error: Error): Partial<SnackbarData> {
     return {
