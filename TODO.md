@@ -13,10 +13,10 @@
 [ ] Add playwright
 [ ] Implement some playwright E2E tests
 [ ] Evaluate usage of strictTemplates
-[ ] Run A19 migrations and test
+[x] Run A19 migrations and test
     [x] Build system migration
-    [ ] Standalone components
-        [ ] Reenable ESLint rule @angular-eslint/prefer-standalone
+    [x] Standalone components
+        [x] Reenable ESLint rule @angular-eslint/prefer-standalone
     [x] Control Flow syntax
     [x] inject() function
     [x] input() API
