@@ -22,8 +22,8 @@
     [x] input() API
     [x] output() function
     [x] Queries as signals
-    [ ] Self-closing tags
-    [ ] Unused import
+    [x] Self-closing tags
+    [x] Unused import
 [ ] Update ESLint to v9 with flat config.
 [ ] Update to A20
 [ ] Evaluate package.json packages, update.
