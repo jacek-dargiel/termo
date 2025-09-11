@@ -1,4 +1,4 @@
-import { Component, Input, HostBinding, OnInit, HostListener, Output, EventEmitter, input } from '@angular/core';
+import { Component, Input, HostBinding, OnInit, HostListener, input, output } from '@angular/core';
 import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/location.model';
 
 @Component({
@@ -13,7 +13,7 @@ export class MapLocationComponent implements OnInit {
   @Input()
   @HostBinding('class.location--selected')
   selected: boolean;
-  @Output() selectLocation = new EventEmitter<Location>();
+  readonly selectLocation = output<Location>();
   @HostBinding('style.bottom.%') bottom: number;
   @HostBinding('style.right.%') right: number;
 
