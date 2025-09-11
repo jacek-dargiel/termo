@@ -2,9 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "allowJs": true,
-    "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
-    "downlevelIteration": true,
     "importHelpers": true,
     "module": "es2020",
     "outDir": "./dist/out-tsc",
