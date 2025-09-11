@@ -15,7 +15,7 @@ describe('SnackbarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SnackbarComponent ],
+      imports: [ SnackbarComponent ],
       providers: [
         { provide: SnackbarService, useClass: MockSnapshotService }
       ],
