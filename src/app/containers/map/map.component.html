@@ -1,9 +1,8 @@
-<termo-header></termo-header>
+<termo-header />
 @for (location of locations$ | async; track location) {
-  <termo-map-location
-    [location]="location"
+  <termo-map-location [location]="location"
     [loading]="loading$ | async"
     [selected]="(selectedLocation$ | async)?.id === location.id"
     (selectLocation)="onLocationSelect(location)"
-  ></termo-map-location>
+   />
 }
