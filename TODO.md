@@ -14,6 +14,10 @@
 [ ] Implement some playwright E2E tests
 [ ] Evaluate usage of strictTemplates
 [ ] Run A19 migrations and test
+    [x] Build system migration
+    [ ] Standalone components
+        [ ] Reenable ESLint rule @angular-eslint/prefer-standalone
+[ ] Update ESLint to v9 with flat config.
 [ ] Update to A20
 [ ] Evaluate package.json packages, update.
 [ ] Hide locations delayed by several days.

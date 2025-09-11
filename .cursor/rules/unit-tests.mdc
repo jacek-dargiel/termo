@@ -1,0 +1,653 @@
+---
+globs: src/**/*.spec.ts
+alwaysApply: false
+---
+# Writing tests
+
+## Type safety
+Use strict types for better type safety. Import types and interfaces defined in the project whenever needed. Avoid using `any`.
+
+## Using jest-marbles
+
+Prefer using marble diagrams for testing RxJS observables. Use jest-marbles.
+
+### Examples
+
+#### toBeObservable
+Verifies that the resulting stream emits certain values at certain time frames
+```js
+    it('Should merge two hot observables and start emitting from the subscription point', () => {
+        const e1 = hot('----a--^--b-------c--|', {a: 0});
+        const e2 = hot('  ---d-^--e---------f-----|', {a: 0});
+        const expected = cold('---(be)----c-f-----|', {a: 0});
+
+        expect(e1.pipe(merge(e2))).toBeObservable(expected);
+    });
+```
+Sample output when the test fails (if change the expected result to `'-d--(be)----c-f-----|'`):
+```
+Expected notifications to be:
+  "-d--(be)----c-f-----|"
+But got:
+  "---(be)----c-f-----|"
+```
+
+#### toBeMarble
+Same as `toBeObservable` but receives marble string instead
+```js
+    it('Should concatenate two cold observables into single cold observable', () => {
+        const a = cold('-a-|');
+        const b = cold('-b-|');
+        const expected = '-a--b-|';
+        expect(a.pipe(concat(b))).toBeMarble(expected);
+    });
+```
+
+#### toHaveSubscriptions
+Verifies that the observable was subscribed in the provided time frames.
+Useful, for example, when you want to verify that particular `switchMap` worked as expected:
+```js
+  it('Should figure out single subscription points', () => {
+    const x = cold('        --a---b---c--|');
+    const xsubs = '   ------^-------!';
+    const y = cold('                ---d--e---f---|');
+    const ysubs = '   --------------^-------------!';
+    const e1 = hot('  ------x-------y------|', { x, y });
+    const expected = cold('--------a---b----d--e---f---|');
+
+    expect(e1.pipe(switchAll())).toBeObservable(expected);
+    expect(x).toHaveSubscriptions(xsubs);
+    expect(y).toHaveSubscriptions(ysubs);
+  });
+```
+The matcher can also accept multiple subscription marbles:
+```js
+  it('Should figure out multiple subscription points', () => {
+    const x = cold('                    --a---b---c--|');
+
+    const y = cold('                ----x---x|', {x});
+    const ySubscription1 = '        ----^---!';
+    //                                     '--a---b---c--|'
+    const ySubscription2 = '        --------^------------!';
+    const expectedY = cold('        ------a---a---b---c--|');
+
+    const z = cold('                   -x|', {x});
+    //                                 '--a---b---c--|'
+    const zSubscription = '            -^------------!';
+    const expectedZ = cold('           ---a---b---c--|');
+
+    expect(y.pipe(switchAll())).toBeObservable(expectedY);
+    expect(z.pipe(switchAll())).toBeObservable(expectedZ);
+
+    expect(x).toHaveSubscriptions([ySubscription1, ySubscription2, zSubscription]);
+  });
+```
+Sample output when the test fails (if change `ySubscription1` to `'-----------------^---!'`):
+```
+Expected observable to have the following subscription points:
+  ["-----------------^---!", "--------^------------!", "-^------------!"]
+But got:
+  ["-^------------!", "----^---!", "--------^------------!"]
+```
+
+#### toHaveNoSubscriptions
+Verifies that the observable was not subscribed during the test.
+Especially useful when you want to verify that certain chain was not called due to an error:
+```js
+  it('Should verify that switchMap was not performed due to an error', () => {
+    const x = cold('--a---b---c--|');
+    const y = cold('---#-x--', {x});
+    const result = y.pipe(switchAll());
+    expect(result).toBeMarble('---#');
+    expect(x).toHaveNoSubscriptions();
+  });
+```
+Sample output when the test fails (if remove error and change the expected marble to `'------a---b---c--|'`):
+```
+Expected observable to have no subscription points
+But got:
+  ["----^------------!"]
+```
+
+#### toSatisfyOnFlush
+Allows you to assert on certain side effects/conditions that should be satisfied when the observable has been flushed (finished)
+```js
+  it('should verify mock has been called', () => {
+      const mock = jest.fn();
+      const stream$ = cold('blah|').pipe(tap(mock));
+      expect(stream$).toSatisfyOnFlush(() => {
+          expect(mock).toHaveBeenCalledTimes(4);
+      });
+  })
+```
+
+#### schedule
+Allows you to schedule task on specified frame
+```js
+  it('should verify subject values', () => {
+    const source = new Subject();
+    const expected = cold('ab');
+
+    schedule(() => source.next('a'), 1);
+    schedule(() => source.next('b'), 2);
+
+    expect(source).toBeObservable(expected);
+  });
+```
+
+## ngrx store testing:
+
+### Using a Mock Store
+
+The `provideMockStore()` function registers providers that allow you to mock out the `Store` for testing functionality that has a dependency on `Store` without setting up reducers.
+You can write tests validating behaviors corresponding to the specific state snapshot easily.
+
+<div class="alert is-helpful">
+
+**Note:** All dispatched actions don't affect the state, but you can see them in the `scannedActions$` stream.
+
+</div>
+
+Usage:
+
+<code-example header="auth.guard.spec.ts">
+import { TestBed } from '@angular/core/testing';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { cold } from 'jasmine-marbles';
+
+import { AuthGuard } from '../guards/auth.guard';
+
+describe('Auth Guard', () => {
+  let guard: AuthGuard;
+  let store: MockStore;
+  const initialState = { loggedIn: false };
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        // any modules needed
+      ],
+      providers: [
+        AuthGuard,
+        provideMockStore({ initialState }),
+        // other providers
+      ],
+    });
+
+    store = TestBed.inject(MockStore);
+    guard = TestBed.inject(AuthGuard);
+  });
+
+  it('should return false if the user state is not logged in', () => {
+    const expected = cold('(a|)', { a: false });
+
+    expect(guard.canActivate()).toBeObservable(expected);
+  });
+
+  it('should return true if the user state is logged in', () => {
+    store.setState({ loggedIn: true });
+
+    const expected = cold('(a|)', { a: true });
+
+    expect(guard.canActivate()).toBeObservable(expected);
+  });
+});
+</code-example>
+
+### Using Mock Selectors
+
+`MockStore` also provides the ability to mock individual selectors to return a passed value using the `overrideSelector()` method. When the selector is invoked by the `select` method, the returned value is overridden by the passed value, regardless of the current state in the store.
+
+`overrideSelector()` returns a `MemoizedSelector`. To update the mock selector to return a different value, use the `MemoizedSelector`'s `setResult()` method. Updating a selector's mock value will not cause it to emit automatically. To trigger an emission from all selectors, use the `MockStore.refreshState()` method after updating the desired selectors.
+
+`overrideSelector()` supports mocking the `select` method (used in RxJS pipe) and the `Store` `select` instance method using a string or selector.
+
+Usage:
+
+<code-example header="src/app/state/books.selectors.ts" path="testing-store/src/app/state/books.selectors.ts"></code-example>
+
+<code-example header="src/app/app.component.spec.ts (Using Mock Selectors) " path="store-walkthrough/src/app/tests/app.component.1.spec.ts" region="mockSelector"></code-example>
+
+In this example based on the [walkthrough](guide/store/walkthrough), we mock the `selectBooks` selector by using `overrideSelector`, passing in the `selectBooks` selector with a default mocked return value of an array of books. Similarly, we mock the `selectBookCollection` selector and pass the selector together with another array. In the test, we use `setResult()` to update the mock selectors to return new array values, then we use `MockStore.refreshState()` to trigger an emission from the `selectBooks` and `selectBookCollection` selectors.
+
+You can reset selectors by calling the `MockStore.resetSelectors()` method in the `afterEach()` hook.
+
+<code-example header="src/app/app.component.spec.ts (Reset Mock Selector) " path="store-walkthrough/src/app/tests/app.component.1.spec.ts" region="resetMockSelector"></code-example>
+
+Try the <live-example name="testing-store"></live-example>.
+
+### Integration Testing
+
+An integration test should verify that the `Store` coherently works together with our components and services that inject `Store`. An integration test will not mock the store or individual selectors, as unit tests do, but will instead integrate a `Store` by using `StoreModule.forRoot` in your `TestBed` configuration. Here is part of an integration test for the `AppComponent` introduced in the [walkthrough](guide/store/walkthrough).
+
+<code-example header="src/app/tests/integration.spec.ts (Integrate Store)" path="store-walkthrough/src/app/tests/integration.spec.ts" region="integrate">
+</code-example>
+
+The integration test sets up the dependent `Store` by importing the `StoreModule`. In this part of the example, we assert that clicking the `add` button dispatches the corresponding action and is correctly emitted by the `collection` selector.
+
+<code-example header="src/app/tests/integration.spec.ts (addButton Test)" path="store-walkthrough/src/app/tests/integration.spec.ts" region="addTest">
+</code-example>
+
+### Testing selectors
+
+You can use the projector function used by the selector by accessing the `.projector` property. The following example tests the `books` selector from the [walkthrough](guide/store/walkthrough).
+
+<code-example header="src/app/state/books.selectors.spec.ts" path="testing-store/src/app/state/books.selectors.spec.ts">
+</code-example>
+
+### Testing reducers
+
+The following example tests the `booksReducer` from the [walkthrough](guide/store/walkthrough). In the first test we check that the state returns the same reference when the reducer is not supposed to handle the action (unknown action). The second test checks that `retrievedBookList` action updates the state and returns the new instance of it.
+
+<code-example header="src/app/state/books.reducer.spec.ts" path="testing-store/src/app/state/books.reducer.spec.ts"></code-example>
+
+### Testing without `TestBed`
+
+The `provideMockStore()` function can be also used with `Injector.create`:
+
+<code-example header="books.component.spec.ts">
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { Injector } from '@angular/core';
+
+describe('Books Component', () => {
+  let store: MockStore;
+  const initialState = { books: ['Book 1', 'Book 2', 'Book 3'] };
+
+  beforeEach(() => {
+    const injector = Injector.create({
+      providers: [
+        provideMockStore({ initialState }),
+      ],
+    });
+
+    store = injector.get(MockStore);
+  });
+});
+</code-example>
+
+Another option to create the `MockStore` without `TestBed` is by calling the `createMockStore()` function:
+
+<code-example header="books.component.spec.ts">
+import { MockStore, createMockStore } from '@ngrx/store/testing';
+
+describe('Books Component', () => {
+  let store: MockStore;
+  const initialState = { books: ['Book 1', 'Book 2', 'Book 3'] };
+
+  beforeEach(() => {
+    store = createMockStore({ initialState });
+  });
+});
+</code-example>
+
+## ngrx effects testing
+
+### Test helpers
+
+#### `provideMockActions`
+
+An Effect subscribes to the `Actions` Observable to perform side effects.
+`provideMockActions` provides a mock provider of the `Actions` Observable to subscribe to, for each test individually.
+
+<code-example header="my.effects.spec.ts">
+import { provideMockActions } from '@ngrx/effects/testing';
+
+let actions$ = new Observable&lt;Action&gt;();
+
+TestBed.configureTestingModule({
+  providers: [provideMockActions(() => actions$)],
+});
+</code-example>
+
+Later in the test cases, we assign the `actions$` variable to a stream of actions.
+
+<code-example header="my.effects.spec.ts">
+// by creating an Observable
+actions$ = of({ type: 'Action One' });
+
+// or by using a marble diagram
+actions$ = hot('--a-', { a: { type: 'Action One' } });
+</code-example>
+
+### Effects with parameters
+
+For time dependant effects, for example `debounceTime`, we must be able override the default RxJS scheduler with the `TestScheduler` during our test.
+That's why we create the effect as a function with parameters. By doing this we can assign default parameter values for the effect, and override these values later in the test cases.
+
+This practice also allows us to hide the implementation details of the effect.
+In the `debounceTime` test case, we can set the debounce time to a controlled value.
+
+<code-example header="my.effects.ts">
+search$ = createEffect(() => ({
+  // assign default values
+  debounce = 300,
+  scheduler = asyncScheduler
+} = {}) =>
+  this.actions$.pipe(
+    ofType(BookActions.search),
+    debounceTime(debounce, scheduler),
+    ...
+  )
+);
+</code-example>
+
+<code-example header="my.effects.spec.ts">
+// override the default values
+effects.search$({
+  debounce: 30,
+  scheduler: getTestScheduler(),
+});
+</code-example>
+
+### Testing practices
+
+#### Marble diagrams
+
+Testing Effects via marble diagrams is particularly useful when the Effect is time sensitive or when the Effect has a lot of behavior.
+
+<div class="alert is-helpful">
+
+For a detailed look on the marble syntax, see [Writing marble tests](https://rxjs.dev/guide/testing/marble-testing).
+
+The `hot`, `cold`, and `toBeObservable` methods are imported from [`jasmine-marbles`](https://www.npmjs.com/package/jasmine-marbles).
+
+</div>
+
+<code-example header="my.effects.spec.ts">
+// create an actions stream to represent a user that is typing
+actions$ = hot('-a-b-', {
+  a: { type: '[Customers Page] Search Customers', name: 'J' },
+  b: { type: '[Customers Page] Search Customers', name: 'Jes' },
+})
+
+// mock the service to prevent an HTTP request to return an array of customers
+customersServiceSpy.searchCustomers.and.returnValue(
+  cold('--a|', { a: [...] })
+);
+
+// expect the first action to debounce and not to dispatch
+// expect the second action to result in a SUCCESS action
+const expected = hot('-------a', {
+  a: {
+    type: '[Customers API] Search Customers Success',
+    customers: [...],
+  },
+});
+
+expect(
+  effects.searchCustomers$({
+    debounce: 20,
+    scheduler: getTestScheduler(),
+  })
+).toBeObservable(expected);
+</code-example>
+
+#### With `TestScheduler`
+
+Instead of using `jasmine-marbles`, we can also run tests with the [RxJS `TestScheduler`](https://rxjs.dev/guide/testing/marble-testing).
+
+To use the `TestScheduler` we first have to instantiate it,
+this can be done in the test case or within a `beforeEach` block.
+
+<code-example header="my.effects.spec.ts">
+import { TestScheduler } from 'rxjs/testing';
+
+let testScheduler: TestScheduler;
+
+beforeEach(() => {
+  testScheduler = new TestScheduler((actual, expected) => {
+    expect(actual).toEqual(expected);
+  });
+});
+</code-example>
+
+The `TestScheduler` provides a `run` method which expects a callback, it's here where we write the test for an effect.
+The callback method provides helper methods to mock Observable streams, and also assertion helper methods to verify the output of a stream.
+
+<code-example header="my.effects.spec.ts">
+// more info about the API can be found at https://rxjs.dev/guide/testing/marble-testing#api
+testScheduler.run(({ cold, hot, expectObservable }) => {
+  // use the `hot` and `cold` helper methods to create the action and service streams
+  actions$ = hot('-a', { a : { type: '[Customers Page] Get Customers' }});
+  customersServiceSpy.getAllCustomers.and.returnValue(cold('--a|', { a: [...] }));
+
+  // use the `expectObservable` helper method to assert if the output matches the expected output
+  expectObservable(effects.getAll$).toBe('---c', {
+    c: {
+      type: '[Customers API] Get Customers Success',
+      customers: [...],
+    }
+  });
+});
+</code-example>
+
+By using the `TestScheduler` we can also test effects dependent on a scheduler.
+Instead of creating an effect as a method to override properties in test cases, as shown in [`Effects with parameters`](#effects-with-parameters), we can rewrite the test case by using the `TestScheduler`.
+
+<code-example header="my.effects.spec.ts">
+testScheduler.run(({ cold, hot, expectObservable }) => {
+  // create an actions stream to represent a user that is typing
+  actions$ = hot('-a-b-', {
+    a: { type: '[Customers Page] Search Customers', name: 'J' },
+    b: { type: '[Customers Page] Search Customers', name: 'Jes' },
+  })
+
+  // mock the service to prevent an HTTP request to return an array of customers
+  customersServiceSpy.searchCustomers.and.returnValue(
+    cold('--a|', { a: [...] })
+  );
+
+  // the `300ms` is the set debounce time
+  // the `5ms` represents the time for the actions stream and the service to return a value
+  expectObservable(effects.searchCustomers).toBe('300ms 5ms c', {
+    c: {
+      type: '[Customers API] Search Customers Success',
+      customers: [...],
+    },
+  });
+});
+</code-example>
+
+#### With Observables
+
+To test simple Effects, it might be easier to create an Observable instead of using a marble diagram.
+
+<code-example header="my.effects.spec.ts">
+// create an actions stream and immediately dispatch a GET action
+actions$ = of({ type: '[Customers Page] Get Customers' });
+
+// mock the service to prevent an HTTP request
+customersServiceSpy.getAllCustomers.and.returnValue(of([...]));
+
+// subscribe to the Effect stream and verify it dispatches a SUCCESS action
+effects.getAll$.subscribe(action => {
+  expect(action).toEqual({
+    type: '[Customers API] Get Customers Success',
+    customers: [...],
+  });
+  done();
+});
+</code-example>
+
+
+#### With `ReplaySubject`
+
+As an alternative, it's also possible to use `ReplaySubject`.
+
+<code-example header="my.effects.spec.ts">
+// create a ReplaySubject
+actions$ = new ReplaySubject(1);
+
+// mock the service to prevent an HTTP request
+customersServiceSpy.getAllCustomers.and.returnValue(of([...]));
+
+// dispatch the GET action
+(actions$ as ReplaySubject).next({ type: '[Customers Page] Get Customers' })
+
+// subscribe to the Effect stream and verify it dispatches a SUCCESS action
+effects.getAll$.subscribe(action => {
+  expect(action).toEqual({
+    type: '[Customers API] Get Customers Success',
+    customers: [...],
+  });
+  done();
+});
+</code-example>
+
+### Examples
+
+#### A non-dispatching Effect
+
+Until now, we only saw Effects that dispatch an Action and we verified the dispatched action.
+With an Effect that does not dispatch an action, we can't verify the Effects stream.
+What we can do, is verify the side-effect has been called.
+
+An example of this is to verify we navigate to the correct page.
+
+<code-example header="my.effects.spec.ts">
+it('should navigate to the customers detail page', () => {
+  actions$ = of({ type: '[Customers Page] Customer Selected', name: 'Bob' });
+
+  // create a spy to verify the navigation will be called
+  spyOn(router, 'navigateByUrl');
+
+  // subscribe to execute the Effect
+  effects.selectCustomer$.subscribe();
+
+  // verify the navigation has been called
+  expect(router.navigateByUrl).toHaveBeenCalledWith('customers/bob');
+});
+</code-example>
+
+#### Effect that uses state
+
+Leverage [`MockStore`](/guide/store/testing#using-a-mock-store) and [`MockSelectors`](/guide/store/testing#using-mock-selectors) to test Effects that are selecting slices of the state.
+
+An example of this is to not fetch an entity (customer in this case) when it's already in the store state.
+
+<code-example header="my.effects.spec.ts">
+let actions$: Observable&lt;Action&gt;;
+
+TestBed.configureTestingModule({
+  providers: [
+    CustomersEffects,
+    provideMockActions(() => actions$),
+    // mock the Store and the selectors that are used within the Effect
+    provideMockStore({
+      selectors: [
+        {
+          selector: selectCustomers,
+          value: {
+            Bob: { name: 'Bob' },
+          },
+        },
+      ],
+    }),
+  ],
+});
+
+effects = TestBed.inject&lt;CustomersEffects&gt;(CustomersEffects);
+
+it('should not fetch if the user is already in the store', () => {
+  actions$ = hot('-a--', {
+    a: { type: '[Customers Page] Search Customers', name: 'Bob' },
+  });
+
+  // there is no output, because Bob is already in the Store state
+  const expected = hot('----');
+
+  expect(effects.getByName$).toBeObservable(expected);
+});
+</code-example>
+
+#### Setup without `TestBed`
+
+Instead of using the Angular `TestBed`, we can instantiate the Effect class.
+
+<code-example header="my.effects.spec.ts">
+it('should get customers', () => {
+  // instead of using `provideMockActions`,
+  // define the actions stream by creating a new `Actions` instance
+  const actions = new Actions(
+    hot('-a--', {
+      a: { type: '[Customers Page] Get Customers' },
+    })
+  );
+
+  // create the effect
+  const effects = new CustomersEffects(actions, customersServiceSpy);
+
+  const expected = hot('-a--', {
+    a: {
+      type: '[Customers API] Get Customers Success',
+      customers: [...],
+    }
+  });
+
+  // expect remains the same
+  expect(effects.getAll$).toBeObservable(expected);
+})
+</code-example>
+
+For an Effect with store interaction, use `createMockStore` to create a new instance of `MockStore`.
+
+<code-example header="my.effects.spec.ts">
+it('should get customers', () => {
+  // create the store, and provide selectors.
+  const store = createMockStore({
+      selectors: [
+        { selector: selectCustomers, value: { Bob: { name: 'Bob' } } }
+      ]
+  });
+
+  // instead of using `provideMockActions`,
+  // define the actions stream by creating a new `Actions` instance
+  const actions = new Actions(
+    hot('-a--', {
+      a: { type: '[Search Customers Page] Get Customer', name: 'Bob' },
+    })
+  );
+
+  // create the effect
+  const effects = new CustomersEffects(store as Store, actions, customersServiceSpy);
+
+  // there is no output, because Bob is already in the Store state
+  const expected = hot('----');
+
+  expect(effects.getByName$).toBeObservable(expected);
+});
+</code-example>
+
+#### Functional Effects
+
+Functional effects can be tested like any other function. If we inject all dependencies as effect function arguments, `TestBed` is not required to mock dependencies. Instead, we can pass fake instances as input arguments to the functional effect.
+
+<code-example header="actors.effects.spec.ts">
+import { of } from 'rxjs';
+
+import { loadActors } from './actors.effects';
+import { ActorsService } from './actors.service';
+import { actorsMock } from './actors.mock';
+import { ActorsPageActions } from './actors-page.actions';
+import { ActorsApiActions } from './actors-api.actions';
+
+it('loads actors successfully', (done) => {
+  const actorsServiceMock = {
+    getAll: () => of(actorsMock),
+  } as ActorsService;
+  const actionsMock$ = of(ActorsPageActions.opened());
+
+  loadActors(actionsMock$, actorsServiceMock).subscribe((action) => {
+    expect(action).toEqual(
+      ActorsApiActions.actorsLoadedSuccess({ actors: actorsMock })
+    );
+    done();
+  });
+});
+</code-example>
+
+<div class="alert is-helpful">
+
+You can check the `loadActors` effect implementation [here](guide/effects#functional-effects).
+
+</div>
