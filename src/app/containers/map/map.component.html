@@ -1,8 +1,9 @@
 <termo-header></termo-header>
-<termo-map-location
-  *ngFor="let location of locations$ | async"
-  [location]="location"
-  [loading]="loading$ | async"
-  [selected]="(selectedLocation$ | async)?.id === location.id"
-  (selectLocation)="onLocationSelect(location)"
-></termo-map-location>
+@for (location of locations$ | async; track location) {
+  <termo-map-location
+    [location]="location"
+    [loading]="loading$ | async"
+    [selected]="(selectedLocation$ | async)?.id === location.id"
+    (selectLocation)="onLocationSelect(location)"
+  ></termo-map-location>
+}

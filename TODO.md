@@ -17,6 +17,13 @@
     [x] Build system migration
     [ ] Standalone components
         [ ] Reenable ESLint rule @angular-eslint/prefer-standalone
+    [x] Control Flow syntax
+    [ ] inject() function
+    [ ] input() API
+    [ ] output() function
+    [ ] Queries as signals
+    [ ] Self-closing tags
+    [ ] Unused import
 [ ] Update ESLint to v9 with flat config.
 [ ] Update to A20
 [ ] Evaluate package.json packages, update.
