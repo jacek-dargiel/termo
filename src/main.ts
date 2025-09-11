@@ -1,5 +1,4 @@
 import { enableProdMode, ErrorHandler, importProvidersFrom } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 
 import { environment } from 'environments/environment';
@@ -13,7 +12,8 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
-
+import * as fromLocation from './app/state/location/location.reducer';
+import * as fromMeasurment from './app/state/measurment/measurment.reducer';
 import { reducers, metaReducers } from './app/state/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
@@ -27,7 +27,15 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(BrowserModule, StoreModule.forRoot(reducers, { metaReducers }), !environment.production ? StoreDevtoolsModule.instrument({ serialize: { options: { map: true, set: true } }, connectInZone: true }) : [], EffectsModule.forRoot([AppEffects]), StoreModule.forFeature('location', fromLocation.reducer), StoreModule.forFeature('measurment', fromMeasurment.reducer), LineChartModule),
+        importProvidersFrom(
+          BrowserModule,
+          StoreModule.forRoot(reducers, { metaReducers }),
+          !environment.production ? StoreDevtoolsModule.instrument({ serialize: { options: { map: true, set: true } }, connectInZone: true }) : [],
+          EffectsModule.forRoot([AppEffects]),
+          StoreModule.forFeature('location', fromLocation.reducer),
+          StoreModule.forFeature('measurment', fromMeasurment.reducer),
+          LineChartModule
+        ),
         ErrorHandlingService,
         LocationService,
         MeasurmentService,
