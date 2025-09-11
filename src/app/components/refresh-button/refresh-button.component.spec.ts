@@ -8,7 +8,7 @@ describe('RefreshButtonComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RefreshButtonComponent ]
+      imports: [ RefreshButtonComponent ]
     })
     .compileComponents();
   }));

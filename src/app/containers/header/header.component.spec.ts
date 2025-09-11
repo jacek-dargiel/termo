@@ -4,6 +4,8 @@ import { HeaderComponent } from './header.component';
 import { HeaderFacade } from './header.facade';
 import { ReplaySubject } from 'rxjs';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { RefreshButtonComponent } from '../../components/refresh-button/refresh-button.component';
+import { AsyncPipe } from '@angular/common';
 
 class MockHeaderFacade {
   public progress = new ReplaySubject<number>();
@@ -24,18 +26,20 @@ describe('HeaderComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ],
+      imports: [ HeaderComponent, RefreshButtonComponent, AsyncPipe ],
       providers: [
         { provide: HeaderFacade, useClass: MockHeaderFacade }
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
-    .compileComponents();
+    .overrideComponent(HeaderComponent, { remove: { imports: [RefreshButtonComponent]}})
+    .compileComponents()
     facade = TestBed.inject(HeaderFacade);
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HeaderComponent);
+    fixture = TestBed
+      .createComponent(HeaderComponent)
     component = fixture.componentInstance;
     fixture.detectChanges();
 

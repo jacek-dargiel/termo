@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { Component, Input, HostBinding, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, Input, HostBinding, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA, input } from '@angular/core';
 
 import { MapComponent } from './map.component';
 import { MapFacade } from './map.facade';
 import { of, Subject, BehaviorSubject } from 'rxjs';
 import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/location.model';
 import { By } from '@angular/platform-browser';
+import { HeaderComponent } from '../header/header.component';
+import { TERMO_CURRENT_TIME_FACTORY } from '../../pipes/current-time.injection-token';
+import { MapLocationComponent } from '../../components/map-location/map-location.component';
 
 class MockMapFacade {
   public locationsLoading$ = new BehaviorSubject<string[]>([]);
@@ -48,10 +51,9 @@ let mockLocations: LocationWithKeyMeasurmentValues[] = [
 @Component({
     selector: 'termo-map-location',
     template: ``,
-    standalone: false
 })
 export class MockMapLocationComponent {
-  @Input() location: LocationWithKeyMeasurmentValues;
+  readonly location = input<LocationWithKeyMeasurmentValues>();
   @Input() loading: boolean;
   @Input()
   @HostBinding('class.location--selected')
@@ -64,18 +66,21 @@ describe('MapComponent', () => {
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
   let facade: MockMapFacade;
+  let since = new Date('2018-09-19T22:15:00');
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
         MapComponent,
-        MockMapLocationComponent,
       ],
       providers: [
         { provide: MapFacade, useClass: MockMapFacade },
+        { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => since }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
+    .overrideComponent(MapComponent, { remove: { imports: [HeaderComponent]}})
+    .overrideComponent(MapComponent, { remove: { imports: [MapLocationComponent] }, add: { imports: [MockMapLocationComponent]}})
     .compileComponents();
   }));
 
@@ -140,6 +145,6 @@ describe('MapComponent', () => {
     let locationComp: MockMapLocationComponent = fixture.debugElement.query(By.css('termo-map-location')).componentInstance;
     locationComp.selectLocation.emit();
     fixture.detectChanges();
-    expect(facade.selectLocation).toHaveBeenCalledWith(locationComp.location);
+    expect(facade.selectLocation).toHaveBeenCalledWith(locationComp.location());
   });
 });

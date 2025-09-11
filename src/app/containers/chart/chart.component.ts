@@ -5,12 +5,13 @@ import { Location } from '../../state/location/location.model';
 import { map, filter } from 'rxjs/operators';
 import { Measurment } from '../../state/measurment/measurment.model';
 import { format } from 'date-fns';
+import { LineChartModule } from '@swimlane/ngx-charts';
 
 @Component({
     selector: 'termo-chart',
     templateUrl: './chart.component.html',
     styleUrls: ['./chart.component.scss'],
-    standalone: false
+    imports: [LineChartModule]
 })
 export class ChartComponent implements OnInit, OnDestroy {
   private chartFacade = inject(ChartFacade);

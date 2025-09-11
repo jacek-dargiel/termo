@@ -6,6 +6,7 @@ import { ChartFacade } from './chart.facade';
 import { ReplaySubject } from 'rxjs';
 import { Location } from '../../state/location/location.model';
 import { Measurment } from '../../state/measurment/measurment.model';
+import { LineChartModule } from '@swimlane/ngx-charts';
 
 let mockLocation: Location = {
   id: 'temperatura.gorny_tunel',
@@ -63,12 +64,13 @@ describe('ChartComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChartComponent ],
+      imports: [ ChartComponent ],
       providers: [
         { provide: ChartFacade, useClass: MockChartFacade }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
+    .overrideComponent(ChartComponent, { remove: { imports: [LineChartModule]}})
     .compileComponents();
     facade = TestBed.get(ChartFacade);
   }));

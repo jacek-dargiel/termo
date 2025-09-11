@@ -2,11 +2,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { MapLocationComponent } from './map-location.component';
-import { ToFixedPipe } from '../../pipes/to-fixed.pipe';
-import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
-import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
 import { LocationWithKeyMeasurmentValues } from '../../state/location/location.model';
 import { TERMO_CURRENT_TIME_FACTORY } from '../../pipes/current-time.injection-token';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 describe('MapLocationComponent', () => {
   let component: MapLocationComponent;
@@ -15,17 +13,15 @@ describe('MapLocationComponent', () => {
   beforeEach(waitForAsync(() => {
     let since = new Date('2018-09-19T22:15:00');
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
         MapLocationComponent,
-        ToFixedPipe,
-        IsLocationOutdatedPipe,
-        RelativeTimePipe,
       ],
       providers: [
         { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => since },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
+    .overrideComponent(MapLocationComponent, { remove: { imports: [SpinnerComponent]}})
     .compileComponents();
   }));
 
