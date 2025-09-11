@@ -44,7 +44,7 @@ describe('MapLocationComponent', () => {
       lastMeasurmentValue: 21.12,
       minimalMeasurmentValue: 19.5,
     };
-    component.location = baseLocation;
+    fixture.componentRef.setInput('location', baseLocation);
 
     fixture.detectChanges();
   });
@@ -54,7 +54,7 @@ describe('MapLocationComponent', () => {
   });
 
   it('should render loading state', () => {
-    component.loading = true;
+    fixture.componentRef.setInput('loading', true);
     fixture.detectChanges();
     expect(fixture).toMatchSnapshot();
   });
@@ -69,13 +69,13 @@ describe('MapLocationComponent', () => {
       ...baseLocation,
       updatedAt: new Date('2018-09-15T22:10:00'),
     };
-    component.location = testLocation;
+    fixture.componentRef.setInput('location', testLocation);
     fixture.detectChanges();
     expect(fixture).toMatchSnapshot();
   });
 
   it('should render selected state', () => {
-    component.selected = true;
+    fixture.componentRef.setInput('selected', true);
     fixture.detectChanges();
     expect(fixture).toMatchSnapshot();
   });

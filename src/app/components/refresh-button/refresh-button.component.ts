@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, input } from '@angular/core';
 
 @Component({
     selector: 'termo-refresh-button',
@@ -7,8 +7,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
     standalone: false
 })
 export class RefreshButtonComponent {
-  @Input() progress: number;
-  @Input() refreshing: boolean;
+  readonly progress = input<number>();
+  readonly refreshing = input<boolean>();
   @Output() refresh = new EventEmitter<void>();
 
   onRefreshClick() {

@@ -1,4 +1,4 @@
-import { Component, Input, HostBinding, OnInit, HostListener, Output, EventEmitter } from '@angular/core';
+import { Component, Input, HostBinding, OnInit, HostListener, Output, EventEmitter, input } from '@angular/core';
 import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/location.model';
 
 @Component({
@@ -8,14 +8,14 @@ import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/
     standalone: false
 })
 export class MapLocationComponent implements OnInit {
-  @Input() location: LocationWithKeyMeasurmentValues;
-  @Input() loading: boolean;
+  readonly location = input<LocationWithKeyMeasurmentValues>();
+  readonly loading = input<boolean>();
   @Input()
   @HostBinding('class.location--selected')
   selected: boolean;
   @Output() selectLocation = new EventEmitter<Location>();
-  @HostBinding('style.bottom.%') bottom;
-  @HostBinding('style.right.%') right;
+  @HostBinding('style.bottom.%') bottom: number;
+  @HostBinding('style.right.%') right: number;
 
   constructor(
   ) { }
@@ -25,13 +25,13 @@ export class MapLocationComponent implements OnInit {
   }
 
   adjustPosition() {
-    this.right = 100 - (this.location.mapPosition.x * 100);
-    this.bottom = 100 - (this.location.mapPosition.y * 100);
+    this.right = 100 - (this.location().mapPosition.x * 100);
+    this.bottom = 100 - (this.location().mapPosition.y * 100);
   }
 
   @HostListener('click')
   selectLocationEntities() {
-    this.selectLocation.emit(this.location);
+    this.selectLocation.emit(this.location());
   }
 
 }
