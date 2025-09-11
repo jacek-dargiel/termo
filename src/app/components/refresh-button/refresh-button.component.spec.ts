@@ -28,14 +28,14 @@ describe('RefreshButtonComponent', () => {
   });
 
   it('should render button at 50%', () => {
-    component.progress = 0.5;
+    fixture.componentRef.setInput('progress', 0.5);
     fixture.detectChanges();
     expect(fixture).toMatchSnapshot();
   });
 
   it('should render button at refreshing state', () => {
-    component.progress = 1;
-    component.refreshing = true;
+    fixture.componentRef.setInput('progress', 1);
+    fixture.componentRef.setInput('refreshing', true);
     fixture.detectChanges();
     expect(fixture).toMatchSnapshot();
   });

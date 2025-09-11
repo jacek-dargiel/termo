@@ -4,8 +4,8 @@
 >
   <div
     class="refresh__progress"
-    [ngClass]="{ 'refresh__progress--refreshing': refreshing }"
-    [style.width.%]="progress*100"
+    [ngClass]="{ 'refresh__progress--refreshing': refreshing() }"
+    [style.width.%]="progress()*100"
   ></div>
   <span class="refresh__label"><ng-content></ng-content></span>
 </button>
