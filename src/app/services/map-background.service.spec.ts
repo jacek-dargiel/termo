@@ -14,7 +14,6 @@ describe('MapBackgroundService', () => {
     expect(service).toBeTruthy();
   }));
   describe('getImageDimentions', () => {
-    // eslint-disable-next-line max-len
     let imageUrl = 'data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7';
     it('should return a observable', inject([MapBackgroundService], (service: MapBackgroundService) => {
       let dimentions$ = service.getImageDimentions(imageUrl);
@@ -22,14 +21,14 @@ describe('MapBackgroundService', () => {
     }));
 
     // Mock global Image to simulate load/error events in a deterministic way
-    let OriginalImage: any;
+    let OriginalImage: typeof Image;
     beforeEach(() => {
-      OriginalImage = (global as any).Image;
+      OriginalImage = (global as typeof globalThis).Image;
       class MockImage {
         width = 0;
         height = 0;
         onload: (() => void) | null = null;
-        onerror: ((err?: any) => void) | null = null;
+        onerror: ((err?: Error) => void) | null = null;
         private _src: string = '';
 
         set src(val: string) {
@@ -56,11 +55,11 @@ describe('MapBackgroundService', () => {
 
         get src() { return this._src; }
       }
-      (global as any).Image = MockImage;
+      (global as typeof globalThis).Image = MockImage as unknown as typeof Image;
     });
 
     afterEach(() => {
-      (global as any).Image = OriginalImage;
+      (global as typeof globalThis).Image = OriginalImage;
     });
 
     it('should emit dimensions for a square image', done => {

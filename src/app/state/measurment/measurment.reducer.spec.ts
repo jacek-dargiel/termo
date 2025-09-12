@@ -8,6 +8,7 @@ describe('Measurment Reducer', () => {
     it('should return the initial state', () => {
       const action = { type: 'NOOP' };
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const result = reducer(initialState, action as any);
 
       expect(result).toBe(initialState);

@@ -7,7 +7,7 @@ export function mapValuesWithKey<T, R>(
   );
 }
 
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function mapToObject<T>(arr: Array<any>, iterator: (v: any) => T): Record<string, T> {
   return Object.fromEntries(arr.map(key => [key.toString(), iterator(key)]));
 }

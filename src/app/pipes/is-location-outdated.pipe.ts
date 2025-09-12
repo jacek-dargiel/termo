@@ -7,7 +7,7 @@ import { TERMO_CURRENT_TIME_FACTORY, timeFactory } from './current-time.injectio
 export class IsLocationOutdatedPipe implements PipeTransform {
   currentTimeFactory = inject<timeFactory>(TERMO_CURRENT_TIME_FACTORY);
 
-  transform(value: any): boolean {
+  transform(value: Date): boolean {
     let thresholdDate = subMilliseconds(this.currentTimeFactory(), environment.locationOutdatedThreshold);
     return isBefore(value, thresholdDate);
   }

@@ -17,10 +17,10 @@ export class SnackbarService {
   private errorHandling = inject(ErrorHandlingService);
 
   public messages: Observable<SnackbarData> = this.errorHandling.errors$.pipe(
-    map(error => this.errorToSnackbarData(error) as any)
+    map(error => this.errorToSnackbarData(error))
   );
 
-  errorToSnackbarData(error: Error): Partial<SnackbarData> {
+  errorToSnackbarData(error: Error): SnackbarData {
     return {
       message: error.message,
       timeout: environment.snackbarDefaultTimeout,

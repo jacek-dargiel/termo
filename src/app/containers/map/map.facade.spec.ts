@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { cold } from 'jest-marbles';
 import { TestScheduler } from 'rxjs/testing';
+import { Observable } from 'rxjs';
 import { MapFacade } from './map.facade';
 import { MapBackgroundService } from '../../services/map-background.service';
 import { ErrorHandlingService } from '../../services/error-handling.service';
@@ -9,11 +10,15 @@ import { MapInitialized, SelectLocation } from '../../state/location/location.ac
 import { Dictionary } from '@ngrx/entity';
 import { Measurment } from 'app/state/measurment/measurment.model';
 
+interface MockFacade {
+  measurmentsByLocation$: Observable<Dictionary<Measurment[]>>
+}
+
 describe('MapFacade', () => {
   let facade: MapFacade;
   let store: MockStore;
-  let mapBackgroundService: any;
-  let errorHandlingService: any;
+  let mapBackgroundService: { getImageDimentions: jest.Mock };
+  let errorHandlingService: { handle: jest.Mock };
 
   beforeEach(() => {
     mapBackgroundService = {
@@ -66,7 +71,15 @@ describe('MapFacade', () => {
     const location = { id: 'test', name: 'test', mapPosition: { x: 0, y: 0 }, updatedAt: new Date() };
 
     it('should dispatch SelectLocation when measurements exist for the location', () => {
-      const mockMeasurmentsByLocation = { test: [{ value: 1 }] };
+      const mockMeasurmentsByLocation = {
+        test: [{
+          id: '1',
+          value: 1,
+          created_at: new Date(),
+          feed_id: 1,
+          feed_key: 'key1'
+        }]
+      };
 
       const ts = new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
 
@@ -74,7 +87,7 @@ describe('MapFacade', () => {
       const errorSpy = jest.spyOn(errorHandlingService, 'handle');
 
       ts.run(({ cold, expectObservable }) => {
-        (facade as any).measurmentsByLocation$ = cold('a|', { a: mockMeasurmentsByLocation });
+        (facade as unknown as MockFacade).measurmentsByLocation$ = cold('a|', { a: mockMeasurmentsByLocation });
 
         const result = facade.selectLocation(location);
 
@@ -86,14 +99,14 @@ describe('MapFacade', () => {
     });
 
     it('should call error handler and not dispatch when there are no measurements', () => {
-      const mockEmpty = { test: [] };
+      const mockEmpty: Dictionary<Measurment[]> = { test: [] };
       const ts = new TestScheduler((actual, expected) => expect(actual).toEqual(expected));
 
       const dispatchSpy = jest.spyOn(store, 'dispatch');
       const errorSpy = jest.spyOn(errorHandlingService, 'handle');
 
       ts.run(({ cold, expectObservable }) => {
-        (facade as any).measurmentsByLocation$ = cold<Dictionary<Measurment[]>>('a|', { a: mockEmpty });
+        (facade as unknown as MockFacade).measurmentsByLocation$ = cold<Dictionary<Measurment[]>>('a|', { a: mockEmpty });
 
         const result = facade.selectLocation(location);
 

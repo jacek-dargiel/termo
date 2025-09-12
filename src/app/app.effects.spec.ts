@@ -15,7 +15,7 @@ import { MeasurmentService } from './services/measurment.service';
 import { RefreshSignalService } from './services/refresh-signal.service';
 
 describe('AppEffects', () => {
-	let actions$: Observable<any>;
+	let actions$: Observable<locationActions.LocationActions|measurmentActions.MeasurmentActions>;
 	let effects: AppEffects;
   let mockErrorHandling: { handle: jest.Mock };
   let mockLocationService: { getLocations: jest.Mock };
@@ -68,7 +68,7 @@ describe('AppEffects', () => {
 			const action1 = new measurmentActions.FetchMeasurmentsError({ error: err1, locationId: 'l1' });
 			const action2 = new measurmentActions.FetchMeasurmentsError({ error: err2, locationId: 'l2' });
 
-			const actionsSubject = new Subject<any>();
+			const actionsSubject = new Subject<measurmentActions.MeasurmentActions>();
 			actions$ = actionsSubject.asObservable();
 
 			// ensure mock returns value so pipeline executes
@@ -175,7 +175,7 @@ describe('AppEffects', () => {
 			const meas2 = [ { id: 'm2', value: 2, created_at: new Date(), feed_id: 2, feed_key: 'loc2' } ];
 
 			// mock measurment.getMeasurments per id
-			const mockGet = jest.fn((id: string, start: any) => {
+			const mockGet = jest.fn((id: string) => {
 				if (id === 'loc1') return cold('-a|', { a: meas1 });
 				if (id === 'loc2') return cold('--b|', { b: meas2 });
 				return cold('|');
