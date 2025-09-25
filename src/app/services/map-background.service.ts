@@ -23,8 +23,8 @@ export class MapBackgroundService {
         observer.next(dimentions);
         observer.complete();
       };
-      image.onerror = error => {
-        observer.error(error);
+      image.onerror = () => {
+        observer.error(new Error(`Failed to load map background: ${url}`));
       };
       image.src = url;
     });

@@ -28,7 +28,7 @@ describe('MapBackgroundService', () => {
         width = 0;
         height = 0;
         onload: (() => void) | null = null;
-        onerror: ((err?: Error) => void) | null = null;
+        onerror: ((event?: Event) => void) | null = null;
         private _src: string = '';
 
         set src(val: string) {
@@ -36,7 +36,7 @@ describe('MapBackgroundService', () => {
           // simulate async loading
           setTimeout(() => {
             if (val.includes('error')) {
-              this.onerror?.(new Error('mock load error'));
+              this.onerror?.(new Event('error'));
               return;
             }
             if (val.includes('wide')) {
@@ -95,12 +95,13 @@ describe('MapBackgroundService', () => {
       });
     });
 
-    it('should emit error for invalid URL', (done: jest.DoneCallback) => {
+    it('should emit normalized Error for invalid URL', done => {
       const service: MapBackgroundService = TestBed.inject(MapBackgroundService);
       service.getImageDimentions('data:error').subscribe({
         next: () => done.fail('should not emit next'),
         error: err => {
-          expect(err).toBeTruthy();
+          expect(err).toBeInstanceOf(Error);
+          expect((err as Error).message).toBe('Failed to load map background: data:error');
           done();
         }
       });
