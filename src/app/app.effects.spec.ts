@@ -42,7 +42,7 @@ describe('AppEffects', () => {
 	});
 
 	describe('genericAjaxErrors$', () => {
-    it('should call errorHandling.handle when FetchLocationsError action is received', done => {
+    it('should call errorHandling.handle when FetchLocationsError action is received', (done: jest.DoneCallback) => {
       const err = new Error('boom');
       const action = new locationActions.FetchLocationsError({ error: err });
       // emit synchronously

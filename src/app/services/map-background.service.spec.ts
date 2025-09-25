@@ -62,7 +62,7 @@ describe('MapBackgroundService', () => {
       (global as typeof globalThis).Image = OriginalImage;
     });
 
-    it('should emit dimensions for a square image', done => {
+    it('should emit dimensions for a square image', (done: jest.DoneCallback) => {
       const service: MapBackgroundService = TestBed.inject(MapBackgroundService);
       service.getImageDimentions('data:square').subscribe({
         next: dims => {
@@ -73,7 +73,7 @@ describe('MapBackgroundService', () => {
       });
     });
 
-    it('should emit dimensions for a wide image', done => {
+    it('should emit dimensions for a wide image', (done: jest.DoneCallback) => {
       const service: MapBackgroundService = TestBed.inject(MapBackgroundService);
       service.getImageDimentions('data:wide').subscribe({
         next: dims => {
@@ -84,7 +84,7 @@ describe('MapBackgroundService', () => {
       });
     });
 
-    it('should emit dimensions for a tall image', done => {
+    it('should emit dimensions for a tall image', (done: jest.DoneCallback) => {
       const service: MapBackgroundService = TestBed.inject(MapBackgroundService);
       service.getImageDimentions('data:tall').subscribe({
         next: dims => {
@@ -95,7 +95,7 @@ describe('MapBackgroundService', () => {
       });
     });
 
-    it('should emit error for invalid URL', done => {
+    it('should emit error for invalid URL', (done: jest.DoneCallback) => {
       const service: MapBackgroundService = TestBed.inject(MapBackgroundService);
       service.getImageDimentions('data:error').subscribe({
         next: () => done.fail('should not emit next'),
