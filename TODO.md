@@ -10,7 +10,8 @@
 [x] Lodash - remove it altogether. It's 2025.
 [x] Check for swimlane charts update (also optimization bailouts)
     [x] Check if it still requires d3-color@2
-[ ] Add playwright
+[x] Add playwright
+    [x] Remove termo-e2e from angular.json
 [ ] Implement some playwright E2E tests
 [x] Evaluate usage of strictTemplates
 [x] Run A19 migrations and test

@@ -42,3 +42,8 @@ Thumbs.db
 
 /src/assets/other
 netlify.toml
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
