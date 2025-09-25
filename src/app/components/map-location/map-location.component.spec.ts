@@ -1,10 +1,18 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 
 import { MapLocationComponent } from './map-location.component';
 import { LocationWithKeyMeasurmentValues } from '../../state/location/location.model';
+import { ToFixedPipe } from '../../pipes/to-fixed.pipe';
 import { TERMO_CURRENT_TIME_FACTORY } from '../../pipes/current-time.injection-token';
 import { SpinnerComponent } from '../spinner/spinner.component';
+
+@Pipe({name: 'toFixed'})
+class MockToFixedPipe implements PipeTransform {
+  transform(value: number, precision = 2): string {
+    return  value.toFixed(precision);
+  }
+}
 
 describe('MapLocationComponent', () => {
   let component: MapLocationComponent;
@@ -21,7 +29,10 @@ describe('MapLocationComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .overrideComponent(MapLocationComponent, { remove: { imports: [SpinnerComponent]}})
+    .overrideComponent(MapLocationComponent, {
+      remove: { imports: [SpinnerComponent, ToFixedPipe]},
+      add: { imports: [ MockToFixedPipe ]},
+    })
     .compileComponents();
   }));
 

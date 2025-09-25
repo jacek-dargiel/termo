@@ -30,7 +30,7 @@ exports[`MapLocationComponent should display outdated warning 1`] = `
         <span
           class="value"
         >
-          21,12
+          21.12
         </span>
         <span
           class="unit"
@@ -44,7 +44,7 @@ exports[`MapLocationComponent should display outdated warning 1`] = `
         <span
           class="value"
         >
-          Min: 19,50
+          Min: 19.50
         </span>
         <span
           class="unit"
@@ -96,7 +96,7 @@ exports[`MapLocationComponent should properly render base state 1`] = `
         <span
           class="value"
         >
-          21,12
+          21.12
         </span>
         <span
           class="unit"
@@ -110,7 +110,7 @@ exports[`MapLocationComponent should properly render base state 1`] = `
         <span
           class="value"
         >
-          Min: 19,50
+          Min: 19.50
         </span>
         <span
           class="unit"
@@ -170,7 +170,7 @@ exports[`MapLocationComponent should render selected state 1`] = `
         <span
           class="value"
         >
-          21,12
+          21.12
         </span>
         <span
           class="unit"
@@ -184,7 +184,7 @@ exports[`MapLocationComponent should render selected state 1`] = `
         <span
           class="value"
         >
-          Min: 19,50
+          Min: 19.50
         </span>
         <span
           class="unit"
