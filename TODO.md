@@ -13,6 +13,13 @@
 [x] Add playwright
     [x] Remove termo-e2e from angular.json
 [ ] Implement some playwright E2E tests
+    [ ] n map locations are shown
+    [ ] Loading indicator show while loading
+    [ ] Expected name, temperature and min-temperature values are shown
+    [ ] 'Outdated' warnings are shown
+    [ ] Clicking a location opens the chart. An actual chart is visible.
+    [ ] Refresh button works
+    [ ] Autorefresh works
 [x] Evaluate usage of strictTemplates
 [x] Run A19 migrations and test
     [x] Build system migration
