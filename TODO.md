@@ -27,5 +27,7 @@
 [x] Update ESLint to v9 with flat config.
 [ ] Update to A20
 [ ] Evaluate package.json packages, update.
+[ ] npm audit
 [ ] Hide locations delayed by several days.
 [ ] Fix measurments typo.
+[ ] Refactor to signal store.
