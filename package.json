@@ -14,7 +14,7 @@
     "envsub": "envsub",
     "sentry-release": "sh ./bin/sentry-release.sh",
     "deploy": "npm run lint && npm run test && npm run build && npm run post-deploy",
-    "post-deploy": "envsub ./dist/index.html && envsub netlify.toml.template netlify.toml && npm run sentry-release",
+    "post-deploy": "envsub ./dist/browser/index.html && envsub netlify.toml.template netlify.toml && npm run sentry-release",
     "lint": "ng lint",
     "test": "jest --silent --maxWorkers=2",
     "test:watch": "jest --watch",
