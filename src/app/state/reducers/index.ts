@@ -5,6 +5,7 @@ import {
 } from '@ngrx/store';
 import { environment } from 'environments/environment';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface State {
 
 }

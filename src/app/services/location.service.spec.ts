@@ -5,8 +5,6 @@ import { LocationService } from './location.service';
 import { of, isObservable } from 'rxjs';
 import { ApiService } from './api.service';
 
-require('jest-marbles');
-
 class MockApiService {
   get = jest.fn(() => of([]));
 }

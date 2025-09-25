@@ -5,11 +5,11 @@ export interface AIOFeed {
     name: string;
     description: string;
     history: boolean;
-    unit_type: any;
-    unit_symbol: any;
+    unit_type: string;
+    unit_symbol: string;
     last_value: string;
     visibility: string;
-    license: any;
+    license: string;
     created_at: string;
     updated_at: string;
     status_notify: boolean;

@@ -24,7 +24,7 @@
     [x] Queries as signals
     [x] Self-closing tags
     [x] Unused import
-[ ] Update ESLint to v9 with flat config.
+[x] Update ESLint to v9 with flat config.
 [ ] Update to A20
 [ ] Evaluate package.json packages, update.
 [ ] Hide locations delayed by several days.

@@ -59,7 +59,7 @@ describe('MeasurmentService', () => {
     }));
     it('should call the API', inject([MeasurmentService], (service: MeasurmentService) => {
       service.getMeasurments('1234').subscribe();
-      expect((api.get as any).mock.calls[0][0]).toBe('/feeds/1234/data');
+      expect((api.get as jest.Mock).mock.calls[0][0]).toBe('/feeds/1234/data');
     }));
     it('should throw when 0 measurments recived', inject([MeasurmentService], (service: MeasurmentService) => {
       let measurments$ = service.getMeasurments('1000');
@@ -89,7 +89,7 @@ describe('MeasurmentService', () => {
       ];
       let expected$ = cold('(a|)', { a: expected });
       let measurments$ = service.getMeasurments('1234');
-      (expect(measurments$) as any).toBeObservable(expected$);
+      expect(measurments$).toBeObservable(expected$);
     }));
   });
 });

@@ -3,6 +3,10 @@ import * as Sentry from '@sentry/browser';
 
 import { environment } from '../../environments/environment';
 
+interface ErrorWithOriginalError extends Error {
+  originalError?: Error;
+}
+
 @Injectable()
 export class SentryErrorHandler implements ErrorHandler {
   static getReleaseId() {
@@ -12,12 +16,12 @@ export class SentryErrorHandler implements ErrorHandler {
 
       let commitIdRegex = /https:\/\/github.com\/.+\/commit\/([\da-f]+)/;
       return link.match(commitIdRegex)[1];
-    } catch (error) {
+    } catch {
       return undefined;
     }
   }
 
-  handleError(error: any) {
+  handleError(error: ErrorWithOriginalError) {
     Sentry.captureException(error.originalError || error);
     // Sentry.showReportDialog({ eventId });
   }

@@ -6,8 +6,9 @@ import { Location } from './location.model';
 describe('Location Reducer', () => {
   describe('unknown action', () => {
     it('should return the initial state', () => {
-      const action = { type: 'NOOP' };
+      const action = { type: 'NOOP' } as const;
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const result = reducer(INITIAL_STATE, action as any);
 
       expect(result).toBe(INITIAL_STATE);

@@ -4,6 +4,7 @@ import { cold } from 'jest-marbles';
 import { HeaderFacade } from './header.facade';
 import { RefreshSignalService } from '../../services/refresh-signal.service';
 import { RefreshButtonClick } from '../../state/location/location.actions';
+import { Observable } from 'rxjs';
 
 // Mock the environment module
 jest.doMock('environments/environment', () => ({
@@ -14,7 +15,7 @@ jest.doMock('environments/environment', () => ({
 
 describe('HeaderFacade', () => {
   let store: MockStore;
-  let refreshSignalService: any;
+  let refreshSignalService: { counter: Observable<number> };
 
   beforeEach(() => {
     refreshSignalService = {

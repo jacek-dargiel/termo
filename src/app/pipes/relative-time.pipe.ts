@@ -17,7 +17,7 @@ export class RelativeTimePipe implements PipeTransform {
   currentTimeFactory = inject<timeFactory>(TERMO_CURRENT_TIME_FACTORY);
 
 
-  transform(value: Date): any {
+  transform(value: Date): string {
     let since = this.currentTimeFactory();
     if (isBefore(value, subDays(since, 2))) {
       let days = differenceInCalendarDays(since, value);
