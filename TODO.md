@@ -39,3 +39,4 @@
 [ ] Hide locations delayed by several days.
 [ ] Fix measurments typo.
 [ ] Refactor to signal store.
+[ ] Refactor to github actions
