@@ -1,19 +1,23 @@
 @if (!loading()) {
   <div
     class="temperature-box"
+    role="group"
+    aria-label="location-card"
+    data-testid="location-card"
     >
     <header>
-      <h2>🌡<span class="label">{{location().name}}</span></h2>
+      <h2>🌡<span class="label" data-testid="location-name">{{location().name}}</span></h2>
     </header>
     <div class="temperatures">
       <div class="temperature temperature--primary">
-        <span class="value">{{location().lastMeasurmentValue | toFixed}}</span><span class="unit">°C</span>
+        <span class="value" data-testid="location-temperature">{{location().lastMeasurmentValue | toFixed}}</span><span class="unit">°C</span>
       </div>
       @if (location().minimalMeasurmentValue !== null) {
         <div
           class="temperature temperature--minimal"
-          >
-          <span class="value">Min: {{location().minimalMeasurmentValue | toFixed}}</span><span class="unit">°C</span>
+          data-testid="location-minimal-temperature"
+        >
+          <span class="value">Min: <span data-testid="location-minimal-value">{{location().minimalMeasurmentValue | toFixed}}</span></span><span class="unit">°C</span>
         </div>
       }
     </div>

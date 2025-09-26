@@ -1,4 +1,5 @@
 import { test, expect, Route } from '@playwright/test';
+import { subDays } from 'date-fns';
 
 import { AIOFeed } from '../src/app/interfaces';
 
@@ -79,5 +80,65 @@ test.describe('Location loading', () => {
     );
   });
 
+  test('displays name, temperature and minimal temperature for a mocked location', async ({ page }) => {
+    const now = new Date();
+    const previous = subDays(now, 1);
+    await page.route('api/groups/tunele/feeds', async route => {
+      const feeds: Partial<AIOFeed>[] = [
+        {
+          key: 'temperature.feed_1234',
+          name: 'Feed name goes here',
+          description: JSON.stringify({ x: 0.25, y: 0.75 }),
+          updated_at: now.toISOString(),
+        }
+      ];
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(feeds) });
+    });
+
+    await page.route('api/feeds/**/data?*', async route => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify([
+          {
+            id: '123',
+            value: '23.45',
+            feed_id: 1234,
+            feed_key: 'temperature.feed_1234',
+            created_at: now.toISOString(),
+            created_epoch: Math.floor(now.getTime() / 1000)
+          },
+          {
+            id: '124',
+            value: '21.50',
+            feed_id: 1234,
+            feed_key: 'temperature.feed_1234',
+            created_at: previous.toISOString(),
+            created_epoch: Math.floor(previous.getTime() / 1000)
+          }
+        ])
+      });
+    });
+
+    await page.goto('/');
+
+    // Wait for any spinners to disappear
+    await page.waitForSelector('termo-spinner', { state: 'detached' });
+
+    const locationCard = page.getByRole('group', { name: 'location-card' });
+    await expect(locationCard).toHaveCount(1);
+    await expect(locationCard).toBeVisible();
+
+    const locationName = locationCard.getByRole('heading');
+    await expect(locationName).toContainText('Feed name goes here');
+
+    const temperature = locationCard.getByTestId('location-temperature')
+    expect(temperature).toBeVisible();
+    await expect(temperature).toHaveText(/23[.,]45/);
+
+    const minTemp = locationCard.getByTestId('location-minimal-value')
+    await expect(minTemp).toBeVisible();
+    await expect(minTemp).toContainText(/21[.,]50/);
+  });
 
 });
