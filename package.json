@@ -42,6 +42,7 @@
     "@swimlane/ngx-charts": "^23.0.1",
     "backoff-rxjs": "^7.0.0",
     "date-fns": "^2.28.3",
+    "ms": "^3.0.0 || ^3.0.0-canary.1",
     "normalize.css": "^8.0.0",
     "rxjs": "^7.8.0",
     "tslib": "^2.0.0",

@@ -1,3 +1,4 @@
+import ms from 'ms';
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -5,12 +6,11 @@
 export const environment = {
   production: false,
   API_URL: '/api',
-  locationOutdatedThreshold: 900000,  // 15 min === 90000 ms
-  refreshTimeout: 300000,             // 5 min === 30000 ms
-  snackbarDefaultTimeout: 5000,
+  locationOutdatedThreshold: ms('15m'),
+  refreshTimeout: ms('5m'),
+  snackbarDefaultTimeout: ms('5s'),
   mapBackgroundUrl: '/assets/map.jpg',
   feedDataLimit: 1000,
-  // refreshTimeout: 30000,
   sentryDsn: 'https://ffefcdedb2c3409a99c1e740056a54e2@sentry.io/5169978',
 };
 
