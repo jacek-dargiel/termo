@@ -1,5 +1,5 @@
 import { test, expect, Route } from '@playwright/test';
-import { subMilliseconds, subMinutes } from 'date-fns';
+import { getUnixTime, subMilliseconds, subMinutes } from 'date-fns';
 
 import { environment } from '../src/environments/environment';
 import { AIOFeed } from '../src/app/interfaces';
@@ -198,4 +198,69 @@ test.describe('Location loading', () => {
     await expect(feedOverdue.getByTestId('location-outdated')).toContainText('Opóźnione:');
   });
 
+  test('shows a chart with time axis and line after clicking a non-overdue location', async ({ page }) => {
+    const now = new Date();
+    const previous = subMinutes(now, 1);
+
+    await page.route('**/groups/tunele/feeds', async route => {
+      const feeds = [
+        {
+          key: 'temperature.fresh',
+          name: 'Fresh Location',
+          description: JSON.stringify({ x: 0.5, y: 0.5 }),
+          updated_at: now.toISOString(),
+        },
+      ];
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(feeds) });
+    });
+
+    await page.route('api/feeds/**/data?*', async route => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify([
+          {
+            id: '1',
+            value: '10',
+            feed_id: 1,
+            feed_key: 'temperature.fresh',
+            created_at: now.toISOString(),
+            created_epoch: getUnixTime(now)
+          },
+          {
+            id: '2',
+            value: '15',
+            feed_id: 1,
+            feed_key: 'temperature.fresh',
+            created_at: previous.toISOString(),
+            created_epoch: getUnixTime(previous)
+          }
+        ])
+      });
+    });
+
+    await page.goto('/');
+
+    // Wait for any spinners to disappear
+    await page.waitForSelector('termo-spinner', { state: 'detached' });
+
+    const locationCard = page.locator('termo-map-location');
+    await locationCard.click();
+
+    const svg = page.locator('ngx-charts-line-chart svg');
+    await expect(svg).toBeVisible();
+
+    // Check for time axis ticks
+    const timeLabels = await svg.locator('.axis.x .tick text');
+    const tickCount = await timeLabels.count();
+    expect(tickCount).toBeGreaterThan(1);
+
+    for (const tick of await timeLabels.all()) {
+      await expect(tick).toContainText(/\d{2}:\d{2}/);  // Matches HH:MM format
+    }
+
+    // Check for line path presence
+    const lineElement = svg.locator('.line-series path');
+    await expect(lineElement).toBeVisible();
+  });
 });

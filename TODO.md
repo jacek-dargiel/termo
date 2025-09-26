@@ -17,7 +17,7 @@
     [x] Loading indicator show while loading
     [x] Expected name, temperature and min-temperature values are shown
     [x] 'Outdated' warnings are shown
-    [ ] Clicking a location opens the chart. An actual chart is visible.
+    [x] Clicking a location opens the chart. An actual chart is visible.
     [ ] Refresh button works
     [ ] Autorefresh works
 [x] Evaluate usage of strictTemplates
