@@ -16,7 +16,7 @@
     [x] n map locations are shown
     [x] Loading indicator show while loading
     [x] Expected name, temperature and min-temperature values are shown
-    [ ] 'Outdated' warnings are shown
+    [x] 'Outdated' warnings are shown
     [ ] Clicking a location opens the chart. An actual chart is visible.
     [ ] Refresh button works
     [ ] Autorefresh works
