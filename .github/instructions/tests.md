@@ -1,5 +1,5 @@
 ---
-applyTo: "**/*.spec.ts"
+applyTo: "src/**/*.spec.ts"
 ---
 # Writing tests
 
