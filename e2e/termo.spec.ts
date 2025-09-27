@@ -264,3 +264,69 @@ test.describe('Location loading', () => {
     await expect(lineElement).toBeVisible();
   });
 });
+
+test.describe('Refreshing data', () => {
+  test('clicking the refresh button fetches new data', async ({ page }) => {
+    const date1 = subMinutes(new Date(), 1);
+    const date2 = new Date();
+    await page.route('**/groups/tunele/feeds', async route => {
+      const feeds = [
+        {
+          key: 'temperature.fresh',
+          name: 'Fresh Location',
+          description: JSON.stringify({ x: 0.5, y: 0.5 }),
+          updated_at: date1.toISOString(),
+        },
+      ];
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(feeds) });
+    });
+    let feedRequestCount = 0;
+    const dataPoints = [
+      {
+        id: '1',
+        value: '10',
+        feed_id: 1,
+        feed_key: 'temperature.fresh',
+        created_at: date1.toISOString(),
+        created_epoch: getUnixTime(date1)
+      },
+      {
+        id: '2',
+        value: '15',
+        feed_id: 1,
+        feed_key: 'temperature.fresh',
+        created_at: date2.toISOString(),
+        created_epoch: getUnixTime(date2)
+      }
+    ]
+    await page.route('api/feeds/**/data?*', async route => {
+      feedRequestCount++;
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(dataPoints.slice(0, feedRequestCount))
+      });
+    });
+
+    await page.goto('/');
+
+    // Wait for any spinners to disappear
+    await page.waitForSelector('termo-spinner', { state: 'detached' });
+
+    const locationCard = page.locator('termo-map-location');
+    await expect(locationCard).toBeVisible();
+
+    const temperature = locationCard.getByTestId('location-temperature')
+    const minimal = locationCard.getByTestId('location-minimal-value')
+    await expect(temperature).toBeVisible();
+    await expect(temperature).toHaveText('10.00');
+    await expect(minimal).toBeVisible();
+    await expect(minimal).toHaveText('10.00');
+
+    const refreshButton = page.getByRole('button', { name: 'Odśwież' });
+    await refreshButton.click();
+
+    await expect(temperature).toHaveText('15.00');
+    await expect(minimal).toHaveText('10.00');
+  });
+});
