@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromLocation from './location/location.reducer';
 import * as fromMeasurment from './measurment/measurment.reducer';
-import { Dictionary } from '@ngrx/entity/src/models';
+import { Dictionary } from '@ngrx/entity';
 import { Measurment } from './measurment/measurment.model';
 import { isAfter, subHours } from 'date-fns';
 import { LocationWithKeyMeasurmentValues, Location } from './location/location.model';

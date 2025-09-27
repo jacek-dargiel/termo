@@ -4,7 +4,7 @@ import { LocationActions, LocationActionTypes } from './location.actions';
 import { MeasurmentActionTypes, MeasurmentActions } from '../measurment/measurment.actions';
 import { Measurment } from '../measurment/measurment.model';
 import { compareAsc } from 'date-fns';
-import { Dictionary } from '@ngrx/entity/src/models';
+import { Dictionary } from '@ngrx/entity';
 
 export interface State extends EntityState<Location> {
   loading: boolean;
