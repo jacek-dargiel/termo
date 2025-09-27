@@ -12,14 +12,14 @@
     [x] Check if it still requires d3-color@2
 [x] Add playwright
     [x] Remove termo-e2e from angular.json
-[ ] Implement some playwright E2E tests
+[x] Implement some playwright E2E tests
     [x] n map locations are shown
     [x] Loading indicator show while loading
     [x] Expected name, temperature and min-temperature values are shown
     [x] 'Outdated' warnings are shown
     [x] Clicking a location opens the chart. An actual chart is visible.
-    [ ] Refresh button works
-    [ ] Autorefresh works
+    [x] Refresh button works
+    [x] Autorefresh works
 [x] Evaluate usage of strictTemplates
 [x] Run A19 migrations and test
     [x] Build system migration
