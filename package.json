@@ -38,7 +38,7 @@
     "@ngrx/operators": "^20.0.1",
     "@ngrx/store": "20.0.1",
     "@ngrx/store-devtools": "20.0.1",
-    "@sentry/browser": "^7.47.0",
+    "@sentry/browser": "^7.120.4",
     "@swimlane/ngx-charts": "^23.0.1",
     "backoff-rxjs": "^7.0.0",
     "date-fns": "^2.28.3",
