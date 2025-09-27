@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SnackbarComponent } from './snackbar.component';
 import { Subject } from 'rxjs';
-import { SnackbarService } from '../../services/snackbar.service';
+import { SnackbarData, SnackbarService } from '../../services/snackbar.service';
 
 class MockSnapshotService {
-  messages = new Subject();
+  messages = new Subject<SnackbarData>();
 }
 
 describe('SnackbarComponent', () => {
@@ -14,15 +14,14 @@ describe('SnackbarComponent', () => {
   let service: MockSnapshotService;
 
   beforeEach(waitForAsync(() => {
+    service = new MockSnapshotService();
     TestBed.configureTestingModule({
       imports: [ SnackbarComponent ],
       providers: [
-        { provide: SnackbarService, useClass: MockSnapshotService }
+        { provide: SnackbarService, useValue: service }
       ],
     })
       .compileComponents();
-
-    service = TestBed.get(SnackbarService);
   }));
 
   beforeEach(() => {
@@ -40,8 +39,9 @@ describe('SnackbarComponent', () => {
   });
 
   it('should render a snackbar when message recived', () => {
-    let message = {
+    let message: SnackbarData = {
       message: 'Something is wrong',
+      timeout: 3000,
     };
     service.messages.next(message);
     fixture.detectChanges();

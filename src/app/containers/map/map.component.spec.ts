@@ -69,12 +69,13 @@ describe('MapComponent', () => {
   let since = new Date('2018-09-19T22:15:00');
 
   beforeEach(waitForAsync(() => {
+    facade = new MockMapFacade();
     TestBed.configureTestingModule({
       imports: [
         MapComponent,
       ],
       providers: [
-        { provide: MapFacade, useClass: MockMapFacade },
+        { provide: MapFacade, useValue: facade },
         { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => since }
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -82,15 +83,12 @@ describe('MapComponent', () => {
     .overrideComponent(MapComponent, { remove: { imports: [HeaderComponent]}})
     .overrideComponent(MapComponent, { remove: { imports: [MapLocationComponent] }, add: { imports: [MockMapLocationComponent]}})
     .compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(MapComponent);
     component = fixture.componentInstance;
     component.updateMapRatio = jest.fn(component.updateMapRatio);
-    facade = TestBed.get(MapFacade);
     fixture.detectChanges();
-  });
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

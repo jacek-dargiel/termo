@@ -63,16 +63,17 @@ describe('ChartComponent', () => {
   let facade: MockChartFacade;
 
   beforeEach(waitForAsync(() => {
+    facade = new MockChartFacade();
+
     TestBed.configureTestingModule({
       imports: [ ChartComponent ],
       providers: [
-        { provide: ChartFacade, useClass: MockChartFacade }
+        { provide: ChartFacade, useValue: facade }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .overrideComponent(ChartComponent, { remove: { imports: [LineChartModule]}})
     .compileComponents();
-    facade = TestBed.get(ChartFacade);
   }));
 
   beforeEach(() => {
