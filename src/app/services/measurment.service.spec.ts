@@ -37,16 +37,17 @@ class MockApiSerivce {
 }
 
 describe('MeasurmentService', () => {
-  let api: ApiService;
+  let api: MockApiSerivce;
 
   beforeEach(() => {
-    let bed = TestBed.configureTestingModule({
+    api = new MockApiSerivce();
+    TestBed.configureTestingModule({
       providers: [
         MeasurmentService,
-        { provide: ApiService, useClass: MockApiSerivce }
+        { provide: ApiService, useValue: api }
       ]
     });
-    api = bed.get(ApiService);
+
   });
 
   it('should be created', inject([MeasurmentService], (service: MeasurmentService) => {
