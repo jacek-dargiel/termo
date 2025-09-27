@@ -33,9 +33,9 @@
     [x] Self-closing tags
     [x] Unused import
 [x] Update ESLint to v9 with flat config.
-[ ] Update to A20
-[ ] Evaluate package.json packages, update.
-[ ] npm audit
+[x] Update to A20
+[x] Evaluate package.json packages, update.
+[x] npm audit
 [ ] Fix measurments typo.
 [ ] Use `host` on `@Component` instead of `@HostBinding` and `@HostListener` https://angular.dev/guide/components/host-elements#binding-to-the-host-element
     [ ] Enable host binding type checking in `angularCompilerOptions`.
