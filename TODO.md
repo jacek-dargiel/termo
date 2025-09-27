@@ -36,7 +36,9 @@
 [ ] Update to A20
 [ ] Evaluate package.json packages, update.
 [ ] npm audit
-[ ] Hide locations delayed by several days.
 [ ] Fix measurments typo.
+[ ] Use `host` on `@Component` instead of `@HostBinding` and `@HostListener` https://angular.dev/guide/components/host-elements#binding-to-the-host-element
+    [ ] Enable host binding type checking in `angularCompilerOptions`.
+[ ] Hide locations delayed by several days.
 [ ] Refactor to signal store.
 [ ] Refactor to github actions
