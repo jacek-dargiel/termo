@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SnackbarComponent } from './snackbar.component';
 import { Subject } from 'rxjs';
@@ -13,7 +13,7 @@ describe('SnackbarComponent', () => {
   let fixture: ComponentFixture<SnackbarComponent>;
   let service: MockSnapshotService;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     service = new MockSnapshotService();
     TestBed.configureTestingModule({
       imports: [ SnackbarComponent ],
@@ -22,7 +22,7 @@ describe('SnackbarComponent', () => {
       ],
     })
       .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SnackbarComponent);

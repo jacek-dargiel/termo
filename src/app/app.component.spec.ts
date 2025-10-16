@@ -1,24 +1,25 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA, provideZonelessChangeDetection } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { MapComponent } from './containers/map/map.component';
-import { SnackbarComponent } from './components/snackbar/snackbar.component';
 import { ChartComponent } from './containers/chart/chart.component';
+import { ErrorHandlingService } from './services/error-handling.service';
 describe('AppComponent', () => {
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         AppComponent
       ],
       schemas: [NO_ERRORS_SCHEMA],
+      providers: [provideZonelessChangeDetection(), ErrorHandlingService]
     })
-      .overrideComponent(AppComponent, { remove: { imports: [MapComponent, ChartComponent, SnackbarComponent]}})
+      .overrideComponent(AppComponent, { remove: { imports: [MapComponent, ChartComponent ]}})
       .compileComponents();
-  }));
-  it('should create the app', waitForAsync(() => {
+  });
+  it('should create the app', () => {
     let fixture = TestBed.createComponent(AppComponent);
     let app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
-  }));
+  });
 });

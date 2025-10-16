@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
 import { HeaderFacade } from './header.facade';
 import { ReplaySubject } from 'rxjs';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, provideZonelessChangeDetection } from '@angular/core';
 import { RefreshButtonComponent } from '../../components/refresh-button/refresh-button.component';
 import { AsyncPipe } from '@angular/common';
 
@@ -24,18 +24,19 @@ describe('HeaderComponent', () => {
   let fixture: ComponentFixture<HeaderComponent>;
   let facade: HeaderFacade;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ HeaderComponent, RefreshButtonComponent, AsyncPipe ],
       providers: [
-        { provide: HeaderFacade, useClass: MockHeaderFacade }
+        { provide: HeaderFacade, useClass: MockHeaderFacade },
+        provideZonelessChangeDetection()
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
     .overrideComponent(HeaderComponent, { remove: { imports: [RefreshButtonComponent]}})
     .compileComponents()
     facade = TestBed.inject(HeaderFacade);
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed
