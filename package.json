@@ -45,8 +45,7 @@
     "ms": "^3.0.0 || ^3.0.0-canary.1",
     "normalize.css": "^8.0.0",
     "rxjs": "^7.8.0",
-    "tslib": "^2.0.0",
-    "zone.js": "~0.15.1"
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^20.3.3",
