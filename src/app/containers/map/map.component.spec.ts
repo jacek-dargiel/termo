@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { Component, Input, HostBinding, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA, input } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, Input, HostBinding, Output, EventEmitter, CUSTOM_ELEMENTS_SCHEMA, input, provideZonelessChangeDetection } from '@angular/core';
 
 import { MapComponent } from './map.component';
 import { MapFacade } from './map.facade';
@@ -68,7 +68,7 @@ describe('MapComponent', () => {
   let facade: MockMapFacade;
   let since = new Date('2018-09-19T22:15:00');
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     facade = new MockMapFacade();
     TestBed.configureTestingModule({
       imports: [
@@ -76,7 +76,8 @@ describe('MapComponent', () => {
       ],
       providers: [
         { provide: MapFacade, useValue: facade },
-        { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => since }
+        { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => since },
+        provideZonelessChangeDetection()
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -88,7 +89,7 @@ describe('MapComponent', () => {
     component = fixture.componentInstance;
     component.updateMapRatio = jest.fn(component.updateMapRatio);
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

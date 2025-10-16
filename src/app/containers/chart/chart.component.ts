@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, HostBinding, OnDestroy, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ChartFacade } from './chart.facade';
 import { Subscription } from 'rxjs';
 import { Location } from '../../state/location/location.model';
@@ -11,10 +11,12 @@ import { LineChartModule } from '@swimlane/ngx-charts';
     selector: 'termo-chart',
     templateUrl: './chart.component.html',
     styleUrls: ['./chart.component.scss'],
-    imports: [LineChartModule]
+    imports: [LineChartModule],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChartComponent implements OnInit, OnDestroy {
   private chartFacade = inject(ChartFacade);
+  private cdr = inject(ChangeDetectorRef);
 
   @HostBinding('class.chart--visible') visible = false;
   selectedLocationSub: Subscription;
@@ -28,6 +30,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       .subscribe(location => {
         this.location = location;
         this.visible = Boolean(location);
+        this.cdr.markForCheck();
       });
 
     this.locationMeasurmentsSub = this.chartFacade.selectedLocationMeasurments$
@@ -37,6 +40,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       )
       .subscribe(data => {
         this.chartData = data;
+        this.cdr.markForCheck();
       });
   }
 

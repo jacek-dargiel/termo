@@ -1,17 +1,19 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RefreshButtonComponent } from './refresh-button.component';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('RefreshButtonComponent', () => {
   let component: RefreshButtonComponent;
   let fixture: ComponentFixture<RefreshButtonComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ RefreshButtonComponent ]
+      imports: [ RefreshButtonComponent ],
+      providers: [provideZonelessChangeDetection()]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RefreshButtonComponent);

@@ -43,4 +43,4 @@
 [ ] Refactor to signal store.
 [ ] Refactor to github actions
 [ ] migrate to angular's built-in experimental vitest framework (vitest promises easy migration from jest) https://angular.dev/guide/testing/unit-tests
-[ ] Evaluate Zoneless.
+[x] Zoneless.

@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, inject } from '@angular/core';
+import { Component, OnInit, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MapFacade } from './map.facade';
 import { Location } from '../../state/location/location.model';
 import { HeaderComponent } from '../header/header.component';
@@ -9,7 +9,8 @@ import { AsyncPipe } from '@angular/common';
     selector: 'termo-map',
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.scss'],
-    imports: [HeaderComponent, MapLocationComponent, AsyncPipe]
+    imports: [HeaderComponent, MapLocationComponent, AsyncPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapComponent implements OnInit {
   private mapFacade = inject(MapFacade);

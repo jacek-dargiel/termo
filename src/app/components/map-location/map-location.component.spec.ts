@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform, provideZonelessChangeDetection } from '@angular/core';
 
 import { MapLocationComponent } from './map-location.component';
 import { LocationWithKeyMeasurmentValues } from '../../state/location/location.model';
@@ -18,7 +18,7 @@ describe('MapLocationComponent', () => {
   let component: MapLocationComponent;
   let fixture: ComponentFixture<MapLocationComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     let since = new Date('2018-09-19T22:15:00');
     TestBed.configureTestingModule({
       imports: [
@@ -26,6 +26,7 @@ describe('MapLocationComponent', () => {
       ],
       providers: [
         { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => since },
+        provideZonelessChangeDetection(),
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -34,7 +35,7 @@ describe('MapLocationComponent', () => {
       add: { imports: [ MockToFixedPipe ]},
     })
     .compileComponents();
-  }));
+  });
 
   let baseLocation: LocationWithKeyMeasurmentValues;
   beforeEach(() => {

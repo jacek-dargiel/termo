@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { HeaderFacade } from './header.facade';
 import { RefreshButtonComponent } from '../../components/refresh-button/refresh-button.component';
 import { AsyncPipe } from '@angular/common';
@@ -7,7 +7,8 @@ import { AsyncPipe } from '@angular/common';
     selector: 'termo-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
-    imports: [RefreshButtonComponent, AsyncPipe]
+    imports: [RefreshButtonComponent, AsyncPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
   private headerFacade = inject(HeaderFacade);

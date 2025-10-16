@@ -1,17 +1,19 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SpinnerComponent } from './spinner.component';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('SpinnerComponent', () => {
   let component: SpinnerComponent;
   let fixture: ComponentFixture<SpinnerComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ SpinnerComponent ]
+      imports: [ SpinnerComponent ],
+      providers: [provideZonelessChangeDetection()]
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SpinnerComponent);

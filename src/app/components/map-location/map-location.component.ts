@@ -1,4 +1,4 @@
-import { Component, Input, HostBinding, OnInit, HostListener, input, output } from '@angular/core';
+import { Component, Input, HostBinding, OnInit, HostListener, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/location.model';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
@@ -9,7 +9,8 @@ import { ToFixedPipe } from '../../pipes/to-fixed.pipe';
     selector: 'termo-map-location',
     templateUrl: './map-location.component.html',
     styleUrls: ['./map-location.component.scss'],
-    imports: [SpinnerComponent, IsLocationOutdatedPipe, RelativeTimePipe, ToFixedPipe]
+    imports: [SpinnerComponent, IsLocationOutdatedPipe, RelativeTimePipe, ToFixedPipe],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapLocationComponent implements OnInit {
   readonly location = input<LocationWithKeyMeasurmentValues>();

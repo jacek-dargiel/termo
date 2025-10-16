@@ -1,4 +1,4 @@
-import { enableProdMode, ErrorHandler, importProvidersFrom } from '@angular/core';
+import { enableProdMode, ErrorHandler, importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
 
 
 import { environment } from 'environments/environment';
@@ -43,7 +43,8 @@ bootstrapApplication(AppComponent, {
         { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => new Date() },
         { provide: ErrorHandler, useClass: SentryErrorHandler },
         provideHttpClient(withInterceptorsFromDi()),
-        provideAnimations()
+        provideAnimations(),
+        provideZonelessChangeDetection()
     ]
 })
   .catch(err => console.log(err));

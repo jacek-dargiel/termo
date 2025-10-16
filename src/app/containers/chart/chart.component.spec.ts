@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA, provideZonelessChangeDetection } from '@angular/core';
 
 import { ChartComponent } from './chart.component';
 import { ChartFacade } from './chart.facade';
@@ -62,19 +62,20 @@ describe('ChartComponent', () => {
   let fixture: ComponentFixture<ChartComponent>;
   let facade: MockChartFacade;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(() => {
     facade = new MockChartFacade();
 
     TestBed.configureTestingModule({
       imports: [ ChartComponent ],
       providers: [
-        { provide: ChartFacade, useValue: facade }
+        { provide: ChartFacade, useValue: facade },
+        provideZonelessChangeDetection()
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .overrideComponent(ChartComponent, { remove: { imports: [LineChartModule]}})
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ChartComponent);
