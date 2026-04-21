@@ -247,7 +247,7 @@ test.describe('Location loading', () => {
     const locationCard = page.locator('termo-map-location');
     await locationCard.click();
 
-    const svg = page.locator('ngx-charts-line-chart svg');
+    const svg = page.locator('ng-charts-line-chart svg');
     await expect(svg).toBeVisible();
 
     // Check for time axis ticks

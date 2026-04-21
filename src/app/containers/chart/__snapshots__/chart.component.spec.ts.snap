@@ -48,7 +48,7 @@ exports[`ChartComponent should render chart 1`] = `
     <div
       class="chart__container"
     >
-      <ngx-charts-line-chart />
+      <ng-charts-line-chart />
     </div>
   </div>
 </termo-chart>
@@ -89,7 +89,7 @@ exports[`ChartComponent should render new location when location changes 1`] = `
     <div
       class="chart__container"
     >
-      <ngx-charts-line-chart />
+      <ng-charts-line-chart />
     </div>
   </div>
 </termo-chart>

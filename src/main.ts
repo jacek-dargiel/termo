@@ -18,7 +18,6 @@ import { reducers, metaReducers } from './app/state/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app/app.effects';
-import { LineChartModule } from '@swimlane/ngx-charts';
 import { AppComponent } from './app/app.component';
 
 if (environment.production) {
@@ -33,8 +32,7 @@ bootstrapApplication(AppComponent, {
           !environment.production ? StoreDevtoolsModule.instrument({ serialize: { options: { map: true, set: true } }, connectInZone: true }) : [],
           EffectsModule.forRoot([AppEffects]),
           StoreModule.forFeature('location', fromLocation.reducer),
-          StoreModule.forFeature('measurment', fromMeasurment.reducer),
-          LineChartModule
+          StoreModule.forFeature('measurment', fromMeasurment.reducer)
         ),
         ErrorHandlingService,
         LocationService,

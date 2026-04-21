@@ -6,7 +6,7 @@ import { ChartFacade } from './chart.facade';
 import { ReplaySubject } from 'rxjs';
 import { Location } from '../../state/location/location.model';
 import { Measurment } from '../../state/measurment/measurment.model';
-import { LineChartModule } from '@swimlane/ngx-charts';
+import { LineChartComponent } from '@glitchtip/ng-charts';
 
 let mockLocation: Location = {
   id: 'temperatura.gorny_tunel',
@@ -73,7 +73,7 @@ describe('ChartComponent', () => {
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .overrideComponent(ChartComponent, { remove: { imports: [LineChartModule]}})
+    .overrideComponent(ChartComponent, { remove: { imports: [LineChartComponent]}})
     .compileComponents();
   });
 
@@ -102,6 +102,6 @@ describe('ChartComponent', () => {
   // it('should render new measurments when measurments change', () => {
   //   facade.selectedLocationMeasurments$.next(mockMeasurmnets2);
   //   fixture.detectChanges();
-  //   let chart = fixture.debugElement.query(By.css('ngx-charts-line-chart'));
+  //   let chart = fixture.debugElement.query(By.css('ng-charts-line-chart'));
   // });
 });

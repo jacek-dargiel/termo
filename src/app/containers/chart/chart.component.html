@@ -12,13 +12,13 @@
     </header>
     <div class="chart__container">
       @if (location && chartData) {
-        <ngx-charts-line-chart
+        <ng-charts-line-chart
           [results]="chartData"
           [xAxis]="true"
           [yAxis]="true"
           [roundDomains]="true"
           [xAxisTickFormatting]="formatTime"
-        ></ngx-charts-line-chart>
+        ></ng-charts-line-chart>
       }
     </div>
   </div>
