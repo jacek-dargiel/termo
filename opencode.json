@@ -1,7 +1,12 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "angular-cli": {
+  "mcp":{
+    "duckduckgo": {
+      "type": "local",
+      "command": ["docker", "run", "-i", "--rm", "mcp/duckduckgo"],
+      "enabled": true
+    },
+    "angular-cli":{
       "type": "local",
       "command": ["npx", "-y", "@angular/cli", "mcp"],
       "enabled": true
