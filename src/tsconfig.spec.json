@@ -2,10 +2,12 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "outDir": "../out-tsc/spec",
-    "types": ["jest", "node"]
+    "types": ["node"]
   },
   "include": [
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
+    "test-setup.ts",
+    "polyfills.ts",
+    "**/*.spec.ts",
+    "**/*.d.ts"
   ]
 }

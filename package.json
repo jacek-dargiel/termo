@@ -17,8 +17,8 @@
     "deploy": "npm run lint && npm run test && npm run e2e-setup && npm run e2e && npm run build && npm run post-deploy",
     "post-deploy": "envsub ./dist/browser/index.html && envsub netlify.toml.template netlify.toml && npm run sentry-release",
     "lint": "ng lint",
-    "test": "jest --silent --maxWorkers=2",
-    "test:watch": "jest --watch",
+    "test": "ng test --no-watch --no-progress",
+    "test:watch": "ng test",
     "e2e": "ng e2e"
   },
   "private": true,
@@ -56,10 +56,10 @@
     "@angular-eslint/template-parser": "21.3.1",
     "@angular/cli": "^21.2.7",
     "@angular/compiler-cli": "^21.2.9",
+    "@granito/vitest-marbles": "^1.1.2",
     "@ngrx/schematics": "21.1.0",
     "@playwright/test": "1.55.1",
     "@sentry/cli": "^2.55.0",
-    "@types/jest": "^30.0.0",
     "@types/node": "^22",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",
@@ -68,17 +68,9 @@
     "envsub": "^4.1.0",
     "esbuild-visualizer": "^0.7.0",
     "eslint": "^9.28.0",
-    "jest": "^30.3.0",
-    "jest-environment-jsdom": "^30.3.0",
-    "jest-marbles": "^3.1.1",
-    "jest-preset-angular": "^16.1.4",
+    "jsdom": "^26.1.0",
     "playwright-ng-schematics": "^2.1.1",
-    "typescript": "5.9.3"
-  },
-  "overrides": {
-    "@angular-devkit/build-angular": {
-      "jest": "^30.0",
-      "jest-environment-jsdom": "^30.0"
-    }
+    "typescript": "5.9.3",
+    "vitest": "^4.1.5"
   }
 }
