@@ -20,8 +20,14 @@
 ## Testing Migration Gotchas
 - Unit test target includes only `src/**/*.spec.ts` (`angular.json` + `src/tsconfig.spec.json`), so `*.jest-spec.ts` files are intentionally excluded from normal `npm test` runs.
 - Project is on Vitest now (`vitest` + `@angular/build:unit-test`); do not add new Jest-based tests.
-- Some repo guidance files still mention Jest/jest-marbles (`.github/instructions/tests.instructions.md`, `.cursor/rules/unit-tests.mdc`) and are stale. Prefer executable config and current deps.
 - Legacy tests are intentionally kept as `*.jest-spec.ts` for migration reference; use provided migration skills instead of deleting blindly.
+
+## External Rule Loading
+- CRITICAL: When you see a rules file reference (for example `@.agents/rules/unit-tests.instructions.md`), use the Read tool and load it only when relevant to the current task.
+- Do not preload all rule files; use lazy loading based on what you are editing (unit tests vs e2e).
+- Treat loaded rules as mandatory task-specific instructions.
+- Unit-test guidance: `@.agents/rules/unit-tests.instructions.md`.
+- E2E guidance: `@.agents/rules/e2e.instructions.md`.
 
 ## Coding Style Preferences
 - Prefer `date-fns` for date/time math and formatting.

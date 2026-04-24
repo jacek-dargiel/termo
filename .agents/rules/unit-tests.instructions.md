@@ -6,9 +6,9 @@ applyTo: "src/**/*.spec.ts"
 ## Type safety
 Use strict types for better type safety. Import types and interfaces defined in the project whenever needed. Avoid using `any`.
 
-## Using jest-marbles
+## Using vitest-marbles
 
-Prefer using marble diagrams for testing RxJS observables. Use jest-marbles.
+Prefer using marble diagrams for testing RxJS observables. Use `@granito/vitest-marbles`.
 
 ### Examples
 
@@ -112,7 +112,7 @@ But got:
 Allows you to assert on certain side effects/conditions that should be satisfied when the observable has been flushed (finished)
 ```js
   it('should verify mock has been called', () => {
-      const mock = jest.fn();
+      const mock = vi.fn();
       const stream$ = cold('blah|').pipe(tap(mock));
       expect(stream$).toSatisfyOnFlush(() => {
           expect(mock).toHaveBeenCalledTimes(4);
@@ -152,7 +152,7 @@ Usage:
 <code-example header="auth.guard.spec.ts">
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { cold } from 'jasmine-marbles';
+import { cold } from '@granito/vitest-marbles';
 
 import { AuthGuard } from '../guards/auth.guard';
 
@@ -348,7 +348,7 @@ Testing Effects via marble diagrams is particularly useful when the Effect is ti
 
 For a detailed look on the marble syntax, see [Writing marble tests](https://rxjs.dev/guide/testing/marble-testing).
 
-The `hot`, `cold`, and `toBeObservable` methods are imported from [`jasmine-marbles`](https://www.npmjs.com/package/jasmine-marbles).
+The `hot`, `cold`, and `toBeObservable` methods are imported from [`@granito/vitest-marbles`](https://www.npmjs.com/package/@granito/vitest-marbles).
 
 </div>
 
@@ -383,7 +383,7 @@ expect(
 
 #### With `TestScheduler`
 
-Instead of using `jasmine-marbles`, we can also run tests with the [RxJS `TestScheduler`](https://rxjs.dev/guide/testing/marble-testing).
+Instead of using `@granito/vitest-marbles`, we can also run tests with the [RxJS `TestScheduler`](https://rxjs.dev/guide/testing/marble-testing).
 
 To use the `TestScheduler` we first have to instantiate it,
 this can be done in the test case or within a `beforeEach` block.
