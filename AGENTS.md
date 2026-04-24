@@ -4,6 +4,7 @@
 - Single-package Angular app (not a monorepo); main entrypoint is `src/main.ts` using standalone bootstrap (`bootstrapApplication`) with NgRx effects/store wired there.
 - State feature names and paths intentionally use the typo `measurment` (actions/reducer/service/files). Reuse that spelling when editing existing code.
 - Runtime API base is `environment.API_URL` (`/api` in both env files), prepended in `src/app/services/api.service.ts`.
+- Prefer `date-fns` helpers for date/time manipulation instead of manual timestamp math.
 
 ## Commands You Should Actually Use
 - Install: `npm ci` (repo uses npm lockfile and `angular.json` sets package manager to npm).
