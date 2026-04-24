@@ -12,7 +12,7 @@
 | [x] | 10 | `src/app/pipes/to-fixed.pipe.jest-spec.ts` | 41.3 | 32 | 1 | 7 | 0 | 0 | 0 | 0 | 11 | 0 | 0 |
 | [x] | 11 | `src/app/pipes/is-location-outdated.pipe.jest-spec.ts` | 43.0 | 29 | 3 | 3 | 1 | 0 | 0 | 3 | 9 | 0 | 0 |
 | [x] | 12 | `src/app/components/spinner/spinner.component.jest-spec.ts` | 45.7 | 25 | 3 | 2 | 2 | 0 | 0 | 3 | 3 | 0 | 6 |
-| [ ] | 13 | `src/app/containers/chart/chart.facade.jest-spec.ts` | 45.9 | 28 | 4 | 2 | 1 | 1 | 2 | 4 | 4 | 2 | 0 |
+| [x] | 13 | `src/app/containers/chart/chart.facade.jest-spec.ts` | 45.9 | 28 | 4 | 2 | 1 | 1 | 2 | 4 | 4 | 2 | 0 |
 | [x] | 14 | `src/app/pipes/relative-time.pipe.jest-spec.ts` | 47.5 | 34 | 3 | 4 | 1 | 0 | 0 | 3 | 10 | 0 | 0 |
 | [ ] | 15 | `src/app/services/location.service.jest-spec.ts` | 51.9 | 61 | 5 | 6 | 1 | 1 | 0 | 3 | 8 | 0 | 0 |
 | [ ] | 16 | `src/app/services/map-background.service.jest-spec.ts` | 59.1 | 99 | 3 | 6 | 2 | 3 | 0 | 6 | 3 | 0 | 0 |
