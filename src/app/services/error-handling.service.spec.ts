@@ -1,4 +1,3 @@
-import { cold } from '@granito/vitest-marbles';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ErrorHandlingService } from './error-handling.service';
@@ -12,14 +11,17 @@ describe('ErrorHandlingService', () => {
 
   it('emits each handled error in order on errors$', () => {
     const service = new ErrorHandlingService();
+    const emitted: Error[] = [];
+    const subscription = service.errors$.subscribe(error => emitted.push(error));
     const firstError = new Error('first');
     const secondError = new Error('second');
 
-    cold('-ab', { a: firstError, b: secondError }).subscribe(error => service.handle(error));
+    service.handle(firstError);
+    service.handle(secondError);
 
-    const expected$ = cold('-ab', { a: firstError, b: secondError });
+    expect(emitted).toEqual([firstError, secondError]);
 
-    expect(service.errors$).toBeObservable(expected$);
+    subscription.unsubscribe();
   });
 
   it('emits the same Error instance passed to handle', () => {

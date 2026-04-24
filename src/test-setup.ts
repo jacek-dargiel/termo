@@ -29,9 +29,13 @@ Object.defineProperty(window, 'getComputedStyle', {
   }),
   configurable: true
 });
-Object.defineProperty(document.body.style, 'transform', {
-  value: () => ({
-    enumerable: true,
+const styleTransformDesc = Object.getOwnPropertyDescriptor(document.body.style, 'transform');
+if (!styleTransformDesc || styleTransformDesc.configurable) {
+  Object.defineProperty(document.body.style, 'transform', {
+    value: () => ({
+      enumerable: true,
+      configurable: true
+    }),
     configurable: true
-  })
-});
+  });
+}
