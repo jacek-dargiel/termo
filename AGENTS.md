@@ -1,32 +1,40 @@
 # AGENTS
 
-## Fast Facts
-- Single-package Angular app (not a monorepo); main entrypoint is `src/main.ts` using standalone bootstrap (`bootstrapApplication`) with NgRx effects/store wired there.
-- State feature names and paths intentionally use the typo `measurment` (actions/reducer/service/files). Reuse that spelling when editing existing code.
-- Runtime API base is `environment.API_URL` (`/api` in both env files), prepended in `src/app/services/api.service.ts`.
-- Prefer `date-fns` helpers for date/time manipulation instead of manual timestamp math.
+## Repo Facts That Matter
+- Single Angular v21 application (not a monorepo). Entrypoint is `src/main.ts` with standalone `bootstrapApplication` and NgRx store/effects wired there.
+- App runs zoneless (`provideZonelessChangeDetection()` in `src/main.ts`), so keep tests and app code compatible with zoneless behavior.
+- State/service naming intentionally uses typo `measurment` across files and feature keys; keep that spelling when touching existing code.
+- API calls are always prefixed in `src/app/services/api.service.ts` with `environment.API_URL` (`/api` in both env files).
 
-## Commands You Should Actually Use
-- Install: `npm ci` (repo uses npm lockfile and `angular.json` sets package manager to npm).
-- Dev server: `npm start` (uses proxy config from `proxy.conf.json`).
+## Commands (Source of Truth: `package.json`)
+- Install deps: `npm ci`.
+- Dev server: `npm start` (uses `proxy.conf.json`).
 - Lint: `npm run lint`.
-- Unit tests: `npm test` (Jest, not Karma).
-- Single unit test file: `npm test -- src/app/path/to/file.spec.ts`.
-- Update Jest snapshots: `npm test -- -u`.
-- E2E with auto dev server: `npm run e2e` (Angular builder wraps Playwright).
-- Focused Playwright run: start app separately, then `npx playwright test e2e/termo.spec.ts`.
+- Unit tests (Vitest via Angular test builder): `npm test`.
+- Run one unit spec: `npm run test:file -- src/app/path/to/file.spec.ts`.
+- Legacy Jest-spec complexity ranking: `npm run test:legacy:rank -- --top 10` (or `--json`).
+- E2E with auto dev server: `npm run e2e`.
+- Direct Playwright run: start app first, then `npx playwright test e2e/termo.spec.ts` (no `webServer` in `playwright.config.ts`).
+- Deploy pipeline order is fixed: `lint -> test -> e2e-setup -> e2e -> build -> post-deploy`.
 
-## Testing/Tooling Gotchas
-- Jest is configured via `jest.config.js` with `jest-preset-angular` + zoneless setup in `setup-jest.ts`; ignore old Karma assumptions.
-- Snapshot files live under `src/**/__snapshots__/*.snap`; UI tests commonly assert snapshots.
-- RxJS/NgRx tests in this repo heavily use `jest-marbles`; follow that style for effects/selectors/facades.
-- E2E tests are in `e2e/*.spec.ts`; config is `playwright.config.ts` (no `webServer` block, so direct Playwright runs need a running app).
+## Testing Migration Gotchas
+- Unit test target includes only `src/**/*.spec.ts` (`angular.json` + `src/tsconfig.spec.json`), so `*.jest-spec.ts` files are intentionally excluded from normal `npm test` runs.
+- Project is on Vitest now (`vitest` + `@angular/build:unit-test`); do not add new Jest-based tests.
+- Some repo guidance files still mention Jest/jest-marbles (`.github/instructions/tests.instructions.md`, `.cursor/rules/unit-tests.mdc`) and are stale. Prefer executable config and current deps.
+- Legacy tests are intentionally kept as `*.jest-spec.ts` for migration reference; use provided migration skills instead of deleting blindly.
 
-## API/Infra Details That Affect Changes
+## Coding Style Preferences
+- Prefer `date-fns` for date/time math and formatting.
+- For RxJS behavior tests, prefer marble tests with `@granito/vitest-marbles`.
+- Follow workspace defaults: 2-space indentation, SCSS for component styles, selector prefix `termo`.
+
+## Infra/Environment Details
 - Dev proxy rewrites `/api/*` to `https://io.adafruit.com/api/v2/przemekd/*` (`proxy.conf.json`).
-- Production redirect template is `netlify.toml.template`; deployment runs `envsub` to generate `netlify.toml` and inject env vars.
-- Full deploy script order is fixed in `package.json`: lint -> test -> e2e setup -> e2e -> build -> post-deploy.
+- Production redirect is templated in `netlify.toml.template`; `post-deploy` generates `netlify.toml` via `envsub`.
+- Runtime in `package.json` expects Node `24.x`.
 
-## Existing Instruction Sources
-- Additional test-writing guidance exists in `.github/instructions/tests.instructions.md` and `.github/instructions/e2e.instructions.md` (mirrored in `.cursor/rules/`).
-- Treat repository config/scripts as source of truth when those docs conflict (for example, test runner is Jest via `npm test`).
+## Agent-Specific Tooling
+- OpenCode MCP config is in `opencode.json`.
+- `angular-cli` MCP is available for Angular docs/project-aware tooling.
+- `grounded-docs` MCP is available; use it for up-to-date Vitest docs when needed.
+- Repo includes migration skills under `.agents/skills/`: `test-rewrite-planner` and `legacy-jest-complexity-ranker`.
