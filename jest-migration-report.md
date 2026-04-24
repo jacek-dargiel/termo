@@ -17,7 +17,7 @@
 | [x] | 15 | `src/app/services/location.service.jest-spec.ts` | 51.9 | 61 | 5 | 6 | 1 | 1 | 0 | 3 | 8 | 0 | 0 |
 | [x] | 16 | `src/app/services/map-background.service.jest-spec.ts` | 59.1 | 99 | 3 | 6 | 2 | 3 | 0 | 6 | 3 | 0 | 0 |
 | [x] | 17 | `src/app/services/measurment.service.jest-spec.ts` | 64.9 | 88 | 6 | 5 | 1 | 2 | 0 | 2 | 12 | 0 | 0 |
-| [ ] | 18 | `src/app/components/snackbar/snackbar.component.jest-spec.ts` | 67.0 | 42 | 4 | 3 | 2 | 0 | 0 | 3 | 6 | 0 | 9 |
+| [x] | 18 | `src/app/components/snackbar/snackbar.component.jest-spec.ts` | 67.0 | 42 | 4 | 3 | 2 | 0 | 0 | 3 | 6 | 0 | 9 |
 | [ ] | 19 | `src/app/containers/header/header.component.jest-spec.ts` | 67.5 | 50 | 7 | 3 | 2 | 1 | 0 | 4 | 7 | 0 | 6 |
 | [ ] | 20 | `src/app/components/refresh-button/refresh-button.component.jest-spec.ts` | 76.9 | 36 | 3 | 4 | 2 | 0 | 0 | 3 | 3 | 0 | 15 |
 | [ ] | 21 | `src/app/containers/chart/chart.component.jest-spec.ts` | 107.6 | 97 | 8 | 5 | 2 | 0 | 0 | 3 | 8 | 0 | 16 |
