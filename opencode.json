@@ -17,6 +17,7 @@
       "enabled": true
     }
   },
+  "lsp": true,
   "provider": {
     "openrouter": {
       "models": {
