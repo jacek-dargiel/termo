@@ -47,6 +47,7 @@
 - E2E guidance: `@.agents/rules/e2e.instructions.md`.
 
 ## Coding Style Preferences
+- Do NOT add banner/separator comments above `describe` blocks (e.g. `// ─── methodName ───`). The `describe` string already identifies the unit under test — such comments add noise.
 - Prefer `date-fns` for date/time math and formatting.
 - For RxJS behavior tests, prefer marble tests with `@granito/vitest-marbles`.
 - Follow workspace defaults: 2-space indentation, SCSS for component styles, selector prefix `termo`.
