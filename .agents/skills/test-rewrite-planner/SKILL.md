@@ -24,7 +24,7 @@ Run a strict two-phase rewrite flow for Angular unit tests:
 - Spin up a subagent for each phase using the `task` tool.
 - Do not read any `*.jest-spec.ts` file during Phase 1.
 - Read the corresponding `.jest-spec.ts` file during Phase 2 and perform explicit gap analysis.
-- In both phases, consult docs when needed:
+- In both phases, subagents MUST call `angular-cli_get_best_practices` with the workspace path before writing or reviewing any Angular test code. This is a hard requirement, not optional.
   - Angular guidance via angular-cli MCP (`angular-cli_list_projects`, `angular-cli_get_best_practices`, `angular-cli_search_documentation`).
   - Vitest guidance via grounded-docs MCP (`grounded-docs_search_docs`; list libs if needed).
 - For RxJS stream behavior, prefer marble-diagram tests in Phase 1 using `@granito/vitest-marbles`.
@@ -42,7 +42,8 @@ Run a strict two-phase rewrite flow for Angular unit tests:
    - Include a hard constraint: do not open/read/search `*.jest-spec.ts` files.
 3. Phase-1 subagent responsibilities:
    - Read only production/test-support files relevant to behavior.
-   - Use Angular docs/best practices if any Angular testing pattern is uncertain.
+   - REQUIRED: Call `angular-cli_get_best_practices` with `workspacePath` set to the project's `angular.json` before writing any Angular test code. Apply the returned best practices throughout.
+   - Use angular-cli MCP search/find-examples for additional Angular testing guidance when needed.
    - Use grounded-docs for Vitest APIs (mocking/spies/timers/globals) when needed.
    - If testing RxJS streams, prefer marble diagrams via `@granito/vitest-marbles`; consult `node_modules/@granito/vitest-marbles/README.md` for matcher/syntax details.
    - Produce:
@@ -58,8 +59,9 @@ Run a strict two-phase rewrite flow for Angular unit tests:
 2. Phase-2 subagent responsibilities:
    - Compare old spec coverage vs Phase-1 tests.
    - Identify missed cases, redundant cases, and outdated assertions.
+   - REQUIRED: Call `angular-cli_get_best_practices` with `workspacePath` to validate Phase 1's test patterns against current Angular conventions.
    - Validate any migration-specific API usage with grounded-docs.
-   - Validate Angular test style with angular-cli docs when needed.
+   - Validate Angular test style with angular-cli MCP search/find-examples when needed.
    - Return a concrete patch plan:
      - what to add,
      - what to keep,
@@ -87,7 +89,7 @@ Load and adapt these templates per target file paths before launching each `task
 
 - Phase 1 subagent executed and respected no-legacy-spec rule.
 - Phase 2 subagent executed and reviewed corresponding legacy spec.
-- Angular and Vitest docs consulted when uncertainty existed.
+- Angular best practices read via `angular-cli_get_best_practices` in both phases (mandatory).
 - New spec reflects behavior parity plus justified improvements.
 - Legacy `.jest-spec.ts` cleanup recommendation provided (not auto-deleted).
 - Tests pass.

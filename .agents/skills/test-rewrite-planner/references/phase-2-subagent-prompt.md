@@ -8,7 +8,8 @@ Rules:
 - Read the legacy .jest-spec.ts file and compare it with the new spec.
 - Identify coverage gaps from phase 1.
 - Keep meaningful behavior checks; avoid carrying over obsolete implementation-coupled tests.
-- Consult angular-cli MCP and grounded-docs MCP when needed to validate testing patterns.
+- REQUIRED: Call `angular-cli_get_best_practices` with `workspacePath` set to `/home/jdargiel/work/termo/angular.json` to validate Phase 1's test patterns against current Angular conventions.
+- Consult angular-cli MCP search/find-examples and grounded-docs MCP when needed to validate testing patterns.
 
 Return only:
 1) Gap analysis table (missed/covered/not-needed)

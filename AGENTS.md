@@ -31,7 +31,7 @@
 ## TestBed Patterns (Do NOT Guess These)
 - **Component tests**: must include `provideZonelessChangeDetection()` in providers.
 - **HttpClient tests**: use `provideHttpClient()` + `provideHttpClientTesting()` (not `HttpClientTestingModule`). Call `httpTesting.verify()` in `afterEach`.
-- **Standalone child stubs**: declare stubs with `standalone: true` and wire via `TestBed.overrideComponent({ set: { imports: [...] } })`. Old `declarations`-based patterns silently don't work.
+- **Standalone child stubs**: `standalone: true` is the default in Angular v21 — do not add it to stub components. Wire stubs via `TestBed.overrideComponent({ set: { imports: [...] } })`. Old `declarations`-based patterns silently don't work.
 - **Services without `providedIn`** (e.g. `LocationService`): must be listed explicitly in `TestBed` providers.
 - **Pipes without DI** (e.g. `ToFixedPipe`): use `new ThePipe()`, no TestBed needed.
 - **Pipes using `inject()`** (e.g. `RelativeTimePipe`): use `TestBed.runInInjectionContext(() => new ThePipe())`, not `TestBed.inject(ThePipe)`.
