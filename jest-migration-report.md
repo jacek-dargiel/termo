@@ -21,7 +21,7 @@
 | [x] | 19 | `src/app/containers/header/header.component.jest-spec.ts` | 67.5 | 50 | 7 | 3 | 2 | 1 | 0 | 4 | 7 | 0 | 6 |
 | [x] | 20 | `src/app/components/refresh-button/refresh-button.component.jest-spec.ts` | 76.9 | 36 | 3 | 4 | 2 | 0 | 0 | 3 | 3 | 0 | 15 |
 | [x] | 21 | `src/app/containers/chart/chart.component.jest-spec.ts` | 107.6 | 97 | 8 | 5 | 2 | 0 | 0 | 3 | 8 | 0 | 16 |
-| [ ] | 22 | `src/app/containers/map/map.facade.jest-spec.ts` | 131.1 | 97 | 11 | 5 | 1 | 9 | 10 | 4 | 20 | 2 | 0 |
+| [x] | 22 | `src/app/containers/map/map.facade.jest-spec.ts` | 131.1 | 97 | 11 | 5 | 1 | 9 | 10 | 4 | 20 | 2 | 0 |
 | [ ] | 23 | `src/app/components/map-location/map-location.component.jest-spec.ts` | 157.8 | 89 | 7 | 7 | 2 | 1 | 2 | 3 | 8 | 3 | 27 |
 | [ ] | 24 | `src/app/containers/header/header.facade.jest-spec.ts` | 164.3 | 113 | 7 | 10 | 1 | 2 | 2 | 13 | 28 | 3 | 0 |
 | [ ] | 25 | `src/app/containers/map/map.component.jest-spec.ts` | 190.5 | 131 | 10 | 7 | 1 | 4 | 0 | 3 | 18 | 3 | 27 |
