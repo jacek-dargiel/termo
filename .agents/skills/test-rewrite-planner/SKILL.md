@@ -45,11 +45,12 @@ Run a strict two-phase rewrite flow for Angular unit tests:
    - REQUIRED: Call `angular-cli_get_best_practices` with `workspacePath` set to the project's `angular.json` before writing any Angular test code. Apply the returned best practices throughout.
    - Use angular-cli MCP search/find-examples for additional Angular testing guidance when needed.
    - Use grounded-docs for Vitest APIs (mocking/spies/timers/globals) when needed.
-   - If testing RxJS streams, prefer marble diagrams via `@granito/vitest-marbles`; consult `node_modules/@granito/vitest-marbles/README.md` for matcher/syntax details.
-   - Produce:
-     - proposed test plan,
-     - initial Vitest spec content,
-     - rationale for each covered case.
+    - If testing RxJS streams, prefer marble diagrams via `@granito/vitest-marbles`; consult `node_modules/@granito/vitest-marbles/README.md` for matcher/syntax details.
+    - Validate that the new spec passes by running `npm run test:file -- <new-spec-path>`. Fix any failures before returning — Phase 1 MUST always deliver a working set of tests.
+    - Produce:
+      - proposed test plan,
+      - initial Vitest spec content (passing),
+      - rationale for each covered case.
 
 ### Phase 2: Refined Test Refactor (Subagent)
 
@@ -87,7 +88,7 @@ Load and adapt these templates per target file paths before launching each `task
 
 ## Completion Checklist
 
-- Phase 1 subagent executed and respected no-legacy-spec rule.
+- Phase 1 subagent executed, respected no-legacy-spec rule, and delivered a passing test suite validated with `npm run test:file`.
 - Phase 2 subagent executed and reviewed corresponding legacy spec.
 - Angular best practices read via `angular-cli_get_best_practices` in both phases (mandatory).
 - New spec reflects behavior parity plus justified improvements.

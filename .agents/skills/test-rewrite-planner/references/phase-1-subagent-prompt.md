@@ -12,8 +12,9 @@ Hard rules:
 - If the target behavior involves RxJS streams, prefer marble-diagram tests using `@granito/vitest-marbles`.
 - Read `node_modules/@granito/vitest-marbles/README.md` for syntax and matcher usage when writing marble tests.
 - Do not add artificial RxJS/marble tests when the target is not stream-based.
+- After writing the spec, run `npm run test:file -- <new-spec-path>` to validate it passes. Fix any failures and re-run until green. Your output MUST be a working set of tests.
 
 Return only:
 1) Coverage plan
-2) Proposed test cases
+2) Proposed test cases (passing)
 3) Any doc-backed decisions and sources used
