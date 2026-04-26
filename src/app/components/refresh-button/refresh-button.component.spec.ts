@@ -1,10 +1,14 @@
 import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { RefreshButtonComponent } from './refresh-button.component';
 
 describe('RefreshButtonComponent', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   function setup() {
     TestBed.configureTestingModule({
       imports: [RefreshButtonComponent],

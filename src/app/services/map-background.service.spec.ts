@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cold } from '@granito/vitest-marbles';
+import { cold, Scheduler } from '@granito/vitest-marbles';
 
 import { MapBackgroundService } from './map-background.service';
 
@@ -13,6 +13,7 @@ describe('MapBackgroundService', () => {
   let service: MapBackgroundService;
 
   beforeEach(() => {
+    Scheduler.init();
     service = new MapBackgroundService();
   });
 

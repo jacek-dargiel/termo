@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { subMilliseconds } from 'date-fns';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { TERMO_CURRENT_TIME_FACTORY } from './current-time.injection-token';
 import { IsLocationOutdatedPipe } from './is-location-outdated.pipe';
@@ -9,14 +9,14 @@ const THRESHOLD_MS = 900_000;
 
 describe('IsLocationOutdatedPipe', () => {
   let currentTime: Date;
-  const currentTimeFactory = vi.fn(() => currentTime);
+  let currentTimeFactory: ReturnType<typeof vi.fn>;
 
   const createPipe = () =>
     TestBed.runInInjectionContext(() => new IsLocationOutdatedPipe());
 
   beforeEach(() => {
     currentTime = new Date('2024-01-10T12:00:00.000Z');
-    currentTimeFactory.mockClear();
+    currentTimeFactory = vi.fn(() => currentTime);
 
     TestBed.configureTestingModule({
       providers: [
@@ -26,6 +26,10 @@ describe('IsLocationOutdatedPipe', () => {
         },
       ],
     });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('creates an instance', () => {

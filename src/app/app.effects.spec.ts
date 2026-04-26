@@ -49,6 +49,7 @@ describe('AppEffects', () => {
 
   beforeEach(() => {
     Scheduler.init();
+    vi.restoreAllMocks();
 
     locationService = { getLocations: vi.fn() };
     measurmentService = { getMeasurments: vi.fn() };

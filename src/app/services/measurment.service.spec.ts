@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cold } from '@granito/vitest-marbles';
+import { cold, Scheduler } from '@granito/vitest-marbles';
 import { of } from 'rxjs';
 
 import { ApiService } from './api.service';
@@ -27,6 +27,7 @@ describe('MeasurmentService', () => {
   let apiGetSpy: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
+    Scheduler.init();
     const apiServiceMock = { get: vi.fn() };
 
     TestBed.configureTestingModule({

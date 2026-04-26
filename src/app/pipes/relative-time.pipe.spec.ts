@@ -1,19 +1,19 @@
 import { TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { TERMO_CURRENT_TIME_FACTORY } from './current-time.injection-token';
 import { RelativeTimePipe } from './relative-time.pipe';
 
 describe('RelativeTimePipe', () => {
   let currentTime: Date;
-  const currentTimeFactory = vi.fn(() => currentTime);
+  let currentTimeFactory: ReturnType<typeof vi.fn>;
 
   const createPipe = () =>
     TestBed.runInInjectionContext(() => new RelativeTimePipe());
 
   beforeEach(() => {
     currentTime = new Date('2024-01-10T12:00:00.000Z');
-    currentTimeFactory.mockClear();
+    currentTimeFactory = vi.fn(() => currentTime);
 
     TestBed.configureTestingModule({
       providers: [
@@ -23,6 +23,10 @@ describe('RelativeTimePipe', () => {
         },
       ],
     });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('creates an instance', () => {

@@ -44,7 +44,6 @@ describe('SnackbarComponent', () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.mocked(MDCSnackbar).mockClear();
-    TestBed.resetTestingModule();
   });
 
   it('creates the component', () => {

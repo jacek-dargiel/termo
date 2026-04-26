@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { of } from 'rxjs';
-import '@granito/vitest-marbles';
+import { Scheduler } from '@granito/vitest-marbles';
 
 import { MapFacade } from './map.facade';
 import { MapInitialized, SelectLocation } from '../../state/location/location.actions';
@@ -31,6 +31,7 @@ describe('MapFacade', () => {
 
   beforeEach(() => {
     vi.restoreAllMocks();
+    Scheduler.init();
 
     mapBackgroundServiceMock = {
       getImageDimentions: vi.fn(),

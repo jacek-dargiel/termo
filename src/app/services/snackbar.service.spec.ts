@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { cold } from '@granito/vitest-marbles';
+import { cold, Scheduler } from '@granito/vitest-marbles';
 import { Observable } from 'rxjs';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { environment } from 'environments/environment';
 
@@ -20,9 +20,12 @@ describe('SnackbarService', () => {
     return TestBed.inject(SnackbarService);
   };
 
+  beforeEach(() => {
+    Scheduler.init();
+  });
+
   afterEach(() => {
     vi.restoreAllMocks();
-    TestBed.resetTestingModule();
   });
 
   it('creates an instance', () => {

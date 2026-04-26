@@ -17,7 +17,7 @@
     "deploy": "npm run lint && npm run test && npm run e2e-setup && npm run e2e && npm run build && npm run post-deploy",
     "post-deploy": "envsub ./dist/browser/index.html && envsub netlify.toml.template netlify.toml && npm run sentry-release",
     "lint": "ng lint",
-    "test": "ng test --no-watch",
+    "test": "NODE_OPTIONS=\"--max-old-space-size=4096\" ng test --no-watch",
     "test:file": "ng test --no-watch --include",
     "test:watch": "ng test",
     "test:legacy:rank": "node ./bin/rank-legacy-jest-specs.mjs",

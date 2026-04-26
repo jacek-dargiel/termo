@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { BehaviorSubject } from 'rxjs';
-import { cold, schedule } from '@granito/vitest-marbles';
+import { cold, schedule, Scheduler } from '@granito/vitest-marbles';
 
 import { HeaderFacade } from './header.facade';
 import { RefreshSignalService } from '../../services/refresh-signal.service';
@@ -25,6 +25,7 @@ describe('HeaderFacade', () => {
   let counterSubject: BehaviorSubject<number>;
 
   beforeEach(() => {
+    Scheduler.init();
     counterSubject = new BehaviorSubject<number>(300);
 
     const mockRefreshSignal = {
@@ -42,6 +43,10 @@ describe('HeaderFacade', () => {
     store = TestBed.inject(MockStore);
     vi.spyOn(store, 'select');
     facade = TestBed.inject(HeaderFacade);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('creates an instance', () => {

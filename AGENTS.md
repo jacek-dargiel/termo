@@ -13,7 +13,7 @@
 - Install deps: `npm ci`.
 - Dev server: `npm start` (uses `proxy.conf.json`).
 - Lint: `npm run lint`.
-- Unit tests (Vitest via Angular test builder): `npm test`.
+- Unit tests (Vitest via Angular test builder): `npm test`. This bundles all 27+ spec files into one process — on low-memory systems (≈6GB), the build + JIT compilation may OOM. If killed, retry once memory frees up, or use `npm run test:file -- <path>` for individual files.
 - Run one unit spec: `npm run test:file -- src/app/path/to/file.spec.ts` (**not** `npm test -- <file>` — that fails with `Error: Unknown`).
 - Legacy Jest-spec complexity ranking: `npm run test:legacy:rank -- --top 10` (or `--json`).
 - E2E with auto dev server: `npm run e2e`.

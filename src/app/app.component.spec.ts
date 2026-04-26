@@ -5,13 +5,13 @@ import { describe, expect, it } from 'vitest';
 
 import { AppComponent } from './app.component';
 
-@Component({ selector: 'termo-map', template: '', standalone: true })
+@Component({ selector: 'termo-map', template: '' })
 class MapStub {}
 
-@Component({ selector: 'termo-chart', template: '', standalone: true })
+@Component({ selector: 'termo-chart', template: '' })
 class ChartStub {}
 
-@Component({ selector: 'termo-snackbar', template: '', standalone: true })
+@Component({ selector: 'termo-snackbar', template: '' })
 class SnackbarStub {}
 
 describe('AppComponent', () => {

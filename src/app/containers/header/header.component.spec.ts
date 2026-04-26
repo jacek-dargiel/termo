@@ -1,9 +1,9 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, input, output, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { cold, schedule } from '@granito/vitest-marbles';
+import { cold, schedule, Scheduler } from '@granito/vitest-marbles';
 import { BehaviorSubject } from 'rxjs';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { HeaderComponent } from './header.component';
 import { HeaderFacade } from './header.facade';
@@ -19,6 +19,14 @@ class RefreshButtonStub {
 }
 
 describe('HeaderComponent', () => {
+  beforeEach(() => {
+    Scheduler.init();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   function setup() {
     const progress$ = new BehaviorSubject<number>(0);
     const refreshing$ = new BehaviorSubject<boolean>(false);
