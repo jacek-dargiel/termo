@@ -20,7 +20,6 @@
     "test": "NODE_OPTIONS=\"--max-old-space-size=4096\" ng test --no-watch",
     "test:file": "ng test --no-watch --include",
     "test:watch": "ng test",
-    "test:legacy:rank": "node ./bin/rank-legacy-jest-specs.mjs",
     "e2e": "ng e2e"
   },
   "private": true,
