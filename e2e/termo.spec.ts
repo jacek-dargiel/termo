@@ -1,4 +1,4 @@
-import { test, expect, Route } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { getUnixTime, subMilliseconds, subMinutes } from 'date-fns';
 
 import { environment } from '../src/environments/environment';
@@ -65,20 +65,21 @@ test.describe('Location loading', () => {
       await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(feeds) });
     });
 
-    const pendingMeasurementRoutes: Route[] = [];
-    await page.route('**/feeds/**/data', async route => {
-      pendingMeasurementRoutes.push(route);
+    let resolveMeasurementRoutes: () => void;
+    const measurementBlocked = new Promise<void>(resolve => {
+      resolveMeasurementRoutes = resolve;
+    });
+
+    await page.route('api/feeds/**/data?*', async route => {
+      await measurementBlocked;
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([]) });
     });
 
     await page.goto('/');
 
     await expect(page.locator('termo-map-location termo-spinner')).toHaveCount(3);
 
-    await Promise.all(
-      pendingMeasurementRoutes.splice(0).map(route =>
-        route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([]) })
-      )
-    );
+    resolveMeasurementRoutes();
   });
 
   test('displays name, temperature and minimal temperature for a mocked location', async ({ page }) => {
