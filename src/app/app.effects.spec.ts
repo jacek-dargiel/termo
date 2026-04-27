@@ -4,7 +4,7 @@ import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { Action } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { cold, hot, Scheduler } from '@granito/vitest-marbles';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterAll } from 'vitest';
 
 import { AppEffects } from './app.effects';
 import { LocationService } from './services/location.service';
@@ -13,7 +13,7 @@ import { ErrorHandlingService } from './services/error-handling.service';
 import { RefreshSignalService } from './services/refresh-signal.service';
 import * as locationActions from './state/location/location.actions';
 import * as measurmentActions from './state/measurment/measurment.actions';
-import { selectLocationIds } from './state/selectors';
+import * as selectors from './state/selectors';
 import { Location } from './state/location/location.model';
 import { Measurment } from './state/measurment/measurment.model';
 
@@ -63,7 +63,12 @@ describe('AppEffects', () => {
       providers: [
         AppEffects,
         provideMockActions(() => actions$),
-        provideMockStore(),
+        provideMockStore({
+          initialState: {
+            location: { ids: [], entities: {}, loading: false, latestMeasurmentIDs: {}, selected: undefined },
+            measurment: { ids: [], entities: {}, loading: false },
+          },
+        }),
         { provide: LocationService, useValue: locationService },
         { provide: MeasurmentService, useValue: measurmentService },
         { provide: ErrorHandlingService, useValue: errorHandlingService },
@@ -173,7 +178,7 @@ describe('AppEffects', () => {
 
   describe('refreshOnButtonClick$', () => {
     it('should select location IDs and dispatch RefreshMeasurmentsOnBtnClick for each', () => {
-      store.overrideSelector(selectLocationIds, ['l1', 'l2']);
+      store.overrideSelector(selectors.selectLocationIds, ['l1', 'l2']);
 
       actions$ = hot('a', { a: new locationActions.RefreshButtonClick() });
 
@@ -185,7 +190,7 @@ describe('AppEffects', () => {
     });
 
     it('should emit nothing when no location IDs are in store', () => {
-      store.overrideSelector(selectLocationIds, []);
+      store.overrideSelector(selectors.selectLocationIds, []);
 
       actions$ = hot('a', { a: new locationActions.RefreshButtonClick() });
 
@@ -195,7 +200,7 @@ describe('AppEffects', () => {
 
   describe('refreshMeasurments$', () => {
     it('should call getMeasurments for each location', () => {
-      store.overrideSelector(selectLocationIds, ['l1', 'l2']);
+      store.overrideSelector(selectors.selectLocationIds, ['l1', 'l2']);
 
       measurmentService.getMeasurments.mockReturnValue(cold('a|', { a: [] }));
 
@@ -209,7 +214,7 @@ describe('AppEffects', () => {
     });
 
     it('should dispatch FetchMeasurmentsError and RefreshMeasurmentsFinished on API error', () => {
-      store.overrideSelector(selectLocationIds, ['l1']);
+      store.overrideSelector(selectors.selectLocationIds, ['l1']);
 
       measurmentService.getMeasurments.mockReturnValue(
         cold('#', undefined, new Error('API down')),
@@ -228,7 +233,7 @@ describe('AppEffects', () => {
     });
 
     it('should trigger on FetchLocationsSuccess', () => {
-      store.overrideSelector(selectLocationIds, ['l1']);
+      store.overrideSelector(selectors.selectLocationIds, ['l1']);
       const m: Measurment[] = [createMeasurment()];
 
       measurmentService.getMeasurments.mockReturnValue(cold('--a|', { a: m }));
@@ -245,7 +250,7 @@ describe('AppEffects', () => {
     });
 
     it('should trigger on RefreshSignal', () => {
-      store.overrideSelector(selectLocationIds, ['l1']);
+      store.overrideSelector(selectors.selectLocationIds, ['l1']);
       const m: Measurment[] = [createMeasurment()];
 
       measurmentService.getMeasurments.mockReturnValue(cold('--a|', { a: m }));
@@ -286,4 +291,14 @@ describe('AppEffects', () => {
       });
     });
   });
+});
+
+afterAll(() => {
+  for (const key of Object.keys(selectors)) {
+    const value: unknown = (selectors as Record<string, unknown>)[key];
+    if (typeof value === 'function') {
+      (value as { clearResult?: () => void }).clearResult?.();
+      (value as { release?: () => void }).release?.();
+    }
+  }
 });

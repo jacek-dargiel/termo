@@ -280,6 +280,33 @@ Allows you to schedule task on specified frame
   });
 ```
 
+### `overrideSelector` global pollution — always clean up
+
+`MockStore.overrideSelector()` calls `selector.setResult(value)` on the **global** memoized selector function (`@ngrx/store`'s `defaultMemoize`, `ngrx-store.mjs:733-734`). The override ignores the state argument — any invocation of that selector returns the overridden value regardless of input. This leaks across test files when they share the same module scope (i.e. all bundled together via `ng test`).
+
+If a downstream test calls the selector directly — e.g. `selectLocationIds(state)` with a manually constructed state — it receives the stale override instead of computing from the actual state.
+
+**Rule:** The file that calls `overrideSelector` must clean up in `afterAll`:
+
+```ts
+import { afterAll } from 'vitest';
+import * as selectors from './state/selectors';
+
+afterAll(() => {
+  for (const key of Object.keys(selectors)) {
+    const value: unknown = (selectors as Record<string, unknown>)[key];
+    if (typeof value === 'function') {
+      (value as { clearResult?: () => void }).clearResult?.();
+      (value as { release?: () => void }).release?.();
+    }
+  }
+});
+```
+
+This calls `clearResult()` (clears the `overrideResult` flag) and `release()` (resets the argument/result cache) on every exported `MemoizedSelector`, preventing pollution of subsequent test files.
+
+Do **not** rely on `MockStore.resetSelectors()` — it operates on a per-store-instance map and its behavior depends on the test environment's module lifecycle.
+
 ## ngrx store testing:
 
 ### Using a Mock Store
