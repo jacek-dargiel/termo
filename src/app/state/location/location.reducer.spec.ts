@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { FetchLocationsSuccess, MapInitialized, RefreshButtonClick, RefreshSignal, RefreshMeasurmentsFinished, FetchLocationsError, SelectLocation } from './location.actions';
+import { LocationActions, FetchLocationsSuccess, MapInitialized, RefreshButtonClick, RefreshSignal, RefreshMeasurmentsFinished, FetchLocationsError, SelectLocation } from './location.actions';
 import { FetchMeasurmentsSuccess, FetchMeasurmentsError } from '../measurment/measurment.actions';
 import { Location } from './location.model';
 import { Measurment } from '../measurment/measurment.model';
@@ -45,7 +45,7 @@ describe('locationReducer', () => {
   describe('unknown action', () => {
     it('returns the same state reference', () => {
       const state = INITIAL_STATE;
-      const result = reducer(state, { type: 'UNKNOWN' } as any);
+      const result = reducer(state, { type: 'UNKNOWN' } as unknown as LocationActions);
       expect(result).toBe(state);
     });
   });
@@ -342,7 +342,7 @@ describe('locationReducer', () => {
     });
 
     it('returns the same state object on unknown actions', () => {
-      const state = reducer(INITIAL_STATE, { type: 'UNKNOWN' } as any);
+      const state = reducer(INITIAL_STATE, { type: 'UNKNOWN' } as unknown as LocationActions);
       expect(state).toBe(INITIAL_STATE);
     });
   });

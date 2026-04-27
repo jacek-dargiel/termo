@@ -9,6 +9,7 @@ import { Location } from '../../state/location/location.model';
 import { Measurment } from '../../state/measurment/measurment.model';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ng-charts-line-chart',
   template: '',
 })
