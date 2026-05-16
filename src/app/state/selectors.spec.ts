@@ -3,13 +3,13 @@ import { subHours, subSeconds } from 'date-fns';
 
 import * as fromLocation from './location/location.reducer';
 import { Location } from './location/location.model';
-import * as fromMeasurment from './measurment/measurment.reducer';
-import { Measurment } from './measurment/measurment.model';
+import * as fromMeasurement from './measurement/measurement.reducer';
+import { Measurement } from './measurement/measurement.model';
 import * as selectors from './selectors';
 
 interface RootState {
   location: fromLocation.State;
-  measurment: fromMeasurment.State;
+  measurement: fromMeasurement.State;
 }
 
 const createLocation = (
@@ -24,12 +24,12 @@ const createLocation = (
   updatedAt,
 });
 
-const createMeasurment = (
+const createMeasurement = (
   id: string,
   feedKey: string,
   value: number,
   createdAt: Date
-): Measurment => ({
+): Measurement => ({
   id,
   value,
   created_at: createdAt,
@@ -49,24 +49,24 @@ const buildLocationState = (
   return fromLocation.adapter.setAll(locations, seed);
 };
 
-const buildMeasurmentState = (
-  measurments: Measurment[],
-  overrides: Partial<fromMeasurment.State> = {}
-): fromMeasurment.State => {
-  const seed: fromMeasurment.State = {
-    ...fromMeasurment.initialState,
+const buildMeasurementState = (
+  measurements: Measurement[],
+  overrides: Partial<fromMeasurement.State> = {}
+): fromMeasurement.State => {
+  const seed: fromMeasurement.State = {
+    ...fromMeasurement.initialState,
     ...overrides,
   };
 
-  return fromMeasurment.adapter.setAll(measurments, seed);
+  return fromMeasurement.adapter.setAll(measurements, seed);
 };
 
 const buildRootState = (
   location: fromLocation.State,
-  measurment: fromMeasurment.State
+  measurement: fromMeasurement.State
 ): RootState => ({
   location,
-  measurment,
+  measurement,
 });
 
 describe('state selectors', () => {
@@ -77,11 +77,11 @@ describe('state selectors', () => {
 
   it('selects feature slices from root state', () => {
     const locationState = buildLocationState([], { loading: true, selected: 'loc-a' });
-    const measurmentState = buildMeasurmentState([], { loading: true });
-    const state = buildRootState(locationState, measurmentState);
+    const measurementState = buildMeasurementState([], { loading: true });
+    const state = buildRootState(locationState, measurementState);
 
     expect(selectors.selectLocationState(state)).toBe(locationState);
-    expect(selectors.selectMeasurmentState(state)).toBe(measurmentState);
+    expect(selectors.selectMeasurementState(state)).toBe(measurementState);
   });
 
   it('selects selected location id and location loading flag', () => {
@@ -95,8 +95,8 @@ describe('state selectors', () => {
     const locA = createLocation('loc-a', 10, 10);
     const locB = createLocation('loc-b', 1, 1);
     const locationState = buildLocationState([locA, locB], { selected: 'loc-a' });
-    const measurmentState = buildMeasurmentState([]);
-    const state = buildRootState(locationState, measurmentState);
+    const measurementState = buildMeasurementState([]);
+    const state = buildRootState(locationState, measurementState);
 
     const ids = selectors.selectLocationIds(state);
     const entities = selectors.selectLocationEntities(state);
@@ -113,11 +113,11 @@ describe('state selectors', () => {
 
   it('groups measurements by location and includes empty arrays for known locations', () => {
     const now = new Date();
-    const m1 = createMeasurment('m1', 'loc-a', 24, subHours(now, 1));
-    const m2 = createMeasurment('m2', 'loc-a', 20, subHours(now, 2));
-    const m3 = createMeasurment('m3', 'loc-b', 18, subHours(now, 3));
+    const m1 = createMeasurement('m1', 'loc-a', 24, subHours(now, 1));
+    const m2 = createMeasurement('m2', 'loc-a', 20, subHours(now, 2));
+    const m3 = createMeasurement('m3', 'loc-b', 18, subHours(now, 3));
 
-    const grouped = selectors.selectMeasurmentsByLocation.projector(
+    const grouped = selectors.selectMeasurementsByLocation.projector(
       ['loc-a', 'loc-b', 'loc-c'],
       [m1, m2, m3]
     );
@@ -128,22 +128,22 @@ describe('state selectors', () => {
   });
 
   it('selects measurements for the selected location', () => {
-    const grouped: Record<string, Measurment[]> = {
-      'loc-a': [createMeasurment('m1', 'loc-a', 10, new Date())],
-      'loc-b': [createMeasurment('m2', 'loc-b', 12, new Date())],
+    const grouped: Record<string, Measurement[]> = {
+      'loc-a': [createMeasurement('m1', 'loc-a', 10, new Date())],
+      'loc-b': [createMeasurement('m2', 'loc-b', 12, new Date())],
     };
 
-    const result = selectors.selectSelectedLocationMeasurments.projector('loc-b', grouped);
+    const result = selectors.selectSelectedLocationMeasurements.projector('loc-b', grouped);
 
     expect(result).toEqual(grouped['loc-b']);
   });
 
   it('maps latest measurement ids to measurement entities by location', () => {
     const now = new Date();
-    const m1 = createMeasurment('m1', 'loc-a', 11, subSeconds(now, 1));
-    const m2 = createMeasurment('m2', 'loc-b', 22, now);
+    const m1 = createMeasurement('m1', 'loc-a', 11, subSeconds(now, 1));
+    const m2 = createMeasurement('m2', 'loc-b', 22, now);
 
-    const result = selectors.selectLastMeasurmentsByLocation.projector(
+    const result = selectors.selectLastMeasurementsByLocation.projector(
       ['loc-a', 'loc-b', 'loc-c'],
       {
         'loc-a': 'm1',
@@ -163,26 +163,26 @@ describe('state selectors', () => {
 
   it('filters measurements to the minimum time range using a strict 12-hour boundary', () => {
     const now = new Date();
-    const inRange = createMeasurment(
+    const inRange = createMeasurement(
       'm-in',
       'loc-a',
       21,
       subHours(now, 11)
     );
-    const exactlyBoundary = createMeasurment(
+    const exactlyBoundary = createMeasurement(
       'm-boundary',
       'loc-a',
       19,
       subHours(now, 12)
     );
-    const outOfRange = createMeasurment(
+    const outOfRange = createMeasurement(
       'm-out',
       'loc-a',
       17,
       subHours(now, 13)
     );
 
-    const result = selectors.selectMeasurmentsFromMinimumRangeByLocation.projector({
+    const result = selectors.selectMeasurementsFromMinimumRangeByLocation.projector({
       'loc-a': [inRange, exactlyBoundary, outOfRange],
       'loc-b': [],
     });
@@ -193,11 +193,11 @@ describe('state selectors', () => {
 
   it('selects minimal measurement per location from filtered measurements', () => {
     const now = new Date();
-    const a1 = createMeasurment('a1', 'loc-a', 20, subSeconds(now, 1));
-    const a2 = createMeasurment('a2', 'loc-a', 14, subSeconds(now, 2));
-    const b1 = createMeasurment('b1', 'loc-b', 30, subSeconds(now, 3));
+    const a1 = createMeasurement('a1', 'loc-a', 20, subSeconds(now, 1));
+    const a2 = createMeasurement('a2', 'loc-a', 14, subSeconds(now, 2));
+    const b1 = createMeasurement('b1', 'loc-b', 30, subSeconds(now, 3));
 
-    const result = selectors.selectMinimalMeasurmentsByLocation.projector({
+    const result = selectors.selectMinimalMeasurementsByLocation.projector({
       'loc-a': [a1, a2],
       'loc-b': [b1],
       'loc-c': [],
@@ -212,27 +212,27 @@ describe('state selectors', () => {
     const locA = createLocation('loc-a', 0, 0);
     const locB = createLocation('loc-b', 1, 1);
 
-    const result = selectors.selectLocationsMappedWithKeyMeasurmentValues.projector(
+    const result = selectors.selectLocationsMappedWithKeyMeasurementValues.projector(
       [locA, locB],
       {
-        'loc-a': createMeasurment('m1', 'loc-a', 25, new Date()),
-        'loc-b': createMeasurment('m3', 'loc-b', 30, new Date()),
+        'loc-a': createMeasurement('m1', 'loc-a', 25, new Date()),
+        'loc-b': createMeasurement('m3', 'loc-b', 30, new Date()),
       },
       {
-        'loc-a': createMeasurment('m2', 'loc-a', 15, new Date()),
+        'loc-a': createMeasurement('m2', 'loc-a', 15, new Date()),
       }
     );
 
     expect(result).toEqual([
       {
         ...locA,
-        lastMeasurmentValue: 25,
-        minimalMeasurmentValue: 15,
+        lastMeasurementValue: 25,
+        minimalMeasurementValue: 15,
       },
       {
         ...locB,
-        lastMeasurmentValue: 30,
-        minimalMeasurmentValue: null,
+        lastMeasurementValue: 30,
+        minimalMeasurementValue: null,
       },
     ]);
   });

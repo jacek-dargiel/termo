@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { subDays } from 'date-fns';
 
 import { LocationService } from './services/location.service';
-import { MeasurmentService } from './services/measurment.service';
+import { MeasurementService } from './services/measurement.service';
 import { ErrorHandlingService } from './services/error-handling.service';
 
 import { of, from } from 'rxjs';
@@ -19,7 +19,7 @@ import {
 } from 'rxjs/operators';
 
 import * as locationActions from './state/location/location.actions';
-import * as measurmentActions from './state/measurment/measurment.actions';
+import * as measurementActions from './state/measurement/measurement.actions';
 import { selectLocationIds, } from './state/selectors';
 import { State } from './state/reducers';
 
@@ -32,7 +32,7 @@ export class AppEffects {
   private actions$ = inject(Actions);
   private store = inject<Store<State>>(Store);
   private location = inject(LocationService);
-  private measurment = inject(MeasurmentService);
+  private measurement = inject(MeasurementService);
   private errorHandling = inject(ErrorHandlingService);
   private refreshSignal = inject(RefreshSignalService);
 
@@ -45,10 +45,10 @@ export class AppEffects {
     map(error => this.errorHandling.handle(error)),
   ), {dispatch: false});
 
-  fetchMeasurmentsErrors$ = createEffect(() => this.actions$.pipe(
-    ofType(measurmentActions.MeasurmentActionTypes.FetchMeasurmentsError),
+  fetchMeasurementsErrors$ = createEffect(() => this.actions$.pipe(
+    ofType(measurementActions.MeasurementActionTypes.FetchMeasurementsError),
     throttleTime(environment.snackbarDefaultTimeout),
-    map((action: measurmentActions.FetchMeasurmentsError) => action.payload.error),
+    map((action: measurementActions.FetchMeasurementsError) => action.payload.error),
     map(error => this.errorHandling.handle(error)),
   ), {dispatch: false});
 
@@ -69,7 +69,7 @@ export class AppEffects {
   refreshOnLocationsLoaded$ = createEffect(() => this.actions$.pipe(
     ofType<locationActions.FetchLocationsSuccess>(locationActions.LocationActionTypes.FetchLocationsSuccess),
     switchMap(action => from(action.payload.locations)),
-    map(location => new locationActions.RefreshMeasurmentsOnLocationsLoaded({locationId: location.id})),
+    map(location => new locationActions.RefreshMeasurementsOnLocationsLoaded({locationId: location.id})),
   ));
 
 
@@ -77,10 +77,10 @@ export class AppEffects {
     ofType<locationActions.RefreshButtonClick>(locationActions.LocationActionTypes.RefreshButtonClick),
     switchMap(() => this.store.select(selectLocationIds)),
     switchMap((ids: string[]) => from(ids)),
-    map(locationId => new locationActions.RefreshMeasurmentsOnBtnClick({locationId})),
+    map(locationId => new locationActions.RefreshMeasurementsOnBtnClick({locationId})),
   ));
 
-  refreshMeasurments$ = createEffect(() => this.actions$.pipe(
+  refreshMeasurements$ = createEffect(() => this.actions$.pipe(
     ofType<locationActions.RefreshButtonClick | locationActions.FetchLocationsSuccess | locationActions.RefreshSignal>(
       locationActions.LocationActionTypes.RefreshButtonClick,
       locationActions.LocationActionTypes.FetchLocationsSuccess,
@@ -92,23 +92,23 @@ export class AppEffects {
       return from(locationIds)
         .pipe(
           mergeMap((locationId: string) => {
-            return this.measurment.getMeasurments(locationId, start)
+            return this.measurement.getMeasurements(locationId, start)
               .pipe(
-                map((measurments) => new measurmentActions.FetchMeasurmentsSuccess({ measurments, locationId })),
+                map((measurements) => new measurementActions.FetchMeasurementsSuccess({ measurements, locationId })),
                 catchError(error => {
                   console.error(error);
                   let readableError = new Error('Nie udało się pobrać najnowszych pomiarów temperatury.');
-                  return of(new measurmentActions.FetchMeasurmentsError({ error: readableError, locationId }));
+                  return of(new measurementActions.FetchMeasurementsError({ error: readableError, locationId }));
                 }),
               );
           }),
-          concatWith(of(new locationActions.RefreshMeasurmentsFinished())),
+          concatWith(of(new locationActions.RefreshMeasurementsFinished())),
         );
     }),
   ));
 
-  resetSignalOnMeasurmentsFinished$ = createEffect(() => this.actions$.pipe(
-    ofType<locationActions.RefreshMeasurmentsFinished>(locationActions.LocationActionTypes.RefreshMeasurmentsFinished),
+  resetSignalOnMeasurementsFinished$ = createEffect(() => this.actions$.pipe(
+    ofType<locationActions.RefreshMeasurementsFinished>(locationActions.LocationActionTypes.RefreshMeasurementsFinished),
     tap(() => this.refreshSignal.restart()),
     switchMap(() =>this.refreshSignal.signal),
     map(() => new locationActions.RefreshSignal()),

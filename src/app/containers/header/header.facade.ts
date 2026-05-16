@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 import { Store } from '@ngrx/store';
 import { State } from '../../state/reducers';
-import { selectMeasurmentsLoading } from '../../state/selectors';
+import { selectMeasurementsLoading } from '../../state/selectors';
 import { RefreshButtonClick } from '../../state/location/location.actions';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class HeaderFacade {
     map(timeLeft => timeLeft * 1000),
     map(timeLeft => (environment.refreshTimeout - timeLeft) / environment.refreshTimeout),
   );
-  public refreshing = this.store.select(selectMeasurmentsLoading);
+  public refreshing = this.store.select(selectMeasurementsLoading);
 
   refresh() {
     this.store.dispatch(new RefreshButtonClick());

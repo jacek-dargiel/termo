@@ -1,14 +1,14 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Location } from './location.model';
 import { LocationActions, LocationActionTypes } from './location.actions';
-import { MeasurmentActionTypes, MeasurmentActions } from '../measurment/measurment.actions';
-import { Measurment } from '../measurment/measurment.model';
+import { MeasurementActionTypes, MeasurementActions } from '../measurement/measurement.actions';
+import { Measurement } from '../measurement/measurement.model';
 import { compareAsc } from 'date-fns';
 import { Dictionary } from '@ngrx/entity';
 
 export interface State extends EntityState<Location> {
   loading: boolean;
-  latestMeasurmentIDs: Dictionary<string>;
+  latestMeasurementIDs: Dictionary<string>;
   selected: string;
 }
 
@@ -25,13 +25,13 @@ export let adapter: EntityAdapter<Location> = createEntityAdapter<Location>({
 
 export const INITIAL_STATE: State = adapter.getInitialState({
   loading: false,
-  latestMeasurmentIDs: {},
+  latestMeasurementIDs: {},
   selected: undefined,
 });
 
 export function reducer(
   state = INITIAL_STATE,
-  action: LocationActions | MeasurmentActions
+  action: LocationActions | MeasurementActions
 ): State {
   switch (action.type) {
 
@@ -59,7 +59,7 @@ export function reducer(
       };
     }
 
-    case MeasurmentActionTypes.FetchMeasurmentsError: {
+    case MeasurementActionTypes.FetchMeasurementsError: {
       return {
         ...state,
         loading: false,
@@ -73,25 +73,25 @@ export function reducer(
       };
     }
 
-    case LocationActionTypes.RefreshMeasurmentsFinished: {
+    case LocationActionTypes.RefreshMeasurementsFinished: {
       return {
         ...state,
         loading: false,
       };
     }
 
-    case MeasurmentActionTypes.FetchMeasurmentsSuccess: {
+    case MeasurementActionTypes.FetchMeasurementsSuccess: {
       let locationsState = state;
-      if (action.payload.measurments.length > 0) {
-        let sortedMeasurments = sortMeasurments(action.payload.measurments);
-        // let latestMeasurment = last(sortedMeasurments);
-        let latestMeasurment = sortedMeasurments.at(-1);
-        locationsState = adapter.updateOne({id: action.payload.locationId, changes: { updatedAt: latestMeasurment.created_at }}, state);
+      if (action.payload.measurements.length > 0) {
+        let sortedMeasurements = sortMeasurements(action.payload.measurements);
+        // let latestMeasurement = last(sortedMeasurements);
+        let latestMeasurement = sortedMeasurements.at(-1);
+        locationsState = adapter.updateOne({id: action.payload.locationId, changes: { updatedAt: latestMeasurement.created_at }}, state);
         locationsState = {
           ...locationsState,
-          latestMeasurmentIDs: {
-            ...locationsState.latestMeasurmentIDs,
-            [action.payload.locationId]: latestMeasurment.id,
+          latestMeasurementIDs: {
+            ...locationsState.latestMeasurementIDs,
+            [action.payload.locationId]: latestMeasurement.id,
           }
         };
       }
@@ -121,6 +121,6 @@ export const {
   selectTotal,
 } = adapter.getSelectors();
 
-function sortMeasurments(measurments: Measurment[]) {
-  return measurments.toSorted((a: Measurment, b: Measurment) => compareAsc(a.created_at, b.created_at));
+function sortMeasurements(measurements: Measurement[]) {
+  return measurements.toSorted((a: Measurement, b: Measurement) => compareAsc(a.created_at, b.created_at));
 }

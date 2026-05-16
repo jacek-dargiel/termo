@@ -5,16 +5,16 @@ import { map, tap } from 'rxjs/operators';
 
 import { HttpParams } from '@angular/common/http';
 
-import { Measurment } from '../state/measurment/measurment.model';
+import { Measurement } from '../state/measurement/measurement.model';
 import { AIOFeedData } from '../interfaces';
 import { environment } from 'environments/environment';
 
 @Injectable()
-export class MeasurmentService {
+export class MeasurementService {
   private api = inject(ApiService);
 
 
-  getMeasurments(locationKey: string, start?: Date, end?: Date) {
+  getMeasurements(locationKey: string, start?: Date, end?: Date) {
     let params = new HttpParams();
     params = params.append('limit', environment.feedDataLimit);
     if (start) {
@@ -28,16 +28,16 @@ export class MeasurmentService {
     };
     return this.api.get<AIOFeedData[]>(`/feeds/${locationKey}/data`, options)
       .pipe(
-        map(feedData => feedData.map(singleFeedData => this.mapFeedMeasurmentDataToMeasurment(singleFeedData))),
-        tap(measurmens => {
-          if (measurmens.length === 0) {
-            throw new Error('0 Measurments recived from API.');
+        map(feedData => feedData.map(singleFeedData => this.mapFeedMeasurementDataToMeasurement(singleFeedData))),
+        tap(measurements => {
+          if (measurements.length === 0) {
+            throw new Error('0 Measurements received from API.');
           }
         }),
       );
   }
 
-  mapFeedMeasurmentDataToMeasurment(data: AIOFeedData): Measurment {
+  mapFeedMeasurementDataToMeasurement(data: AIOFeedData): Measurement {
     return {
       id: data.id,
       value: parseFloat(data.value),

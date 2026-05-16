@@ -1,4 +1,4 @@
-export interface Measurment {
+export interface Measurement {
   id: string;
   value: number;
   created_at: Date;

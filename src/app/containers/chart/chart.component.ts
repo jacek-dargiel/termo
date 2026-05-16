@@ -3,7 +3,7 @@ import { ChartFacade } from './chart.facade';
 import { Subscription } from 'rxjs';
 import { Location } from '../../state/location/location.model';
 import { map, filter } from 'rxjs/operators';
-import { Measurment } from '../../state/measurment/measurment.model';
+import { Measurement } from '../../state/measurement/measurement.model';
 import { format } from 'date-fns';
 import { LineChartComponent } from '@glitchtip/ng-charts';
 
@@ -20,8 +20,8 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   @HostBinding('class.chart--visible') visible = false;
   selectedLocationSub: Subscription;
-  locationMeasurmentsSub: Subscription;
-  measurmentsSub: Subscription;
+  locationMeasurementsSub: Subscription;
+  measurementsSub: Subscription;
   location: Location;
   chartData;
 
@@ -33,10 +33,10 @@ export class ChartComponent implements OnInit, OnDestroy {
         this.cdr.markForCheck();
       });
 
-    this.locationMeasurmentsSub = this.chartFacade.selectedLocationMeasurments$
+    this.locationMeasurementsSub = this.chartFacade.selectedLocationMeasurements$
       .pipe(
-        filter(measurments => measurments !== undefined),
-        map(measuments => this.mapMeasurmentToChartDataPoint(measuments))
+        filter(measurements => measurements !== undefined),
+        map(measurements => this.mapMeasurementToChartDataPoint(measurements))
       )
       .subscribe(data => {
         this.chartData = data;
@@ -48,8 +48,8 @@ export class ChartComponent implements OnInit, OnDestroy {
     if (this.selectedLocationSub) {
       this.selectedLocationSub.unsubscribe();
     }
-    if (this.locationMeasurmentsSub) {
-      this.locationMeasurmentsSub.unsubscribe();
+    if (this.locationMeasurementsSub) {
+      this.locationMeasurementsSub.unsubscribe();
     }
   }
 
@@ -57,12 +57,12 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.chartFacade.closeChart();
   }
 
-  mapMeasurmentToChartDataPoint(measurments: Measurment[]) {
+  mapMeasurementToChartDataPoint(measurements: Measurement[]) {
     let data = {
       name: this.location.name,
-      series: measurments.map(measurment => ({
-        name: measurment.created_at,
-        value: measurment.value,
+      series: measurements.map(measurement => ({
+        name: measurement.created_at,
+        value: measurement.value,
       })),
     };
     return [data];

@@ -1,14 +1,14 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromLocation from './location/location.reducer';
-import * as fromMeasurment from './measurment/measurment.reducer';
+import * as fromMeasurement from './measurement/measurement.reducer';
 import { Dictionary } from '@ngrx/entity';
-import { Measurment } from './measurment/measurment.model';
+import { Measurement } from './measurement/measurement.model';
 import { isAfter, subHours } from 'date-fns';
-import { LocationWithKeyMeasurmentValues, Location } from './location/location.model';
+import { LocationWithKeyMeasurementValues, Location } from './location/location.model';
 import { mapToObject, mapValuesWithKey } from '../helpers/utils';
 
 export let selectLocationState = createFeatureSelector<fromLocation.State>('location');
-export let selectMeasurmentState = createFeatureSelector<fromMeasurment.State>('measurment');
+export let selectMeasurementState = createFeatureSelector<fromMeasurement.State>('measurement');
 
 export let selectSelectedLocationID = createSelector(
   selectLocationState,
@@ -43,110 +43,110 @@ export let selectSelectedLocation = createSelector(
   }
 );
 
-export let selectAllMeasurments = createSelector(
-  selectMeasurmentState,
-  fromMeasurment.selectAll
+export let selectAllMeasurements = createSelector(
+  selectMeasurementState,
+  fromMeasurement.selectAll
 );
 
-export let selectMeasurmentEntities = createSelector(
-  selectMeasurmentState,
-  fromMeasurment.selectEntities,
+export let selectMeasurementEntities = createSelector(
+  selectMeasurementState,
+  fromMeasurement.selectEntities,
 );
 
-export let selectMeasurmentsLoading = createSelector(
-  selectMeasurmentState,
+export let selectMeasurementsLoading = createSelector(
+  selectMeasurementState,
   state => state.loading,
 );
 
-export let selectMeasurmentsByLocation = createSelector(
+export let selectMeasurementsByLocation = createSelector(
   selectLocationIds,
-  selectAllMeasurments,
-  (locationIDs: string[], measurments): Dictionary<Measurment[]> => {
-    let grouped: Dictionary<Measurment[]> = Object.groupBy(measurments, measurment => measurment.feed_key);
-    return mapToObject<Measurment[]>(
+  selectAllMeasurements,
+  (locationIDs: string[], measurements): Dictionary<Measurement[]> => {
+    let grouped: Dictionary<Measurement[]> = Object.groupBy(measurements, measurement => measurement.feed_key);
+    return mapToObject<Measurement[]>(
       locationIDs,
       locationID => grouped[locationID] || [],
     );
   }
 );
 
-export let selectSelectedLocationMeasurments = createSelector(
+export let selectSelectedLocationMeasurements = createSelector(
   selectSelectedLocationID,
-  selectMeasurmentsByLocation,
-  (id, measurments) => measurments[id],
+  selectMeasurementsByLocation,
+  (id, measurements) => measurements[id],
 );
 
-let selectLatestMeasurmentIdsByLocation = createSelector(
+let selectLatestMeasurementIdsByLocation = createSelector(
   selectLocationState,
-  locationState => locationState.latestMeasurmentIDs,
+  locationState => locationState.latestMeasurementIDs,
 );
 
-export let selectLastMeasurmentsByLocation = createSelector(
+export let selectLastMeasurementsByLocation = createSelector(
   selectLocationIds,
-  selectLatestMeasurmentIdsByLocation,
-  selectMeasurmentEntities,
-  (locationIDs, latestMeasurmentIDs, measurmentEntities): Dictionary<Measurment> => {
+  selectLatestMeasurementIdsByLocation,
+  selectMeasurementEntities,
+  (locationIDs, latestMeasurementIDs, measurementEntities): Dictionary<Measurement> => {
     return mapToObject(
       locationIDs,
-      locationID => measurmentEntities[latestMeasurmentIDs[locationID]],
+      locationID => measurementEntities[latestMeasurementIDs[locationID]],
     );
   }
 );
 
-// export let selectLastMeasurmentsByLocation = createSelector(
-//   selectMeasurmentsByLocation,
-//   (measurmentsByLocation): Dictionary<Measurment> => {
+// export let selectLastMeasurementsByLocation = createSelector(
+//   selectMeasurementsByLocation,
+//   (measurementsByLocation): Dictionary<Measurement> => {
 //     return mapToObject(
-//       (locationID: string) => last(measurmentsByLocation[locationID]),
-//       keys(measurmentsByLocation)
+//       (locationID: string) => last(measurementsByLocation[locationID]),
+//       keys(measurementsByLocation)
 //     );
 //   }
 // );
 
-function isMeasurmentInMinimumRange(measurment: Measurment): boolean {
-  return isAfter(measurment.created_at, subHours(new Date(), 12));
+function isMeasurementInMinimumRange(measurement: Measurement): boolean {
+  return isAfter(measurement.created_at, subHours(new Date(), 12));
 }
 
-export let selectMeasurmentsFromMinimumRangeByLocation = createSelector(
-  selectMeasurmentsByLocation,
-  (measurmentsByLocation): Dictionary<Measurment[]> => {
+export let selectMeasurementsFromMinimumRangeByLocation = createSelector(
+  selectMeasurementsByLocation,
+  (measurementsByLocation): Dictionary<Measurement[]> => {
     return mapValuesWithKey(
-      measurmentsByLocation,
-      (measurments: Measurment[], locationID: string) => measurmentsByLocation[locationID].filter(isMeasurmentInMinimumRange),
+      measurementsByLocation,
+      (measurements: Measurement[], locationID: string) => measurementsByLocation[locationID].filter(isMeasurementInMinimumRange),
     );
   }
 );
 
-export let selectMinimalMeasurmentsByLocation = createSelector(
-  selectMeasurmentsFromMinimumRangeByLocation,
-  (todaysMeasurmentsByLocation): Dictionary<Measurment> => {
+export let selectMinimalMeasurementsByLocation = createSelector(
+  selectMeasurementsFromMinimumRangeByLocation,
+  (todaysMeasurementsByLocation): Dictionary<Measurement> => {
     return mapValuesWithKey(
-      todaysMeasurmentsByLocation,
-      (measurments: Measurment[], locationID: string) => {
-        let sorted: Measurment[] = todaysMeasurmentsByLocation[locationID].toSorted((a, b) => a.value - b.value);
+      todaysMeasurementsByLocation,
+      (measurements: Measurement[], locationID: string) => {
+        let sorted: Measurement[] = todaysMeasurementsByLocation[locationID].toSorted((a, b) => a.value - b.value);
         return sorted[0];
       },
     );
   }
 );
 
-export let selectLocationsMappedWithKeyMeasurmentValues = createSelector(
+export let selectLocationsMappedWithKeyMeasurementValues = createSelector(
   selectAllLocations,
-  selectLastMeasurmentsByLocation,
-  selectMinimalMeasurmentsByLocation,
-  (locations, lastMeasurmentsByLocation, minimalMeasurmentsByLocation): LocationWithKeyMeasurmentValues[]  => {
-    return locations.map(location => mapLocationWithKeyMeasurmentValues(location, lastMeasurmentsByLocation, minimalMeasurmentsByLocation));
+  selectLastMeasurementsByLocation,
+  selectMinimalMeasurementsByLocation,
+  (locations, lastMeasurementsByLocation, minimalMeasurementsByLocation): LocationWithKeyMeasurementValues[]  => {
+    return locations.map(location => mapLocationWithKeyMeasurementValues(location, lastMeasurementsByLocation, minimalMeasurementsByLocation));
   }
 );
 
-function mapLocationWithKeyMeasurmentValues(
+function mapLocationWithKeyMeasurementValues(
   location: Location,
-  lastMeasurmentsByLocation: Dictionary<Measurment>,
-  minimalMeasurmentsByLocation: Dictionary<Measurment>,
-): LocationWithKeyMeasurmentValues {
+  lastMeasurementsByLocation: Dictionary<Measurement>,
+  minimalMeasurementsByLocation: Dictionary<Measurement>,
+): LocationWithKeyMeasurementValues {
   return {
     ...location,
-    lastMeasurmentValue: lastMeasurmentsByLocation[location.id] ? lastMeasurmentsByLocation[location.id].value : null,
-    minimalMeasurmentValue: minimalMeasurmentsByLocation[location.id] ? minimalMeasurmentsByLocation[location.id].value : null,
+    lastMeasurementValue: lastMeasurementsByLocation[location.id] ? lastMeasurementsByLocation[location.id].value : null,
+    minimalMeasurementValue: minimalMeasurementsByLocation[location.id] ? minimalMeasurementsByLocation[location.id].value : null,
   };
 }

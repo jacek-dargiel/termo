@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest';
 
-import { FetchMeasurmentsSuccess, FetchMeasurmentsError, MeasurmentActions } from './measurment.actions';
-import { RefreshMeasurmentsOnBtnClick, RefreshMeasurmentsOnLocationsLoaded } from '../location/location.actions';
-import { Measurment } from './measurment.model';
-import { reducer, initialState, adapter } from './measurment.reducer';
+import { FetchMeasurementsSuccess, FetchMeasurementsError, MeasurementActions } from './measurement.actions';
+import { RefreshMeasurementsOnBtnClick, RefreshMeasurementsOnLocationsLoaded } from '../location/location.actions';
+import { Measurement } from './measurement.model';
+import { reducer, initialState, adapter } from './measurement.reducer';
 
-const createMeasurment = (
+const createMeasurement = (
   id: string,
   feedKey: string,
   value: number,
   createdAt: Date = new Date('2026-01-01T00:00:00.000Z'),
-): Measurment => ({
+): Measurement => ({
   id,
   value,
   created_at: createdAt,
@@ -18,7 +18,7 @@ const createMeasurment = (
   feed_key: feedKey,
 });
 
-describe('measurmentReducer', () => {
+describe('measurementReducer', () => {
   describe('initialState', () => {
     it('has the correct default shape', () => {
       expect(initialState.ids).toEqual([]);
@@ -30,14 +30,14 @@ describe('measurmentReducer', () => {
   describe('unknown action', () => {
     it('returns the same state reference', () => {
       const state = initialState;
-      const result = reducer(state, { type: 'UNKNOWN' } as unknown as MeasurmentActions);
+      const result = reducer(state, { type: 'UNKNOWN' } as unknown as MeasurementActions);
       expect(result).toBe(state);
     });
   });
 
-  describe('RefreshMeasurmentsOnBtnClick', () => {
+  describe('RefreshMeasurementsOnBtnClick', () => {
     it('sets loading to true', () => {
-      const action = new RefreshMeasurmentsOnBtnClick({ locationId: 'loc-a' });
+      const action = new RefreshMeasurementsOnBtnClick({ locationId: 'loc-a' });
 
       const state = reducer(initialState, action);
 
@@ -45,9 +45,9 @@ describe('measurmentReducer', () => {
     });
 
     it('preserves existing entities', () => {
-      const m1 = createMeasurment('m1', 'loc-a', 25);
+      const m1 = createMeasurement('m1', 'loc-a', 25);
       const initial = adapter.addOne(m1, initialState);
-      const action = new RefreshMeasurmentsOnBtnClick({ locationId: 'loc-a' });
+      const action = new RefreshMeasurementsOnBtnClick({ locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
@@ -57,9 +57,9 @@ describe('measurmentReducer', () => {
     });
   });
 
-  describe('RefreshMeasurmentsOnLocationsLoaded', () => {
+  describe('RefreshMeasurementsOnLocationsLoaded', () => {
     it('sets loading to true', () => {
-      const action = new RefreshMeasurmentsOnLocationsLoaded({ locationId: 'loc-a' });
+      const action = new RefreshMeasurementsOnLocationsLoaded({ locationId: 'loc-a' });
 
       const state = reducer(initialState, action);
 
@@ -67,9 +67,9 @@ describe('measurmentReducer', () => {
     });
 
     it('preserves existing entities', () => {
-      const m1 = createMeasurment('m1', 'loc-a', 25);
+      const m1 = createMeasurement('m1', 'loc-a', 25);
       const initial = adapter.addOne(m1, initialState);
-      const action = new RefreshMeasurmentsOnLocationsLoaded({ locationId: 'loc-a' });
+      const action = new RefreshMeasurementsOnLocationsLoaded({ locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
@@ -79,12 +79,12 @@ describe('measurmentReducer', () => {
     });
   });
 
-  describe('FetchMeasurmentsSuccess', () => {
+  describe('FetchMeasurementsSuccess', () => {
     it('adds measurements to state via adapter.addMany and sets loading to false', () => {
-      const m1 = createMeasurment('m1', 'loc-a', 25, new Date('2026-01-02T00:00:00.000Z'));
-      const m2 = createMeasurment('m2', 'loc-a', 30, new Date('2026-01-03T00:00:00.000Z'));
+      const m1 = createMeasurement('m1', 'loc-a', 25, new Date('2026-01-02T00:00:00.000Z'));
+      const m2 = createMeasurement('m2', 'loc-a', 30, new Date('2026-01-03T00:00:00.000Z'));
       const initial = { ...initialState, loading: true };
-      const action = new FetchMeasurmentsSuccess({ measurments: [m1, m2], locationId: 'loc-a' });
+      const action = new FetchMeasurementsSuccess({ measurements: [m1, m2], locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
@@ -96,7 +96,7 @@ describe('measurmentReducer', () => {
 
     it('handles an empty measurements array', () => {
       const initial = { ...initialState, loading: true };
-      const action = new FetchMeasurmentsSuccess({ measurments: [], locationId: 'loc-a' });
+      const action = new FetchMeasurementsSuccess({ measurements: [], locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
@@ -105,10 +105,10 @@ describe('measurmentReducer', () => {
     });
 
     it('merges new measurements with existing entities', () => {
-      const existing = createMeasurment('existing', 'loc-a', 10, new Date('2026-01-01T00:00:00.000Z'));
-      const incoming = createMeasurment('incoming', 'loc-a', 20, new Date('2026-01-02T00:00:00.000Z'));
+      const existing = createMeasurement('existing', 'loc-a', 10, new Date('2026-01-01T00:00:00.000Z'));
+      const incoming = createMeasurement('incoming', 'loc-a', 20, new Date('2026-01-02T00:00:00.000Z'));
       const initial = adapter.addOne(existing, { ...initialState, loading: true });
-      const action = new FetchMeasurmentsSuccess({ measurments: [incoming], locationId: 'loc-a' });
+      const action = new FetchMeasurementsSuccess({ measurements: [incoming], locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
@@ -119,10 +119,10 @@ describe('measurmentReducer', () => {
     });
   });
 
-  describe('FetchMeasurmentsError', () => {
+  describe('FetchMeasurementsError', () => {
     it('sets loading to false when it was true', () => {
       const initial = { ...initialState, loading: true };
-      const action = new FetchMeasurmentsError({ error: new Error('fail'), locationId: 'loc-a' });
+      const action = new FetchMeasurementsError({ error: new Error('fail'), locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
@@ -130,7 +130,7 @@ describe('measurmentReducer', () => {
     });
 
     it('leaves loading as false when it was already false', () => {
-      const action = new FetchMeasurmentsError({ error: new Error('fail'), locationId: 'loc-a' });
+      const action = new FetchMeasurementsError({ error: new Error('fail'), locationId: 'loc-a' });
 
       const state = reducer(initialState, action);
 
@@ -138,9 +138,9 @@ describe('measurmentReducer', () => {
     });
 
     it('preserves existing entities', () => {
-      const m1 = createMeasurment('m1', 'loc-a', 25);
+      const m1 = createMeasurement('m1', 'loc-a', 25);
       const initial = adapter.addOne(m1, { ...initialState, loading: true });
-      const action = new FetchMeasurmentsError({ error: new Error('fail'), locationId: 'loc-a' });
+      const action = new FetchMeasurementsError({ error: new Error('fail'), locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
@@ -152,9 +152,9 @@ describe('measurmentReducer', () => {
 
   describe('adapter sortComparer', () => {
     it('sorts measurements by created_at ascending', () => {
-      const older = createMeasurment('older', 'loc-a', 10, new Date('2026-01-01T00:00:00.000Z'));
-      const newer = createMeasurment('newer', 'loc-a', 20, new Date('2026-01-05T00:00:00.000Z'));
-      const mid = createMeasurment('mid', 'loc-a', 15, new Date('2026-01-03T00:00:00.000Z'));
+      const older = createMeasurement('older', 'loc-a', 10, new Date('2026-01-01T00:00:00.000Z'));
+      const newer = createMeasurement('newer', 'loc-a', 20, new Date('2026-01-05T00:00:00.000Z'));
+      const mid = createMeasurement('mid', 'loc-a', 15, new Date('2026-01-03T00:00:00.000Z'));
 
       const state = adapter.addMany([newer, older, mid], initialState);
 
@@ -164,13 +164,13 @@ describe('measurmentReducer', () => {
 
   describe('state reference integrity', () => {
     it('returns a new state object on known actions', () => {
-      const action = new RefreshMeasurmentsOnBtnClick({ locationId: 'loc-a' });
+      const action = new RefreshMeasurementsOnBtnClick({ locationId: 'loc-a' });
       const state = reducer(initialState, action);
       expect(state).not.toBe(initialState);
     });
 
     it('returns the same state object on unknown actions', () => {
-      const state = reducer(initialState, { type: 'UNKNOWN' } as unknown as MeasurmentActions);
+      const state = reducer(initialState, { type: 'UNKNOWN' } as unknown as MeasurementActions);
       expect(state).toBe(initialState);
     });
   });

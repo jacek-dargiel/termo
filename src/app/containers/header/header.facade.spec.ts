@@ -6,13 +6,13 @@ import { cold, schedule, Scheduler } from '@granito/vitest-marbles';
 
 import { HeaderFacade } from './header.facade';
 import { RefreshSignalService } from '../../services/refresh-signal.service';
-import { selectMeasurmentsLoading } from '../../state/selectors';
+import { selectMeasurementsLoading } from '../../state/selectors';
 import { RefreshButtonClick } from '../../state/location/location.actions';
 
 const REFRESH_TIMEOUT = 300000;
 
 const initialState = {
-  measurment: {
+  measurement: {
     ids: [],
     entities: {},
     loading: false,
@@ -49,12 +49,12 @@ describe('HeaderFacade', () => {
     expect(facade).toBeTruthy();
   });
 
-  it('sets up refreshing from store.select using selectMeasurmentsLoading', () => {
-    expect(store.select).toHaveBeenCalledWith(selectMeasurmentsLoading);
+  it('sets up refreshing from store.select using selectMeasurementsLoading', () => {
+    expect(store.select).toHaveBeenCalledWith(selectMeasurementsLoading);
   });
 
   it('refreshing emits the store loading state', () => {
-    store.overrideSelector(selectMeasurmentsLoading, true);
+    store.overrideSelector(selectMeasurementsLoading, true);
     store.refreshState();
 
     const values: boolean[] = [];

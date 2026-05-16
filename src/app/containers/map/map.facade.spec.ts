@@ -11,9 +11,9 @@ import { MapBackgroundService } from '../../services/map-background.service';
 import { ErrorHandlingService } from '../../services/error-handling.service';
 import { environment } from 'environments/environment';
 import { Location } from '../../state/location/location.model';
-import { Measurment } from '../../state/measurment/measurment.model';
+import { Measurement } from '../../state/measurement/measurement.model';
 
-const makeMeasurment = (overrides: Partial<Measurment> = {}): Measurment => ({
+const makeMeasurement = (overrides: Partial<Measurement> = {}): Measurement => ({
   id: 'meas-1',
   value: 25,
   created_at: new Date(),
@@ -70,9 +70,9 @@ describe('MapFacade', () => {
       expect(store.select).toHaveBeenCalledWith(selectors.selectLocationLoading);
     });
 
-    it('locations$ is wired to selectLocationsMappedWithKeyMeasurmentValues', () => {
+    it('locations$ is wired to selectLocationsMappedWithKeyMeasurementValues', () => {
       expect(store.select).toHaveBeenCalledWith(
-        selectors.selectLocationsMappedWithKeyMeasurmentValues,
+        selectors.selectLocationsMappedWithKeyMeasurementValues,
       );
     });
 
@@ -80,8 +80,8 @@ describe('MapFacade', () => {
       expect(store.select).toHaveBeenCalledWith(selectors.selectSelectedLocation);
     });
 
-    it('measurmentsByLocation$ is wired to selectMeasurmentsByLocation', () => {
-      expect(store.select).toHaveBeenCalledWith(selectors.selectMeasurmentsByLocation);
+    it('measurementsByLocation$ is wired to selectMeasurementsByLocation', () => {
+      expect(store.select).toHaveBeenCalledWith(selectors.selectMeasurementsByLocation);
     });
   });
 
@@ -112,8 +112,8 @@ describe('MapFacade', () => {
   describe('selectLocation', () => {
     it('dispatches SelectLocation when measurements array has items', () => {
       const dispatchSpy = vi.spyOn(store, 'dispatch');
-      const measurmentsByLocation = { 'loc-test': [makeMeasurment()] };
-      store.overrideSelector(selectors.selectMeasurmentsByLocation, measurmentsByLocation);
+      const measurementsByLocation = { 'loc-test': [makeMeasurement()] };
+      store.overrideSelector(selectors.selectMeasurementsByLocation, measurementsByLocation);
 
       const stream$ = facade.selectLocation(testLocation);
 
@@ -127,10 +127,10 @@ describe('MapFacade', () => {
 
     it('calls error handler and does NOT dispatch when measurements array is empty', () => {
       const dispatchSpy = vi.spyOn(store, 'dispatch');
-      const measurmentsByLocation: Record<string, Measurment[]> = {
+      const measurementsByLocation: Record<string, Measurement[]> = {
         'loc-test': [],
       };
-      store.overrideSelector(selectors.selectMeasurmentsByLocation, measurmentsByLocation);
+      store.overrideSelector(selectors.selectMeasurementsByLocation, measurementsByLocation);
 
       const stream$ = facade.selectLocation(testLocation);
 
@@ -146,8 +146,8 @@ describe('MapFacade', () => {
 
     it('dispatches SelectLocation when measurements key does not exist for the location', () => {
       const dispatchSpy = vi.spyOn(store, 'dispatch');
-      const measurmentsByLocation: Record<string, Measurment[]> = {};
-      store.overrideSelector(selectors.selectMeasurmentsByLocation, measurmentsByLocation);
+      const measurementsByLocation: Record<string, Measurement[]> = {};
+      store.overrideSelector(selectors.selectMeasurementsByLocation, measurementsByLocation);
 
       const stream$ = facade.selectLocation(testLocation);
 

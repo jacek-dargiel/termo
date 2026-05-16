@@ -4,7 +4,7 @@ import { provideMockStore, MockStore } from '@ngrx/store/testing';
 
 import { ChartFacade } from './chart.facade';
 import { SelectLocation } from '../../state/location/location.actions';
-import { selectSelectedLocation, selectSelectedLocationMeasurments } from '../../state/selectors';
+import { selectSelectedLocation, selectSelectedLocationMeasurements } from '../../state/selectors';
 
 describe('ChartFacade', () => {
   let facade: ChartFacade;
@@ -31,8 +31,8 @@ describe('ChartFacade', () => {
     expect(store.select).toHaveBeenCalledWith(selectSelectedLocation);
   });
 
-  it('sets up selectedLocationMeasurments$ from store.select using selectSelectedLocationMeasurments', () => {
-    expect(store.select).toHaveBeenCalledWith(selectSelectedLocationMeasurments);
+  it('sets up selectedLocationMeasurements$ from store.select using selectSelectedLocationMeasurements', () => {
+    expect(store.select).toHaveBeenCalledWith(selectSelectedLocationMeasurements);
   });
 
   it('closeChart dispatches SelectLocation action with undefined location', () => {

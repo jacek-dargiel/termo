@@ -7,7 +7,7 @@ import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
 import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
 import { ToFixedPipe } from '../../pipes/to-fixed.pipe';
 import { TERMO_CURRENT_TIME_FACTORY } from '../../pipes/current-time.injection-token';
-import { LocationWithKeyMeasurmentValues } from '../../state/location/location.model';
+import { LocationWithKeyMeasurementValues } from '../../state/location/location.model';
 
 const MOCK_NOW = new Date('2026-04-25T12:00:00Z');
 
@@ -17,14 +17,14 @@ const MOCK_NOW = new Date('2026-04-25T12:00:00Z');
 })
 class StubSpinnerComponent {}
 
-function createMockLocation(overrides?: Partial<LocationWithKeyMeasurmentValues>): LocationWithKeyMeasurmentValues {
+function createMockLocation(overrides?: Partial<LocationWithKeyMeasurementValues>): LocationWithKeyMeasurementValues {
   return {
     id: 'loc-1',
     name: 'Living Room',
     mapPosition: { x: 0.5, y: 0.3 },
     updatedAt: new Date('2026-04-25T11:59:00Z'),
-    lastMeasurmentValue: 22.5,
-    minimalMeasurmentValue: 18.3,
+    lastMeasurementValue: 22.5,
+    minimalMeasurementValue: 18.3,
     ...overrides,
   };
 }
@@ -93,7 +93,7 @@ describe('MapLocationComponent', () => {
 
     it('displays the formatted temperature with °C unit', () => {
       const { fixture } = setup();
-      fixture.componentRef.setInput('location', createMockLocation({ lastMeasurmentValue: 22.5 }));
+      fixture.componentRef.setInput('location', createMockLocation({ lastMeasurementValue: 22.5 }));
       fixture.componentRef.setInput('loading', false);
       fixture.detectChanges();
 
@@ -103,9 +103,9 @@ describe('MapLocationComponent', () => {
       expect(el.textContent).toContain('°C');
     });
 
-    it('shows the minimal temperature section when minimalMeasurmentValue is not null', () => {
+    it('shows the minimal temperature section when minimalMeasurementValue is not null', () => {
       const { fixture } = setup();
-      fixture.componentRef.setInput('location', createMockLocation({ minimalMeasurmentValue: 18.3 }));
+      fixture.componentRef.setInput('location', createMockLocation({ minimalMeasurementValue: 18.3 }));
       fixture.componentRef.setInput('loading', false);
       fixture.detectChanges();
 
@@ -114,9 +114,9 @@ describe('MapLocationComponent', () => {
       expect(el.querySelector('[data-testid="location-minimal-value"]')).toBeTruthy();
     });
 
-    it('hides the minimal temperature section when minimalMeasurmentValue is null', () => {
+    it('hides the minimal temperature section when minimalMeasurementValue is null', () => {
       const { fixture } = setup();
-      fixture.componentRef.setInput('location', createMockLocation({ minimalMeasurmentValue: null }));
+      fixture.componentRef.setInput('location', createMockLocation({ minimalMeasurementValue: null }));
       fixture.componentRef.setInput('loading', false);
       fixture.detectChanges();
 

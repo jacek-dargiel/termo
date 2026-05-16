@@ -10,14 +10,14 @@
     </header>
     <div class="temperatures">
       <div class="temperature temperature--primary">
-        <span class="value" data-testid="location-temperature">{{location().lastMeasurmentValue | toFixed}}</span><span class="unit">°C</span>
+        <span class="value" data-testid="location-temperature">{{location().lastMeasurementValue | toFixed}}</span><span class="unit">°C</span>
       </div>
-      @if (location().minimalMeasurmentValue !== null) {
+      @if (location().minimalMeasurementValue !== null) {
         <div
           class="temperature temperature--minimal"
           data-testid="location-minimal-temperature"
         >
-          <span class="value">Min: <span data-testid="location-minimal-value">{{location().minimalMeasurmentValue | toFixed}}</span></span><span class="unit">°C</span>
+          <span class="value">Min: <span data-testid="location-minimal-value">{{location().minimalMeasurementValue | toFixed}}</span></span><span class="unit">°C</span>
         </div>
       }
     </div>

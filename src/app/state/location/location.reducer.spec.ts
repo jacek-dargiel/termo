@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { LocationActions, FetchLocationsSuccess, MapInitialized, RefreshButtonClick, RefreshSignal, RefreshMeasurmentsFinished, FetchLocationsError, SelectLocation } from './location.actions';
-import { FetchMeasurmentsSuccess, FetchMeasurmentsError } from '../measurment/measurment.actions';
+import { LocationActions, FetchLocationsSuccess, MapInitialized, RefreshButtonClick, RefreshSignal, RefreshMeasurementsFinished, FetchLocationsError, SelectLocation } from './location.actions';
+import { FetchMeasurementsSuccess, FetchMeasurementsError } from '../measurement/measurement.actions';
 import { Location } from './location.model';
-import { Measurment } from '../measurment/measurment.model';
+import { Measurement } from '../measurement/measurement.model';
 import { reducer, INITIAL_STATE, adapter } from './location.reducer';
 
 const createLocation = (
@@ -18,12 +18,12 @@ const createLocation = (
   updatedAt,
 });
 
-const createMeasurment = (
+const createMeasurement = (
   id: string,
   feedKey: string,
   value: number,
   createdAt: Date
-): Measurment => ({
+): Measurement => ({
   id,
   value,
   created_at: createdAt,
@@ -37,7 +37,7 @@ describe('locationReducer', () => {
       expect(INITIAL_STATE.ids).toEqual([]);
       expect(INITIAL_STATE.entities).toEqual({});
       expect(INITIAL_STATE.loading).toBe(false);
-      expect(INITIAL_STATE.latestMeasurmentIDs).toEqual({});
+      expect(INITIAL_STATE.latestMeasurementIDs).toEqual({});
       expect(INITIAL_STATE.selected).toBeUndefined();
     });
   });
@@ -169,10 +169,10 @@ describe('locationReducer', () => {
     });
   });
 
-  describe('FetchMeasurmentsError', () => {
+  describe('FetchMeasurementsError', () => {
     it('sets loading to false', () => {
       const initial = { ...INITIAL_STATE, loading: true };
-      const action = new FetchMeasurmentsError({ error: new Error('fail'), locationId: 'loc-a' });
+      const action = new FetchMeasurementsError({ error: new Error('fail'), locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
@@ -182,7 +182,7 @@ describe('locationReducer', () => {
     it('preserves other state properties', () => {
       const locA = createLocation('loc-a', 5, 5);
       const initial = adapter.setOne(locA, { ...INITIAL_STATE, loading: true, selected: 'loc-a' });
-      const action = new FetchMeasurmentsError({ error: new Error('fail'), locationId: 'loc-a' });
+      const action = new FetchMeasurementsError({ error: new Error('fail'), locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
@@ -192,10 +192,10 @@ describe('locationReducer', () => {
     });
   });
 
-  describe('RefreshMeasurmentsFinished', () => {
+  describe('RefreshMeasurementsFinished', () => {
     it('sets loading to false', () => {
       const initial = { ...INITIAL_STATE, loading: true };
-      const action = new RefreshMeasurmentsFinished();
+      const action = new RefreshMeasurementsFinished();
 
       const state = reducer(initial, action);
 
@@ -236,24 +236,24 @@ describe('locationReducer', () => {
     });
   });
 
-  describe('FetchMeasurmentsSuccess', () => {
+  describe('FetchMeasurementsSuccess', () => {
     const locA = createLocation('loc-a', 5, 5, new Date('2026-01-01T00:00:00.000Z'));
 
     it('does nothing when measurements array is empty', () => {
       const initial = adapter.setOne(locA, INITIAL_STATE);
-      const action = new FetchMeasurmentsSuccess({ measurments: [], locationId: 'loc-a' });
+      const action = new FetchMeasurementsSuccess({ measurements: [], locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
       expect(state.entities['loc-a']).toEqual(locA);
-      expect(state.latestMeasurmentIDs).toEqual({});
+      expect(state.latestMeasurementIDs).toEqual({});
     });
 
     it('updates the location updatedAt to the latest measurement created_at', () => {
       const initial = adapter.setOne(locA, INITIAL_STATE);
-      const m1 = createMeasurment('m1', 'loc-a', 25, new Date('2026-01-02T00:00:00.000Z'));
-      const m2 = createMeasurment('m2', 'loc-a', 30, new Date('2026-01-03T00:00:00.000Z'));
-      const action = new FetchMeasurmentsSuccess({ measurments: [m1, m2], locationId: 'loc-a' });
+      const m1 = createMeasurement('m1', 'loc-a', 25, new Date('2026-01-02T00:00:00.000Z'));
+      const m2 = createMeasurement('m2', 'loc-a', 30, new Date('2026-01-03T00:00:00.000Z'));
+      const action = new FetchMeasurementsSuccess({ measurements: [m1, m2], locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
@@ -262,63 +262,63 @@ describe('locationReducer', () => {
 
     it('sorts measurements and picks the latest regardless of input order', () => {
       const initial = adapter.setOne(locA, INITIAL_STATE);
-      const older = createMeasurment('older', 'loc-a', 10, new Date('2026-01-01T00:00:00.000Z'));
-      const newer = createMeasurment('newer', 'loc-a', 20, new Date('2026-01-05T00:00:00.000Z'));
-      const mid = createMeasurment('mid', 'loc-a', 15, new Date('2026-01-03T00:00:00.000Z'));
-      const action = new FetchMeasurmentsSuccess({ measurments: [newer, older, mid], locationId: 'loc-a' });
+      const older = createMeasurement('older', 'loc-a', 10, new Date('2026-01-01T00:00:00.000Z'));
+      const newer = createMeasurement('newer', 'loc-a', 20, new Date('2026-01-05T00:00:00.000Z'));
+      const mid = createMeasurement('mid', 'loc-a', 15, new Date('2026-01-03T00:00:00.000Z'));
+      const action = new FetchMeasurementsSuccess({ measurements: [newer, older, mid], locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
       expect(state.entities['loc-a']!.updatedAt).toEqual(new Date('2026-01-05T00:00:00.000Z'));
     });
 
-    it('stores the latest measurement id in latestMeasurmentIDs', () => {
+    it('stores the latest measurement id in latestMeasurementIDs', () => {
       const initial = adapter.setOne(locA, INITIAL_STATE);
-      const m1 = createMeasurment('m1', 'loc-a', 25, new Date('2026-01-02T00:00:00.000Z'));
-      const m2 = createMeasurment('m2', 'loc-a', 30, new Date('2026-01-03T00:00:00.000Z'));
-      const action = new FetchMeasurmentsSuccess({ measurments: [m1, m2], locationId: 'loc-a' });
+      const m1 = createMeasurement('m1', 'loc-a', 25, new Date('2026-01-02T00:00:00.000Z'));
+      const m2 = createMeasurement('m2', 'loc-a', 30, new Date('2026-01-03T00:00:00.000Z'));
+      const action = new FetchMeasurementsSuccess({ measurements: [m1, m2], locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
-      expect(state.latestMeasurmentIDs['loc-a']).toBe('m2');
+      expect(state.latestMeasurementIDs['loc-a']).toBe('m2');
     });
 
-    it('preserves existing latestMeasurmentIDs for other locations', () => {
+    it('preserves existing latestMeasurementIDs for other locations', () => {
       const locB = createLocation('loc-b', 10, 10);
       const initial = adapter.setAll([locA, locB], {
         ...INITIAL_STATE,
-        latestMeasurmentIDs: { 'loc-b': 'old-b' },
+        latestMeasurementIDs: { 'loc-b': 'old-b' },
       });
-      const m1 = createMeasurment('m1', 'loc-a', 25, new Date('2026-01-02T00:00:00.000Z'));
-      const action = new FetchMeasurmentsSuccess({ measurments: [m1], locationId: 'loc-a' });
+      const m1 = createMeasurement('m1', 'loc-a', 25, new Date('2026-01-02T00:00:00.000Z'));
+      const action = new FetchMeasurementsSuccess({ measurements: [m1], locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
-      expect(state.latestMeasurmentIDs['loc-a']).toBe('m1');
-      expect(state.latestMeasurmentIDs['loc-b']).toBe('old-b');
+      expect(state.latestMeasurementIDs['loc-a']).toBe('m1');
+      expect(state.latestMeasurementIDs['loc-b']).toBe('old-b');
     });
 
     it('does not change loading flag', () => {
       const initial = adapter.setOne(locA, { ...INITIAL_STATE, loading: true });
-      const m1 = createMeasurment('m1', 'loc-a', 25, new Date('2026-01-02T00:00:00.000Z'));
-      const action = new FetchMeasurmentsSuccess({ measurments: [m1], locationId: 'loc-a' });
+      const m1 = createMeasurement('m1', 'loc-a', 25, new Date('2026-01-02T00:00:00.000Z'));
+      const action = new FetchMeasurementsSuccess({ measurements: [m1], locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
       expect(state.loading).toBe(true);
     });
 
-    it('overwrites latestMeasurmentID for the same location', () => {
+    it('overwrites latestMeasurementID for the same location', () => {
       const initial = adapter.setOne(locA, {
         ...INITIAL_STATE,
-        latestMeasurmentIDs: { 'loc-a': 'old-m' },
+        latestMeasurementIDs: { 'loc-a': 'old-m' },
       });
-      const m1 = createMeasurment('m1', 'loc-a', 25, new Date('2026-01-02T00:00:00.000Z'));
-      const action = new FetchMeasurmentsSuccess({ measurments: [m1], locationId: 'loc-a' });
+      const m1 = createMeasurement('m1', 'loc-a', 25, new Date('2026-01-02T00:00:00.000Z'));
+      const action = new FetchMeasurementsSuccess({ measurements: [m1], locationId: 'loc-a' });
 
       const state = reducer(initial, action);
 
-      expect(state.latestMeasurmentIDs['loc-a']).toBe('m1');
+      expect(state.latestMeasurementIDs['loc-a']).toBe('m1');
     });
   });
 

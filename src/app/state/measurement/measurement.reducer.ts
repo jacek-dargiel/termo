@@ -1,15 +1,15 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { Measurment } from './measurment.model';
-import { MeasurmentActions, MeasurmentActionTypes } from './measurment.actions';
+import { Measurement } from './measurement.model';
+import { MeasurementActions, MeasurementActionTypes } from './measurement.actions';
 import { LocationActionTypes, LocationActions } from '../location/location.actions';
 import { compareAsc } from 'date-fns';
 
-export interface State extends EntityState<Measurment> {
+export interface State extends EntityState<Measurement> {
   loading: boolean;
 }
 
-export const adapter: EntityAdapter<Measurment> = createEntityAdapter<Measurment>({
-  sortComparer: (a: Measurment, b: Measurment) => compareAsc(a.created_at, b.created_at),
+export const adapter: EntityAdapter<Measurement> = createEntityAdapter<Measurement>({
+  sortComparer: (a: Measurement, b: Measurement) => compareAsc(a.created_at, b.created_at),
 });
 
 export const initialState: State = adapter.getInitialState({
@@ -18,11 +18,11 @@ export const initialState: State = adapter.getInitialState({
 
 export function reducer(
   state = initialState,
-  action: MeasurmentActions | LocationActions
+  action: MeasurementActions | LocationActions
 ): State {
   switch (action.type) {
-    case LocationActionTypes.RefreshMeasurmentsOnBtnClick:
-    case LocationActionTypes.RefreshMeasurmentsOnLocationsLoaded:
+    case LocationActionTypes.RefreshMeasurementsOnBtnClick:
+    case LocationActionTypes.RefreshMeasurementsOnLocationsLoaded:
     {
       return {
         ...state,
@@ -30,14 +30,14 @@ export function reducer(
       };
     }
 
-    case MeasurmentActionTypes.FetchMeasurmentsSuccess: {
-      return adapter.addMany(action.payload.measurments, {
+    case MeasurementActionTypes.FetchMeasurementsSuccess: {
+      return adapter.addMany(action.payload.measurements, {
         ...state,
         loading: false,
       });
     }
 
-    case MeasurmentActionTypes.FetchMeasurmentsError: {
+    case MeasurementActionTypes.FetchMeasurementsError: {
       return {
         ...state,
         loading: false,

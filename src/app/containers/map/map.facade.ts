@@ -16,10 +16,10 @@ export class MapFacade {
   private errorHandlingService = inject(ErrorHandlingService);
 
   public loading$ = this.store.select(selectors.selectLocationLoading);
-  public locations$ = this.store.select(selectors.selectLocationsMappedWithKeyMeasurmentValues);
+  public locations$ = this.store.select(selectors.selectLocationsMappedWithKeyMeasurementValues);
   public selectedLocation$ = this.store.select(selectors.selectSelectedLocation);
 
-  private measurmentsByLocation$ = this.store.select(selectors.selectMeasurmentsByLocation);
+  private measurementsByLocation$ = this.store.select(selectors.selectMeasurementsByLocation);
 
   dispatchMapInit() {
     this.store.dispatch(new MapInitialized());
@@ -31,11 +31,11 @@ export class MapFacade {
   }
 
   selectLocation(location: Location) {
-    return this.measurmentsByLocation$.pipe(
+    return this.measurementsByLocation$.pipe(
       first(),
-      tap(measurmentsByLocation => {
-        let locationMeasurments = measurmentsByLocation[location.id];
-        if (Array.isArray(locationMeasurments) && locationMeasurments.length === 0) {
+      tap(measurementsByLocation => {
+        let locationMeasurements = measurementsByLocation[location.id];
+        if (Array.isArray(locationMeasurements) && locationMeasurements.length === 0) {
           this.errorHandlingService.handle(new Error('Brak aktualnych danych do wyświetlenia na wykresie.'));
           return;
         }

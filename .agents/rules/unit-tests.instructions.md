@@ -102,13 +102,13 @@ Must be listed explicitly in providers (e.g. `LocationService`).
 
 ## NgRx Conventions
 - Actions are class-based: `new ActionClass(payload)`, not `createAction`.
-- Reducer state exports: `INITIAL_STATE` (uppercase, `location.reducer.ts`) vs `initialState` (lowercase, `measurment.reducer.ts`) — match the source.
+- Reducer state exports: `INITIAL_STATE` (uppercase, `location.reducer.ts`) vs `initialState` (lowercase, `measurement.reducer.ts`) — match the source.
 - Facades: spy on `store.select` for wiring tests; spy on `store.dispatch` for dispatch tests.
 
 ```ts
 vi.spyOn(store, 'select');
 const facade = TestBed.inject(HeaderFacade);
-expect(store.select).toHaveBeenCalledWith(selectMeasurmentsLoading);
+expect(store.select).toHaveBeenCalledWith(selectMeasurementsLoading);
 ```
 
 ## Marble Testing

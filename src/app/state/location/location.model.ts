@@ -7,7 +7,7 @@ export interface Location {
   updatedAt: Date;
 }
 
-export interface LocationWithKeyMeasurmentValues extends Location {
-  lastMeasurmentValue: number | null;
-  minimalMeasurmentValue: number | null;
+export interface LocationWithKeyMeasurementValues extends Location {
+  lastMeasurementValue: number | null;
+  minimalMeasurementValue: number | null;
 }

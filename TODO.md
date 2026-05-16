@@ -4,8 +4,8 @@
 [ ] Add sentry error handler tests
 [x] Reevaluate the tests
 [x] Effects tests
-    [x] Unignore refreshMeasurments$ tests
-    [x] Write resetSignalOnMeasurmentsFinished$ tests
+    [x] Unignore refreshMeasurements$ tests
+    [x] Write resetSignalOnMeasurementsFinished$ tests
 [x] Lodash - check if there's better ways to include it, to not trigger optimization bailouts
 [x] Lodash - remove it altogether. It's 2025.
 [x] Check for swimlane charts update (also optimization bailouts)
@@ -36,7 +36,7 @@
 [x] Update to A20
 [x] Evaluate package.json packages, update.
 [x] npm audit
-[ ] Fix measurments typo.
+[x] Fix measurements typo.
 [ ] Use `host` on `@Component` instead of `@HostBinding` and `@HostListener` https://angular.dev/guide/components/host-elements#binding-to-the-host-element
     [ ] Enable host binding type checking in `angularCompilerOptions`.
 [ ] Hide locations delayed by several days.

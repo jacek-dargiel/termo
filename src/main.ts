@@ -4,7 +4,7 @@ import { enableProdMode, ErrorHandler, importProvidersFrom, provideZonelessChang
 import { environment } from 'environments/environment';
 import { ErrorHandlingService } from './app/services/error-handling.service';
 import { LocationService } from './app/services/location.service';
-import { MeasurmentService } from './app/services/measurment.service';
+import { MeasurementService } from './app/services/measurement.service';
 import { MapFacade } from './app/containers/map/map.facade';
 import { TERMO_CURRENT_TIME_FACTORY } from './app/pipes/current-time.injection-token';
 import { SentryErrorHandler } from './app/services/sentry.error-handler';
@@ -14,7 +14,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
 import { StoreModule } from '@ngrx/store';
 import * as fromLocation from './app/state/location/location.reducer';
-import * as fromMeasurment from './app/state/measurment/measurment.reducer';
+import * as fromMeasurement from './app/state/measurement/measurement.reducer';
 import { reducers, metaReducers } from './app/state/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
@@ -33,11 +33,11 @@ bootstrapApplication(AppComponent, {
           !environment.production ? StoreDevtoolsModule.instrument({ serialize: { options: { map: true, set: true } }, connectInZone: true }) : [],
           EffectsModule.forRoot([AppEffects]),
           StoreModule.forFeature('location', fromLocation.reducer),
-          StoreModule.forFeature('measurment', fromMeasurment.reducer)
+          StoreModule.forFeature('measurement', fromMeasurement.reducer)
         ),
         ErrorHandlingService,
         LocationService,
-        MeasurmentService,
+        MeasurementService,
         MapFacade,
         { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => new Date() },
         { provide: ErrorHandler, useClass: SentryErrorHandler },

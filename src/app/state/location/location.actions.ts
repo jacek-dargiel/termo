@@ -4,12 +4,12 @@ import { Location } from './location.model';
 export enum LocationActionTypes {
   MapInitialized = '[Map] Map Initialized',
   MQTTConnected = '[MQTT] Connected',
-  RefreshMeasurmentsOnBtnClick = '[Effect] Refresh Measurments On Button Click',
-  RefreshMeasurmentsOnLocationsLoaded = '[Effect] Refresh Measurments On Locations Loaded',
+  RefreshMeasurementsOnBtnClick = '[Effect] Refresh Measurements On Button Click',
+  RefreshMeasurementsOnLocationsLoaded = '[Effect] Refresh Measurements On Locations Loaded',
   RefreshButtonClick = '[Header] Refresh button clicked',
   RefreshSignal = '[Effect] Refresh Signal',
 
-  RefreshMeasurmentsFinished = '[Effect] Refresh Measurments finished',
+  RefreshMeasurementsFinished = '[Effect] Refresh Measurements finished',
 
   FetchLocationsSuccess = '[API] Fetch Locations Success',
   FetchLocationsError = '[API] Fetch Locations Error',
@@ -29,13 +29,13 @@ export class MapInitialized implements Action {
   readonly type = LocationActionTypes.MapInitialized;
 }
 
-export class RefreshMeasurmentsOnBtnClick implements Action {
-  readonly type = LocationActionTypes.RefreshMeasurmentsOnBtnClick;
+export class RefreshMeasurementsOnBtnClick implements Action {
+  readonly type = LocationActionTypes.RefreshMeasurementsOnBtnClick;
   constructor(public payload: { locationId: string }) {}
 }
 
-export class RefreshMeasurmentsOnLocationsLoaded implements Action {
-  readonly type = LocationActionTypes.RefreshMeasurmentsOnLocationsLoaded;
+export class RefreshMeasurementsOnLocationsLoaded implements Action {
+  readonly type = LocationActionTypes.RefreshMeasurementsOnLocationsLoaded;
   constructor(public payload: { locationId: string }) {}
 }
 
@@ -47,8 +47,8 @@ export class RefreshSignal implements Action {
   readonly type = LocationActionTypes.RefreshSignal;
 }
 
-export class RefreshMeasurmentsFinished implements Action {
-  readonly type = LocationActionTypes.RefreshMeasurmentsFinished;
+export class RefreshMeasurementsFinished implements Action {
+  readonly type = LocationActionTypes.RefreshMeasurementsFinished;
 }
 
 export class FetchLocationsError implements Action {
@@ -64,10 +64,10 @@ export class SelectLocation implements Action {
 export type LocationActions =
  FetchLocationsSuccess
  | MapInitialized
- | RefreshMeasurmentsOnBtnClick
- | RefreshMeasurmentsOnLocationsLoaded
+ | RefreshMeasurementsOnBtnClick
+ | RefreshMeasurementsOnLocationsLoaded
  | RefreshButtonClick
- | RefreshMeasurmentsFinished
+ | RefreshMeasurementsFinished
  | RefreshSignal
  | FetchLocationsError
  | SelectLocation

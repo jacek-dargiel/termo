@@ -1,5 +1,5 @@
 import { Component, Input, HostBinding, OnInit, HostListener, input, output, ChangeDetectionStrategy } from '@angular/core';
-import { LocationWithKeyMeasurmentValues, Location } from '../../state/location/location.model';
+import { LocationWithKeyMeasurementValues, Location } from '../../state/location/location.model';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
 import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
@@ -13,7 +13,7 @@ import { ToFixedPipe } from '../../pipes/to-fixed.pipe';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapLocationComponent implements OnInit {
-  readonly location = input<LocationWithKeyMeasurmentValues>();
+  readonly location = input<LocationWithKeyMeasurementValues>();
   readonly loading = input<boolean>();
   @Input()
   @HostBinding('class.location--selected')
