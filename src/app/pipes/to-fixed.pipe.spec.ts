@@ -1,14 +1,10 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { ToFixedPipe } from './to-fixed.pipe';
 
 describe('ToFixedPipe', () => {
   const locale = 'en-GB';
   const pipe = new ToFixedPipe();
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   it('creates an instance', () => {
     expect(pipe).toBeTruthy();

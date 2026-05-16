@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { take } from 'rxjs';
 
 import { environment } from '../../environments/environment';
@@ -15,11 +15,6 @@ describe('RefreshSignalService', () => {
     vi.useFakeTimers();
     vi.spyOn(document, 'hidden', 'get').mockImplementation(() => hidden);
     service = new RefreshSignalService();
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
-    vi.restoreAllMocks();
   });
 
   it('creates an instance', () => {

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { subMilliseconds } from 'date-fns';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { TERMO_CURRENT_TIME_FACTORY } from './current-time.injection-token';
 import { IsLocationOutdatedPipe } from './is-location-outdated.pipe';
@@ -26,10 +26,6 @@ describe('IsLocationOutdatedPipe', () => {
         },
       ],
     });
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
   });
 
   it('creates an instance', () => {

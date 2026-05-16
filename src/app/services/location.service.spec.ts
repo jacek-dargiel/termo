@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LocationService } from './location.service';
 import { ApiService } from './api.service';
@@ -47,10 +47,6 @@ describe('LocationService', () => {
     });
 
     service = TestBed.inject(LocationService);
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
   });
 
   it('creates an instance', () => {

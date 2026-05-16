@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { TERMO_CURRENT_TIME_FACTORY } from './current-time.injection-token';
 import { RelativeTimePipe } from './relative-time.pipe';
@@ -23,10 +23,6 @@ describe('RelativeTimePipe', () => {
         },
       ],
     });
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
   });
 
   it('creates an instance', () => {

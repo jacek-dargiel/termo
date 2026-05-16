@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 
 import { ChartFacade } from './chart.facade';
@@ -21,10 +21,6 @@ describe('ChartFacade', () => {
     store = TestBed.inject(MockStore);
     vi.spyOn(store, 'select');
     facade = TestBed.inject(ChartFacade);
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
   });
 
   it('creates an instance', () => {

@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { subHours, subSeconds } from 'date-fns';
 
 import * as fromLocation from './location/location.reducer';
@@ -73,10 +73,6 @@ describe('state selectors', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-01-15T12:00:00.000Z'));
-  });
-
-  afterEach(() => {
-    vi.useRealTimers();
   });
 
   it('selects feature slices from root state', () => {

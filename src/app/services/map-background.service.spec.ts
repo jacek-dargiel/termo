@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { cold, Scheduler } from '@granito/vitest-marbles';
 
 import { MapBackgroundService } from './map-background.service';
@@ -15,10 +15,6 @@ describe('MapBackgroundService', () => {
   beforeEach(() => {
     Scheduler.init();
     service = new MapBackgroundService();
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
   });
 
   it('creates an instance', () => {

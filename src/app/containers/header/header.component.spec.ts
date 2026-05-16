@@ -3,7 +3,7 @@ import { Component, input, output, provideZonelessChangeDetection } from '@angul
 import { TestBed } from '@angular/core/testing';
 import { cold, schedule, Scheduler } from '@granito/vitest-marbles';
 import { BehaviorSubject } from 'rxjs';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { HeaderComponent } from './header.component';
 import { HeaderFacade } from './header.facade';
@@ -21,10 +21,6 @@ class RefreshButtonStub {
 describe('HeaderComponent', () => {
   beforeEach(() => {
     Scheduler.init();
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
   });
 
   function setup() {

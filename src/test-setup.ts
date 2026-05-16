@@ -39,3 +39,13 @@ if (!styleTransformDesc || styleTransformDesc.configurable) {
     configurable: true
   });
 }
+
+import { afterEach, vi } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+
+afterEach(() => {
+  TestBed.resetTestingModule();
+  vi.restoreAllMocks();
+  vi.clearAllTimers();
+  vi.useRealTimers();
+});

@@ -1,6 +1,6 @@
 import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { MapLocationComponent } from './map-location.component';
 import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
@@ -46,10 +46,6 @@ describe('MapLocationComponent', () => {
     const fixture = TestBed.createComponent(MapLocationComponent);
     return { fixture };
   }
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   it('creates the component', () => {
     const { fixture } = setup();

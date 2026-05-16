@@ -3,7 +3,7 @@ import { Component, input, output, provideZonelessChangeDetection } from '@angul
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject, of, Subject } from 'rxjs';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { MapComponent } from './map.component';
 import { MapFacade } from './map.facade';
@@ -83,10 +83,6 @@ describe('MapComponent', () => {
       selectLocation,
     };
   }
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
 
   it('creates the component', () => {
     const { component } = setup();

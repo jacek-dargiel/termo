@@ -90,7 +90,8 @@
             ],
             "setupFiles": [
               "src/test-setup.ts"
-            ]
+            ],
+            "runnerConfig": true
           }
         },
         "lint": {
