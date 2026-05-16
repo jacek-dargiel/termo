@@ -11,6 +11,7 @@ import { SentryErrorHandler } from './app/services/sentry.error-handler';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideHotToastConfig } from '@ngxpert/hot-toast';
 import { StoreModule } from '@ngrx/store';
 import * as fromLocation from './app/state/location/location.reducer';
 import * as fromMeasurment from './app/state/measurment/measurment.reducer';
@@ -42,7 +43,12 @@ bootstrapApplication(AppComponent, {
         { provide: ErrorHandler, useClass: SentryErrorHandler },
         provideHttpClient(withInterceptorsFromDi()),
         provideAnimations(),
-        provideZonelessChangeDetection()
+        provideZonelessChangeDetection(),
+        provideHotToastConfig({
+          position: 'bottom-center',
+          theme: 'snackbar',
+          duration: environment.snackbarDefaultTimeout,
+        }),
     ]
 })
   .catch(err => console.log(err));

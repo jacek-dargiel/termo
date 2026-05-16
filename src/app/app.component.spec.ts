@@ -11,9 +11,6 @@ class MapStub {}
 @Component({ selector: 'termo-chart', template: '' })
 class ChartStub {}
 
-@Component({ selector: 'termo-snackbar', template: '' })
-class SnackbarStub {}
-
 describe('AppComponent', () => {
   function setup() {
     TestBed.configureTestingModule({
@@ -22,7 +19,7 @@ describe('AppComponent', () => {
     });
 
     TestBed.overrideComponent(AppComponent, {
-      set: { imports: [MapStub, ChartStub, SnackbarStub] },
+      set: { imports: [MapStub, ChartStub] },
     });
 
     const fixture = TestBed.createComponent(AppComponent);
@@ -49,6 +46,5 @@ describe('AppComponent', () => {
 
     expect(el.querySelector('termo-map')).toBeTruthy();
     expect(el.querySelector('termo-chart')).toBeTruthy();
-    expect(el.querySelector('termo-snackbar')).toBeTruthy();
   });
 });

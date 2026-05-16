@@ -1,53 +1,53 @@
+import { TestBed } from '@angular/core/testing';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ErrorHandlingService } from './error-handling.service';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 describe('ErrorHandlingService', () => {
+  function setup() {
+    const mockToast = { error: vi.fn() };
+
+    TestBed.configureTestingModule({
+      providers: [
+        ErrorHandlingService,
+        { provide: HotToastService, useValue: mockToast },
+      ],
+    });
+
+    const service = TestBed.inject(ErrorHandlingService);
+    return { service, mockToast };
+  }
+
   it('creates an instance', () => {
-    const service = new ErrorHandlingService();
+    const { service } = setup();
 
     expect(service).toBeTruthy();
   });
 
-  it('emits each handled error in order on errors$', () => {
-    const service = new ErrorHandlingService();
-    const emitted: Error[] = [];
-    const subscription = service.errors$.subscribe(error => emitted.push(error));
-    const firstError = new Error('first');
-    const secondError = new Error('second');
-
-    service.handle(firstError);
-    service.handle(secondError);
-
-    expect(emitted).toEqual([firstError, secondError]);
-
-    subscription.unsubscribe();
-  });
-
-  it('emits the same Error instance passed to handle', () => {
-    const service = new ErrorHandlingService();
-    const error = new Error('boom');
-    let emitted: Error | undefined;
-
-    const subscription = service.errors$.subscribe(value => {
-      emitted = value;
-    });
+  it('calls toast.error with the error message when handle is called', () => {
+    const { service, mockToast } = setup();
+    const error = new Error('Connection failed');
 
     service.handle(error);
 
-    expect(emitted).toBe(error);
-
-    subscription.unsubscribe();
+    expect(mockToast.error).toHaveBeenCalledWith('Connection failed', { icon: '' });
   });
 
-  it('does not emit before handle is called', () => {
-    const service = new ErrorHandlingService();
-    const handler = vi.fn();
+  it('calls toast.error for each error when handle is called multiple times', () => {
+    const { service, mockToast } = setup();
 
-    const subscription = service.errors$.subscribe(handler);
+    service.handle(new Error('First error'));
+    service.handle(new Error('Second error'));
 
-    expect(handler).not.toHaveBeenCalled();
+    expect(mockToast.error).toHaveBeenCalledTimes(2);
+    expect(mockToast.error).toHaveBeenNthCalledWith(1, 'First error', { icon: '' });
+    expect(mockToast.error).toHaveBeenNthCalledWith(2, 'Second error', { icon: '' });
+  });
 
-    subscription.unsubscribe();
+  it('does not call toast.error before handle is called', () => {
+    const { mockToast } = setup();
+
+    expect(mockToast.error).not.toHaveBeenCalled();
   });
 });

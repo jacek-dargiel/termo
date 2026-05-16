@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @Injectable()
 export class ErrorHandlingService {
-  private errorsSubject = new Subject<Error>();
-  public errors$ = this.errorsSubject.asObservable();
+  private toast = inject(HotToastService);
 
   handle(error: Error) {
-    this.errorsSubject.next(error);
+    this.toast.error(error.message, { icon: '' });
   }
 }

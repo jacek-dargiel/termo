@@ -1,6 +1,5 @@
 @use 'sass:color';
 @use '../../../styles/variables' as vars;
-@use '../../../../node_modules/@material/animation' as mdc;
 
 $chartHeight: 15rem;
 
@@ -14,11 +13,11 @@ $chartHeight: 15rem;
   background: #fff;
   border: 1px solid color.mix(#bbb, vars.$colorPrimary, 85%);
   box-shadow: 0.3rem 0.3rem 1rem rgba(#000, 0.5);
-  transition: mdc.exit-temporary(transform, 175ms);
+  transition: transform 175ms cubic-bezier(0.4, 0.0, 1, 1);
   display: flex;
 
   &.chart--visible {
-    transition: mdc.enter(transform, 175ms);
+    transition: transform 175ms cubic-bezier(0.0, 0.0, 0.2, 1);
     transform: translateY(0);
   }
 }
