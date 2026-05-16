@@ -42,5 +42,5 @@
 [ ] Hide locations delayed by several days.
 [ ] Refactor to signal store.
 [ ] Refactor to github actions
-[ ] migrate to angular's built-in experimental vitest framework (vitest promises easy migration from jest) https://angular.dev/guide/testing/unit-tests
+[x] migrate to angular's built-in experimental vitest framework (vitest promises easy migration from jest) https://angular.dev/guide/testing/unit-tests
 [x] Zoneless.
