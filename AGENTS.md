@@ -36,3 +36,17 @@
 - OpenCode MCP config is in `opencode.json`.
 - `angular-cli` MCP is available for Angular docs/project-aware tooling.
 - `grounded-docs` MCP is available; use it for up-to-date Vitest docs when needed.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues via the `gh` CLI in the `jacek-dargiel/termo` repo. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout. See `docs/agents/domain.md`.
