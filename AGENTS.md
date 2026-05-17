@@ -22,6 +22,7 @@
 - Treat loaded rules as mandatory task-specific instructions.
 - Unit-test guidance: `@.agents/rules/unit-tests.instructions.md`.
 - E2E guidance: `@.agents/rules/e2e.instructions.md`.
+- ADR guidance: `@.agents/rules/adr.instructions.md`. Read before proposing or writing any Architecture Decision Record.
 
 ## Coding Style Preferences
 - Prefer `date-fns` for date/time math and formatting.
@@ -31,6 +32,10 @@
 - Dev proxy rewrites `/api/*` to `https://io.adafruit.com/api/v2/przemekd/*` (`proxy.conf.json`).
 - Production redirect is templated in `netlify.toml.template`; `post-deploy` generates `netlify.toml` via `envsub`.
 - Runtime in `package.json` expects Node `24.x`.
+
+## Architecture Decisions
+- `docs/adr/README.md` — Index of all ADRs. Read before making structural changes to understand past decisions.
+- ADR format and rules: `.agents/rules/adr.instructions.md`.
 
 ## Agent-Specific Tooling
 - OpenCode MCP config is in `opencode.json`.

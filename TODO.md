@@ -40,6 +40,7 @@
 [ ] Use `host` on `@Component` instead of `@HostBinding` and `@HostListener` https://angular.dev/guide/components/host-elements#binding-to-the-host-element
     [ ] Enable host binding type checking in `angularCompilerOptions`.
 [ ] Hide locations delayed by several days.
+[ ] Per-location loading state instead of single global boolean (currently all map markers show/hide spinners simultaneously).
 [ ] Refactor to signal store.
 [ ] Refactor to github actions
 [x] migrate to angular's built-in experimental vitest framework (vitest promises easy migration from jest) https://angular.dev/guide/testing/unit-tests
