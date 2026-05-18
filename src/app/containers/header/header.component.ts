@@ -10,10 +10,13 @@ import { RefreshButtonComponent } from '../../components/refresh-button/refresh-
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
-  protected readonly facade = inject(LocationFacade);
+  private readonly locationFacade = inject(LocationFacade);
+
+  readonly refreshing = this.locationFacade.refreshing;
+  readonly refreshProgress = this.locationFacade.refreshProgress;
 
   public refresh () {
-    this.facade.manualRefresh();
+    this.locationFacade.manualRefresh();
   }
 
 }

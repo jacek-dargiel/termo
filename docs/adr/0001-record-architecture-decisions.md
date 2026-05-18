@@ -28,10 +28,9 @@ The template is the 5-section Nygard format extended with Alternatives Considere
 ## Consequences
 
 **What gets easier:**
-- Onboarding new developers — they read ADRs and understand the architecture's history
 - AI coding agents receive past decisions as context, preventing drift and re-deciding
 - Design discussions are grounded in written trade-offs, not memory
-- Quarterly reviews catch stale assumptions
+- Long gaps between maintenance sessions don't erode institutional memory — decisions are recorded, not remembered
 
 **What gets harder:**
 - Adds ~15 minutes of overhead per significant decision

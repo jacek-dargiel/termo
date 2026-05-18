@@ -60,7 +60,7 @@ describe('HeaderComponent', () => {
     expect(button.refreshing()).toBe(true);
   });
 
-  it('calls facade.manualRefresh on refresh()', () => {
+  it('calls locationFacade.manualRefresh on refresh()', () => {
     const { fixture } = setup();
 
     fixture.componentInstance.refresh();

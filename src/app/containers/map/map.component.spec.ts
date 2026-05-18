@@ -89,7 +89,7 @@ describe('MapComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('exposes isLoading, enrichedLocations, and selectedLocation from the facade', () => {
+  it('exposes isLoading, enrichedLocations, and selectedLocation', () => {
     const { component, mockFacade } = setup();
     const location = createLocation();
 
@@ -97,13 +97,13 @@ describe('MapComponent', () => {
     mockFacade.enrichedLocations.set([location]);
     mockFacade.selectedLocation.set(location);
 
-    expect(component.facade.isLoading()).toBe(true);
-    expect(component.facade.enrichedLocations()).toEqual([location]);
-    expect(component.facade.selectedLocation()).toBe(location);
+    expect(component.isLoading()).toBe(true);
+    expect(component.enrichedLocations()).toEqual([location]);
+    expect(component.selectedLocation()).toBe(location);
   });
 
   describe('ngOnInit', () => {
-    it('calls init on the facade', () => {
+    it('calls init on the LocationFacade', () => {
       const { init } = setup();
 
       expect(init).toHaveBeenCalledOnce();

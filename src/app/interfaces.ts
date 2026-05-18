@@ -57,8 +57,6 @@ export interface LocationWithKeyMeasurementValues extends Location {
   minimalMeasurementValue: number | null;
 }
 
-export type Dictionary<T> = Record<string, T>;
-
 export interface AIOFeedData {
     id: string;
     value: string;

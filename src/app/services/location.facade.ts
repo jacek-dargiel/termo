@@ -1,5 +1,6 @@
 import { DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
 import { isAfter, subHours } from 'date-fns';
+import { switchMap } from 'rxjs';
 import { environment } from 'environments/environment';
 
 import { LocationStateService } from './location.state';
@@ -26,30 +27,31 @@ export class LocationFacade {
 
   readonly lastMeasurementsByLocation = computed(() => {
     const measurements = this.measurementsByLocation();
-    const result: Record<string, Measurement> = {};
-    for (const [key, values] of Object.entries(measurements)) {
-      if (values.length > 0) {
-        result[key] = values.reduce((latest, m) =>
-          m.created_at > latest.created_at ? m : latest
-        );
-      }
-    }
-    return result;
+    return Object.fromEntries(
+      Object.entries(measurements)
+        .filter(([, values]) => values.length > 0)
+        .map(([key, values]) => [
+          key,
+          values.reduce((latest, m) =>
+            m.created_at > latest.created_at ? m : latest
+          ),
+        ])
+    ) as Record<string, Measurement>;
   });
 
   readonly minimalMeasurementsByLocation = computed(() => {
     const measurements = this.measurementsByLocation();
-    const result: Record<string, Measurement> = {};
     const twelveHoursAgo = subHours(new Date(), 12);
-    for (const [key, values] of Object.entries(measurements)) {
-      const recentValues = values.filter((m) => isAfter(m.created_at, twelveHoursAgo));
-      if (recentValues.length > 0) {
-        result[key] = recentValues.reduce((min, m) =>
-          m.value < min.value ? m : min
-        );
-      }
-    }
-    return result;
+    return Object.fromEntries(
+      Object.entries(measurements).flatMap(([key, values]) => {
+        const recentValues = values.filter((m) => isAfter(m.created_at, twelveHoursAgo));
+        if (recentValues.length === 0) return [];
+        return [[
+          key,
+          recentValues.reduce((min, m) => m.value < min.value ? m : min),
+        ]];
+      }),
+    );
   });
 
   readonly enrichedLocations = computed((): LocationWithKeyMeasurementValues[] => {
@@ -81,11 +83,15 @@ export class LocationFacade {
 
   readonly refreshing = computed(() => this.measurementState.loading());
 
-  async init(): Promise<void> {
-    await this.locationState.load();
-    const locationIds = this.locationState.locations().map((l) => l.id);
-    await this.measurementState.refreshAll(locationIds);
-    this.startRefreshTimer();
+  init(): void {
+    this.locationState.load().pipe(
+      switchMap(() => {
+        const locationIds = this.locationState.locations().map((l) => l.id);
+        return this.measurementState.refreshAll(locationIds);
+      }),
+    ).subscribe(() => {
+      this.startRefreshTimer();
+    });
   }
 
   selectLocation(location: Location): void {
@@ -105,7 +111,7 @@ export class LocationFacade {
 
   manualRefresh(): void {
     const locationIds = this.locationState.locations().map((l) => l.id);
-    this.measurementState.refreshAll(locationIds);
+    this.measurementState.refreshAll(locationIds).subscribe();
     this.resetTimer();
   }
 
@@ -122,7 +128,7 @@ export class LocationFacade {
       if (remaining <= 0) {
         this.refreshProgress.set(1);
         const locationIds = this.locationState.locations().map((l) => l.id);
-        this.measurementState.refreshAll(locationIds);
+        this.measurementState.refreshAll(locationIds).subscribe();
         this.resetTimer();
       } else {
         this.secondsRemaining.set(remaining);

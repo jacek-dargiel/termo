@@ -33,7 +33,7 @@ We will replace NgRx (`@ngrx/store`, `@ngrx/effects`, `@ngrx/entity`) with **pla
 
 - **`signal<T>()`** for mutable state (entity arrays, loading flags, selected IDs)
 - **`computed<T>()`** for derived state (grouped measurements, location+values merges, filtered/sorted projections)
-- **`httpResource<T>()`** for API calls — provides built-in `isLoading()`, `error()`, `value()` signals. If experimental status is a concern, the fallback is `httpClient` with `toSignal()` (well-established pattern).
+- **`HttpClient` with Observables** for API calls — state services return Observables that set signals in a `finalize`/`tap` pipeline. `httpResource<T>()` remains experimental as of Angular 21 and was not adopted in this migration; it should be revisited when stabilized as it would replace manual loading/error signal management.
 - **Direct method calls** instead of action dispatch for user actions (refresh, select location)
 - **`setInterval` in an `effect()`** for auto-refresh, replacing the 4-action + 2-effect + `RefreshSignalService` chain
 
@@ -66,7 +66,7 @@ The `@ngrx/store-devtools` package is removed. Angular DevTools provides compone
 - **No more facade indirection:** Components inject state services directly with `inject(LocationStateService)` instead of going through facade → store dispatch → effect → service.
 
 **What gets harder:**
-- **Debugging:** Redux DevTools (time-travel, action log, state diffs) is gone. Debugging involves logging signal values in `effect()` or using Angular DevTools (component tree only). For a 2-entity app with ~9 state fields, the loss is manageable.
+- **Debugging:** Redux DevTools (time-travel, action log, state diffs) is gone. Debugging involves logging signal values in `effect()` or using Angular DevTools (component tree only). For a 2-entity app with ~9 state fields, the loss is manageable. In practice, Redux DevTools were rarely consulted during development — the debugging need they addressed was largely a symptom of the NgRx architecture's own complexity.
 - **Action audit trail:** No structured action history with source tags (`[Map]`, `[API]`, `[Effect]`). Method-call tracing relies on browser DevTools call stacks.
 - **Cross-cutting error handling:** The throttled error snackbar (`app.effects.ts` line 50: `throttleTime(snackbarDefaultTimeout)`) currently lives in a single effect. In the signal approach, throttling must be handled in each service method or via an `HttpInterceptor`.
 - **Immutability enforcement:** NgRx reducers structurally enforce immutability via spread operators. Signal services rely on convention and code review. The risk is low given the small state surface (~9 fields).
@@ -76,12 +76,10 @@ The `@ngrx/store-devtools` package is removed. Angular DevTools provides compone
 
 Reconsider this decision if:
 - The application grows to 5+ entity types or requires lazy-loaded state slices
-- The team grows to 4+ developers and needs a standardized state management contract
-- NgRx releases a SignalStore version with zero-config migration from signals that materially changes the trade-off
+- `httpResource<T>()` stabilizes (exits experimental) — it would replace the manual loading/error signal management currently done via `HttpClient` + Observables
 - Angular deprecates `signal()` / `computed()` / `effect()` (unlikely given their foundational role)
 
 ## References
 
 - NgRx current footprint: `state/location/` (74 + 126 + 13 lines), `state/measurement/` (31 + 58 + 7 lines), `state/selectors.ts` (152 lines), `app.effects.ts` (117 lines), 3 facades (91 lines), `state/reducers/index.ts` (18 lines)
 - Angular Signals guide: https://angular.dev/guide/signals
-- `httpResource()`: https://angular.dev/guide/http/http-resource

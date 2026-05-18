@@ -2,6 +2,7 @@ import { ApplicationRef, provideZonelessChangeDetection } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { subDays } from 'date-fns';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { environment } from 'environments/environment';
@@ -57,8 +58,20 @@ describe('MeasurementStateService', () => {
   });
 
   describe('refreshAll', () => {
-    const urlFor = (key: string) =>
-      `${environment.API_URL}/feeds/${key}/data?limit=${environment.feedDataLimit}`;
+    const fixedNow = new Date('2026-05-18T12:00:00Z');
+
+    beforeEach(() => {
+      vi.setSystemTime(fixedNow);
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    const urlFor = (key: string) => {
+      const start = subDays(fixedNow, 1).toISOString();
+      return `${environment.API_URL}/feeds/${key}/data?limit=${environment.feedDataLimit}&start_time=${start}`;
+    };
 
     it('after refreshAll(ids), measurementsByLocation groups data by feed_key', async () => {
       const locAData = [
@@ -72,7 +85,7 @@ describe('MeasurementStateService', () => {
       expect(service.measurementsByLocation()).toEqual({});
       expect(service.loading()).toBe(false);
 
-      service.refreshAll(['loc-a', 'loc-b']);
+      service.refreshAll(['loc-a', 'loc-b']).subscribe();
 
       const reqA = httpTesting.expectOne(urlFor('loc-a'));
       expect(reqA.request.method).toBe('GET');
@@ -94,7 +107,7 @@ describe('MeasurementStateService', () => {
     });
 
     it('refreshAll sets loading to true during fetch', async () => {
-      service.refreshAll(['loc-a']);
+      service.refreshAll(['loc-a']).subscribe();
 
       expect(service.loading()).toBe(true);
 
@@ -109,7 +122,7 @@ describe('MeasurementStateService', () => {
     it('when refreshAll fails, error is shown but only one toast per 5 seconds', async () => {
       vi.useFakeTimers();
 
-      service.refreshAll(['loc-a', 'loc-b', 'loc-c']);
+      service.refreshAll(['loc-a', 'loc-b', 'loc-c']).subscribe();
 
       const reqA = httpTesting.expectOne(urlFor('loc-a'));
       const reqB = httpTesting.expectOne(urlFor('loc-b'));

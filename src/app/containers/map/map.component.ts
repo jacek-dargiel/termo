@@ -14,12 +14,16 @@ import { environment } from 'environments/environment';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapComponent implements OnInit {
-  readonly facade = inject(LocationFacade);
+  private readonly locationFacade = inject(LocationFacade);
   private readonly mapBackground = inject(MapBackgroundService);
   el = inject<ElementRef<HTMLElement>>(ElementRef);
 
+  readonly enrichedLocations = this.locationFacade.enrichedLocations;
+  readonly isLoading = this.locationFacade.isLoading;
+  readonly selectedLocation = this.locationFacade.selectedLocation;
+
   ngOnInit() {
-    this.facade.init();
+    this.locationFacade.init();
     this.mapBackground.getImageDimentions(environment.mapBackgroundUrl)
       .subscribe(dimentions => this.updateMapRatio(dimentions));
   }
@@ -30,7 +34,7 @@ export class MapComponent implements OnInit {
   }
 
   onLocationSelect(location: Location) {
-    this.facade.selectLocation(location);
+    this.locationFacade.selectLocation(location);
   }
 
 }

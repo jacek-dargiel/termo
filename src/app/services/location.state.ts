@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { Observable, map, tap, finalize } from 'rxjs';
 import { environment } from 'environments/environment';
 import { AIOFeed, Location, Point } from '../interfaces';
 
@@ -12,20 +12,19 @@ export class LocationStateService {
   readonly loading = signal(false);
   readonly selectedLocationId = signal<string | null>(null);
 
-  async load(): Promise<void> {
+  load(): Observable<void> {
     this.loading.set(true);
-    try {
-      const feeds = await firstValueFrom(
-        this.http.get<AIOFeed[]>(`${environment.API_URL}/groups/tunele/feeds`)
-      );
-      if (feeds.length === 0) {
-        throw new Error('0 Locations received from API.');
-      }
-      const locations = feeds.map(feed => this.mapFeedToLocation(feed));
-      this.locations.set(locations);
-    } finally {
-      this.loading.set(false);
-    }
+    return this.http.get<AIOFeed[]>(`${environment.API_URL}/groups/tunele/feeds`).pipe(
+      tap(feeds => {
+        if (feeds.length === 0) {
+          throw new Error('0 Locations received from API.');
+        }
+        const locations = feeds.map(feed => this.mapFeedToLocation(feed));
+        this.locations.set(locations);
+      }),
+      finalize(() => this.loading.set(false)),
+      map(() => undefined),
+    );
   }
 
   private mapFeedToLocation(feed: AIOFeed): Location {

@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { subHours } from 'date-fns';
 import { signal } from '@angular/core';
+import { of } from 'rxjs';
 
 import { LocationFacade } from './location.facade';
 import { LocationStateService } from './location.state';
@@ -33,7 +34,7 @@ function createMeasurement(overrides?: Partial<Measurement>): Measurement {
 }
 
 describe('LocationFacade', () => {
-  let facade: LocationFacade;
+  let locationFacade: LocationFacade;
   let mockLocationState: {
     locations: ReturnType<typeof signal<Location[]>>;
     loading: ReturnType<typeof signal<boolean>>;
@@ -52,12 +53,12 @@ describe('LocationFacade', () => {
       locations: signal<Location[]>([]),
       loading: signal(false),
       selectedLocationId: signal<string | null>(null),
-      load: vi.fn().mockResolvedValue(undefined),
+      load: vi.fn(() => of(undefined)),
     };
     mockMeasurementState = {
       measurementsByLocation: signal<Record<string, Measurement[]>>({}),
       loading: signal(false),
-      refreshAll: vi.fn().mockResolvedValue(undefined),
+      refreshAll: vi.fn(() => of(undefined)),
     };
     mockErrorHandling = { handle: vi.fn() };
 
@@ -71,7 +72,7 @@ describe('LocationFacade', () => {
       ],
     });
 
-    facade = TestBed.inject(LocationFacade);
+    locationFacade = TestBed.inject(LocationFacade);
   });
 
   describe('enrichedLocations', () => {
@@ -87,7 +88,7 @@ describe('LocationFacade', () => {
         ],
       });
 
-      const result = facade.enrichedLocations();
+      const result = locationFacade.enrichedLocations();
       expect(result).toHaveLength(1);
       expect(result[0].lastMeasurementValue).toBe(20);
       expect(result[0].minimalMeasurementValue).toBe(18);
@@ -98,7 +99,7 @@ describe('LocationFacade', () => {
       mockLocationState.locations.set([loc]);
       mockMeasurementState.measurementsByLocation.set({});
 
-      const result = facade.enrichedLocations();
+      const result = locationFacade.enrichedLocations();
       expect(result[0].lastMeasurementValue).toBeNull();
       expect(result[0].minimalMeasurementValue).toBeNull();
     });
@@ -115,7 +116,7 @@ describe('LocationFacade', () => {
         ],
       });
 
-      const result = facade.enrichedLocations();
+      const result = locationFacade.enrichedLocations();
       expect(result[0].minimalMeasurementValue).toBe(5);
     });
   });
@@ -127,7 +128,7 @@ describe('LocationFacade', () => {
       mockLocationState.locations.set([locA, locB]);
       mockLocationState.selectedLocationId.set('loc-a');
 
-      expect(facade.selectedLocation()).toEqual(locA);
+      expect(locationFacade.selectedLocation()).toEqual(locA);
     });
 
     it('returns null when selectedLocationId is null', () => {
@@ -135,7 +136,7 @@ describe('LocationFacade', () => {
       mockLocationState.locations.set([locA]);
       mockLocationState.selectedLocationId.set(null);
 
-      expect(facade.selectedLocation()).toBeNull();
+      expect(locationFacade.selectedLocation()).toBeNull();
     });
 
     it('returns null when selectedLocationId does not match any location', () => {
@@ -143,7 +144,7 @@ describe('LocationFacade', () => {
       mockLocationState.locations.set([locA]);
       mockLocationState.selectedLocationId.set('nonexistent');
 
-      expect(facade.selectedLocation()).toBeNull();
+      expect(locationFacade.selectedLocation()).toBeNull();
     });
   });
 
@@ -156,7 +157,7 @@ describe('LocationFacade', () => {
       mockMeasurementState.measurementsByLocation.set({ 'loc-a': measurements });
       mockLocationState.selectedLocationId.set('loc-a');
 
-      expect(facade.selectedLocationMeasurements()).toEqual(measurements);
+      expect(locationFacade.selectedLocationMeasurements()).toEqual(measurements);
     });
 
     it('returns empty array when no location selected', () => {
@@ -165,7 +166,7 @@ describe('LocationFacade', () => {
       });
       mockLocationState.selectedLocationId.set(null);
 
-      expect(facade.selectedLocationMeasurements()).toEqual([]);
+      expect(locationFacade.selectedLocationMeasurements()).toEqual([]);
     });
   });
 
@@ -174,31 +175,31 @@ describe('LocationFacade', () => {
       mockLocationState.loading.set(true);
       mockMeasurementState.loading.set(false);
 
-      expect(facade.isLoading()).toBe(true);
+      expect(locationFacade.isLoading()).toBe(true);
     });
 
     it('is true when measurementState is loading', () => {
       mockLocationState.loading.set(false);
       mockMeasurementState.loading.set(true);
 
-      expect(facade.isLoading()).toBe(true);
+      expect(locationFacade.isLoading()).toBe(true);
     });
 
     it('is false when neither is loading', () => {
       mockLocationState.loading.set(false);
       mockMeasurementState.loading.set(false);
 
-      expect(facade.isLoading()).toBe(false);
+      expect(locationFacade.isLoading()).toBe(false);
     });
   });
 
   describe('refreshing', () => {
     it('reflects measurementState loading', () => {
       mockMeasurementState.loading.set(true);
-      expect(facade.refreshing()).toBe(true);
+      expect(locationFacade.refreshing()).toBe(true);
 
       mockMeasurementState.loading.set(false);
-      expect(facade.refreshing()).toBe(false);
+      expect(locationFacade.refreshing()).toBe(false);
     });
   });
 
@@ -208,7 +209,7 @@ describe('LocationFacade', () => {
       mockMeasurementState.measurementsByLocation.set({ 'loc-a': [] });
 
       const loc = createLocation({ id: 'loc-a' });
-      facade.selectLocation(loc);
+      locationFacade.selectLocation(loc);
 
       expect(mockErrorHandling.handle).toHaveBeenCalledTimes(1);
       const errorArg = mockErrorHandling.handle.mock.calls[0][0];
@@ -221,7 +222,7 @@ describe('LocationFacade', () => {
       mockMeasurementState.measurementsByLocation.set({});
 
       const loc = createLocation({ id: 'loc-a' });
-      facade.selectLocation(loc);
+      locationFacade.selectLocation(loc);
 
       expect(mockErrorHandling.handle).toHaveBeenCalledTimes(1);
       const errorArg = mockErrorHandling.handle.mock.calls[0][0];
@@ -236,7 +237,7 @@ describe('LocationFacade', () => {
       });
 
       const loc = createLocation({ id: 'loc-a' });
-      facade.selectLocation(loc);
+      locationFacade.selectLocation(loc);
 
       expect(mockErrorHandling.handle).not.toHaveBeenCalled();
       expect(mockLocationState.selectedLocationId()).toBe('loc-a');
@@ -247,22 +248,23 @@ describe('LocationFacade', () => {
     it('clears selectedLocationId', () => {
       mockLocationState.selectedLocationId.set('loc-a');
 
-      facade.closeChart();
+      locationFacade.closeChart();
 
       expect(mockLocationState.selectedLocationId()).toBeNull();
     });
   });
 
   describe('init', () => {
-    it('loads locations then refreshes measurements for all locations', async () => {
+    it('loads locations then refreshes measurements for all locations', () => {
       const locA = createLocation({ id: 'loc-a' });
       const locB = createLocation({ id: 'loc-b' });
 
-      mockLocationState.load.mockImplementation(async () => {
+      mockLocationState.load.mockImplementation(() => {
         mockLocationState.locations.set([locA, locB]);
+        return of(undefined);
       });
 
-      await facade.init();
+      locationFacade.init();
 
       expect(mockLocationState.load).toHaveBeenCalledTimes(1);
       expect(mockMeasurementState.refreshAll).toHaveBeenCalledTimes(1);
@@ -275,10 +277,10 @@ describe('LocationFacade', () => {
       mockLocationState.locations.set([createLocation({ id: 'loc-a' })]);
     });
 
-    it('init starts periodic refresh that calls refreshAll every refreshTimeout', async () => {
+    it('init starts periodic refresh that calls refreshAll every refreshTimeout', () => {
       vi.useFakeTimers();
 
-      await facade.init();
+      locationFacade.init();
 
       expect(mockMeasurementState.refreshAll).toHaveBeenCalledTimes(1);
 
@@ -287,27 +289,27 @@ describe('LocationFacade', () => {
       expect(mockMeasurementState.refreshAll).toHaveBeenCalledTimes(2);
     });
 
-    it('refreshProgress counts from 0 toward 1 over refreshTimeout', async () => {
+    it('refreshProgress counts from 0 toward 1 over refreshTimeout', () => {
       vi.useFakeTimers();
 
-      await facade.init();
-      expect(facade.refreshProgress()).toBe(0);
+      locationFacade.init();
+      expect(locationFacade.refreshProgress()).toBe(0);
 
       vi.advanceTimersByTime(environment.refreshTimeout / 2);
-      expect(facade.refreshProgress()).toBeCloseTo(0.5, 0);
+      expect(locationFacade.refreshProgress()).toBeCloseTo(0.5, 0);
     });
 
     it('manualRefresh resets progress and calls refreshAll', () => {
-      facade.manualRefresh();
+      locationFacade.manualRefresh();
 
       expect(mockMeasurementState.refreshAll).toHaveBeenCalledWith(['loc-a']);
-      expect(facade.refreshProgress()).toBe(0);
+      expect(locationFacade.refreshProgress()).toBe(0);
     });
 
-    it('does not refresh when document is hidden', async () => {
+    it('does not refresh when document is hidden', () => {
       vi.useFakeTimers();
 
-      await facade.init();
+      locationFacade.init();
       const callsAfterInit = mockMeasurementState.refreshAll.mock.calls.length;
 
       vi.spyOn(document, 'hidden', 'get').mockReturnValue(true);

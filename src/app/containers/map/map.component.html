@@ -1,8 +1,8 @@
 <termo-header />
-@for (location of facade.enrichedLocations(); track location.id) {
+@for (location of enrichedLocations(); track location.id) {
   <termo-map-location [location]="location"
-    [loading]="facade.isLoading()"
-    [selected]="facade.selectedLocation()?.id === location.id"
+    [loading]="isLoading()"
+    [selected]="selectedLocation()?.id === location.id"
     (selectLocation)="onLocationSelect(location)"
    />
 }

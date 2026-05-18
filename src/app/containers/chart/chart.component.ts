@@ -13,23 +13,26 @@ import { LineChartComponent } from '@glitchtip/ng-charts';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartComponent {
-  protected readonly facade = inject(LocationFacade);
+  private readonly locationFacade = inject(LocationFacade);
+
+  readonly selectedLocation = computed(() => this.locationFacade.selectedLocation());
+  readonly selectedLocationMeasurements = computed(() => this.locationFacade.selectedLocationMeasurements());
 
   @HostBinding('class.chart--visible')
   get visible(): boolean {
-    return this.facade.selectedLocation() !== null;
+    return this.selectedLocation() !== null;
   }
 
   readonly chartData = computed(() => {
-    const location = this.facade.selectedLocation();
-    const measurements = this.facade.selectedLocationMeasurements();
+    const location = this.selectedLocation();
+    const measurements = this.selectedLocationMeasurements();
     if (!location) return undefined;
     if (!measurements || measurements.length === 0) return undefined;
     return this.mapMeasurementToChartDataPoint(location, measurements);
   });
 
   close(): void {
-    this.facade.closeChart();
+    this.locationFacade.closeChart();
   }
 
   mapMeasurementToChartDataPoint(location: Location, measurements: Measurement[]) {

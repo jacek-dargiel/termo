@@ -132,7 +132,7 @@ describe('ChartComponent', () => {
     expect(component.chartData()).toBeUndefined();
   });
 
-  it('close() calls facade.closeChart()', () => {
+  it('close() calls locationFacade.closeChart()', () => {
     const { component, closeChart } = setup();
     component.close();
     expect(closeChart).toHaveBeenCalledOnce();

@@ -104,7 +104,7 @@ describe('LocationStateService', () => {
 
       expect(service.locations()).toEqual([]);
 
-      service.load();
+      service.load().subscribe();
 
       const req = httpTesting.expectOne(`${environment.API_URL}/groups/tunele/feeds`);
       expect(req.request.method).toBe('GET');
