@@ -1,75 +1,48 @@
-import { Component, OnInit, HostBinding, OnDestroy, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { ChartFacade } from './chart.facade';
-import { Subscription } from 'rxjs';
-import { Location } from '../../state/location/location.model';
-import { map, filter } from 'rxjs/operators';
-import { Measurement } from '../../state/measurement/measurement.model';
+import { Component, HostBinding, computed, inject, ChangeDetectionStrategy } from '@angular/core';
+import { LocationFacade } from '../../services/location.facade';
+import { Location } from '../../interfaces';
+import { Measurement } from '../../interfaces';
 import { format } from 'date-fns';
 import { LineChartComponent } from '@glitchtip/ng-charts';
 
 @Component({
-    selector: 'termo-chart',
-    templateUrl: './chart.component.html',
-    styleUrls: ['./chart.component.scss'],
-    imports: [LineChartComponent],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'termo-chart',
+  templateUrl: './chart.component.html',
+  styleUrls: ['./chart.component.scss'],
+  imports: [LineChartComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChartComponent implements OnInit, OnDestroy {
-  private chartFacade = inject(ChartFacade);
-  private cdr = inject(ChangeDetectorRef);
+export class ChartComponent {
+  protected readonly facade = inject(LocationFacade);
 
-  @HostBinding('class.chart--visible') visible = false;
-  selectedLocationSub: Subscription;
-  locationMeasurementsSub: Subscription;
-  measurementsSub: Subscription;
-  location: Location;
-  chartData;
-
-  ngOnInit() {
-    this.selectedLocationSub = this.chartFacade.selectedLocation$
-      .subscribe(location => {
-        this.location = location;
-        this.visible = Boolean(location);
-        this.cdr.markForCheck();
-      });
-
-    this.locationMeasurementsSub = this.chartFacade.selectedLocationMeasurements$
-      .pipe(
-        filter(measurements => measurements !== undefined),
-        map(measurements => this.mapMeasurementToChartDataPoint(measurements))
-      )
-      .subscribe(data => {
-        this.chartData = data;
-        this.cdr.markForCheck();
-      });
+  @HostBinding('class.chart--visible')
+  get visible(): boolean {
+    return this.facade.selectedLocation() !== null;
   }
 
-  ngOnDestroy() {
-    if (this.selectedLocationSub) {
-      this.selectedLocationSub.unsubscribe();
-    }
-    if (this.locationMeasurementsSub) {
-      this.locationMeasurementsSub.unsubscribe();
-    }
+  readonly chartData = computed(() => {
+    const location = this.facade.selectedLocation();
+    const measurements = this.facade.selectedLocationMeasurements();
+    if (!location) return undefined;
+    if (!measurements || measurements.length === 0) return undefined;
+    return this.mapMeasurementToChartDataPoint(location, measurements);
+  });
+
+  close(): void {
+    this.facade.closeChart();
   }
 
-  close() {
-    this.chartFacade.closeChart();
-  }
-
-  mapMeasurementToChartDataPoint(measurements: Measurement[]) {
-    let data = {
-      name: this.location.name,
+  mapMeasurementToChartDataPoint(location: Location, measurements: Measurement[]) {
+    return [{
+      name: location.name,
       series: measurements.map(measurement => ({
         name: measurement.created_at,
         value: measurement.value,
       })),
-    };
-    return [data];
+    }];
   }
 
-  formatTime(date: Date) {
+  formatTime(date: Date): string {
     return format(date, 'HH:mm');
   }
-
 }

@@ -1,28 +1,26 @@
 import { Component, OnInit, ElementRef, inject, ChangeDetectionStrategy } from '@angular/core';
-import { MapFacade } from './map.facade';
-import { Location } from '../../state/location/location.model';
+import { LocationFacade } from '../../services/location.facade';
+import { Location } from '../../interfaces';
 import { HeaderComponent } from '../header/header.component';
 import { MapLocationComponent } from '../../components/map-location/map-location.component';
-import { AsyncPipe } from '@angular/common';
+import { MapBackgroundService } from '../../services/map-background.service';
+import { environment } from 'environments/environment';
 
 @Component({
     selector: 'termo-map',
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.scss'],
-    imports: [HeaderComponent, MapLocationComponent, AsyncPipe],
+    imports: [HeaderComponent, MapLocationComponent],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MapComponent implements OnInit {
-  private mapFacade = inject(MapFacade);
+  readonly facade = inject(LocationFacade);
+  private readonly mapBackground = inject(MapBackgroundService);
   el = inject<ElementRef<HTMLElement>>(ElementRef);
 
-  public loading$ = this.mapFacade.loading$;
-  public locations$ = this.mapFacade.locations$;
-  public selectedLocation$ = this.mapFacade.selectedLocation$;
-
   ngOnInit() {
-    this.mapFacade.dispatchMapInit();
-    this.mapFacade.getImageDimentions()
+    this.facade.init();
+    this.mapBackground.getImageDimentions(environment.mapBackgroundUrl)
       .subscribe(dimentions => this.updateMapRatio(dimentions));
   }
 
@@ -32,7 +30,7 @@ export class MapComponent implements OnInit {
   }
 
   onLocationSelect(location: Location) {
-    this.mapFacade.selectLocation(location).subscribe();
+    this.facade.selectLocation(location);
   }
 
 }

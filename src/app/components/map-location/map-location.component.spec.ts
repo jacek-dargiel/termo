@@ -7,7 +7,7 @@ import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
 import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
 import { ToFixedPipe } from '../../pipes/to-fixed.pipe';
 import { TERMO_CURRENT_TIME_FACTORY } from '../../pipes/current-time.injection-token';
-import { LocationWithKeyMeasurementValues } from '../../state/location/location.model';
+import { LocationWithKeyMeasurementValues } from '../../interfaces';
 
 const MOCK_NOW = new Date('2026-04-25T12:00:00Z');
 

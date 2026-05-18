@@ -1,24 +1,12 @@
 import { enableProdMode, ErrorHandler, importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
-
-
 import { environment } from 'environments/environment';
 import { ErrorHandlingService } from './app/services/error-handling.service';
-import { LocationService } from './app/services/location.service';
-import { MeasurementService } from './app/services/measurement.service';
-import { MapFacade } from './app/containers/map/map.facade';
 import { TERMO_CURRENT_TIME_FACTORY } from './app/pipes/current-time.injection-token';
 import { SentryErrorHandler } from './app/services/sentry.error-handler';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
-import { StoreModule } from '@ngrx/store';
-import * as fromLocation from './app/state/location/location.reducer';
-import * as fromMeasurement from './app/state/measurement/measurement.reducer';
-import { reducers, metaReducers } from './app/state/reducers';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './app/app.effects';
 import { AppComponent } from './app/app.component';
 
 if (environment.production) {
@@ -27,18 +15,8 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
     providers: [
-        importProvidersFrom(
-          BrowserModule,
-          StoreModule.forRoot(reducers, { metaReducers }),
-          !environment.production ? StoreDevtoolsModule.instrument({ serialize: { options: { map: true, set: true } }, connectInZone: true }) : [],
-          EffectsModule.forRoot([AppEffects]),
-          StoreModule.forFeature('location', fromLocation.reducer),
-          StoreModule.forFeature('measurement', fromMeasurement.reducer)
-        ),
+        importProvidersFrom(BrowserModule),
         ErrorHandlingService,
-        LocationService,
-        MeasurementService,
-        MapFacade,
         { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => new Date() },
         { provide: ErrorHandler, useClass: SentryErrorHandler },
         provideHttpClient(withInterceptorsFromDi()),

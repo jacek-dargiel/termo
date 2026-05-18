@@ -1,7 +1,7 @@
-@if (location) {
+@if (facade.selectedLocation(); as location) {
   <div class="chart">
     <header class="header">
-      <h3 class="header__location-name">🌡{{location?.name}}</h3>
+      <h3 class="header__location-name">🌡{{location.name}}</h3>
       <div class="header__actions">
         <button
           type="button"
@@ -11,9 +11,9 @@
       </div>
     </header>
     <div class="chart__container">
-      @if (location && chartData) {
+      @if (chartData(); as data) {
         <ng-charts-line-chart
-          [results]="chartData"
+          [results]="data"
           [xAxis]="true"
           [yAxis]="true"
           [roundDomains]="true"
