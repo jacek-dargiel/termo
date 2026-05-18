@@ -1,13 +1,13 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, input, output, provideZonelessChangeDetection } from '@angular/core';
+import { Component, input, output, provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { BehaviorSubject, of, Subject } from 'rxjs';
+import { of } from 'rxjs';
 import { describe, expect, it, vi } from 'vitest';
 
 import { MapComponent } from './map.component';
-import { MapFacade } from './map.facade';
-import { Location } from '../../state/location/location.model';
+import { LocationFacade } from '../../services/location.facade';
+import { MapBackgroundService } from '../../services/map-background.service';
+import { Location, LocationWithKeyMeasurementValues } from '../../interfaces';
 
 @Component({
   selector: 'termo-header',
@@ -26,45 +26,47 @@ class MapLocationStub {
   selected = input<boolean>();
 }
 
-function createLocation(overrides?: Partial<Location>): Location {
+function createLocation(overrides?: Partial<LocationWithKeyMeasurementValues>): LocationWithKeyMeasurementValues {
   return {
     id: 'loc-1',
     name: 'Living Room',
     mapPosition: { x: 0.5, y: 0.3 },
     updatedAt: new Date(),
+    lastMeasurementValue: 20.5,
+    minimalMeasurementValue: 18.3,
     ...overrides,
   };
 }
 
 describe('MapComponent', () => {
   function setup() {
-    const loading$ = new BehaviorSubject<boolean>(false);
-    const locations$ = new BehaviorSubject<Location[]>([]);
-    const selectedLocation$ = new BehaviorSubject<Location | undefined>(undefined);
-    const getImageDimentions$ = new Subject<{ width: number; height: number }>();
-    const dispatchMapInit = vi.fn();
-    const selectLocation = vi.fn().mockReturnValue(of(undefined));
-    const getImageDimentions = vi.fn().mockReturnValue(getImageDimentions$);
+    const init = vi.fn().mockResolvedValue(undefined);
+    const selectLocation = vi.fn();
+    const getImageDimentions = vi.fn().mockReturnValue(of({ width: 800, height: 600 }));
 
     const mockFacade = {
-      loading$: loading$.asObservable(),
-      locations$: locations$.asObservable(),
-      selectedLocation$: selectedLocation$.asObservable(),
-      dispatchMapInit,
-      getImageDimentions,
+      enrichedLocations: signal<LocationWithKeyMeasurementValues[]>([]),
+      selectedLocation: signal<Location | null>(null),
+      isLoading: signal(false),
+      init,
       selectLocation,
+    };
+
+    const mockMapBg = {
+      getImageDimentions,
     };
 
     TestBed.configureTestingModule({
       imports: [MapComponent],
       providers: [
         provideZonelessChangeDetection(),
-        { provide: MapFacade, useValue: mockFacade },
+        { provide: LocationFacade, useValue: mockFacade },
+        { provide: MapBackgroundService, useValue: mockMapBg },
       ],
     });
 
     TestBed.overrideComponent(MapComponent, {
-      set: { imports: [HeaderStub, MapLocationStub, AsyncPipe] },
+      set: { imports: [HeaderStub, MapLocationStub] },
     });
 
     const fixture = TestBed.createComponent(MapComponent);
@@ -74,13 +76,11 @@ describe('MapComponent', () => {
     return {
       fixture,
       component,
-      loading$,
-      locations$,
-      selectedLocation$,
-      getImageDimentions$,
-      dispatchMapInit,
-      getImageDimentions,
+      mockFacade,
+      mockMapBg,
+      init,
       selectLocation,
+      getImageDimentions,
     };
   }
 
@@ -89,36 +89,34 @@ describe('MapComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('exposes loading$, locations$, and selectedLocation$ observables from the facade', () => {
-    const { component, loading$, locations$, selectedLocation$ } = setup();
+  it('exposes isLoading, enrichedLocations, and selectedLocation', () => {
+    const { component, mockFacade } = setup();
     const location = createLocation();
 
-    loading$.next(true);
-    locations$.next([location]);
-    selectedLocation$.next(location);
+    mockFacade.isLoading.set(true);
+    mockFacade.enrichedLocations.set([location]);
+    mockFacade.selectedLocation.set(location);
 
-    expect(component.loading$).toBeDefined();
-    expect(component.locations$).toBeDefined();
-    expect(component.selectedLocation$).toBeDefined();
+    expect(component.isLoading()).toBe(true);
+    expect(component.enrichedLocations()).toEqual([location]);
+    expect(component.selectedLocation()).toBe(location);
   });
 
   describe('ngOnInit', () => {
-    it('dispatches MapInitialized action via the facade', () => {
-      const { dispatchMapInit } = setup();
+    it('calls init on the LocationFacade', () => {
+      const { init } = setup();
 
-      expect(dispatchMapInit).toHaveBeenCalledOnce();
+      expect(init).toHaveBeenCalledOnce();
     });
 
-    it('calls getImageDimentions on the facade', () => {
+    it('calls getImageDimentions on MapBackgroundService', () => {
       const { getImageDimentions } = setup();
 
       expect(getImageDimentions).toHaveBeenCalledOnce();
     });
 
     it('subscribes to image dimensions and updates --mapBackgroundRatio CSS property', () => {
-      const { getImageDimentions$, fixture } = setup();
-
-      getImageDimentions$.next({ width: 800, height: 600 });
+      const { fixture } = setup();
 
       expect(fixture.nativeElement.style.getPropertyValue('--mapBackgroundRatio')).toBe('0.75');
     });
@@ -143,7 +141,7 @@ describe('MapComponent', () => {
   });
 
   describe('onLocationSelect', () => {
-    it('calls mapFacade.selectLocation with the given location', () => {
+    it('calls LocationFacade.selectLocation with the given location', () => {
       const { component, selectLocation } = setup();
       const location = createLocation();
 
@@ -152,11 +150,11 @@ describe('MapComponent', () => {
       expect(selectLocation).toHaveBeenCalledWith(location);
     });
 
-    it('calls mapFacade.selectLocation when a child component emits selectLocation', () => {
-      const { locations$, selectLocation, fixture } = setup();
+    it('calls LocationFacade.selectLocation when a child component emits selectLocation', () => {
+      const { mockFacade, selectLocation, fixture } = setup();
       const location = createLocation();
 
-      locations$.next([location]);
+      mockFacade.enrichedLocations.set([location]);
       fixture.detectChanges();
 
       const childComponent = fixture.debugElement

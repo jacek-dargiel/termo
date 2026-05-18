@@ -1,12 +1,10 @@
-import { Component, input, provideZonelessChangeDetection } from '@angular/core';
+import { Component, input, provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { BehaviorSubject } from 'rxjs';
 import { describe, expect, it, vi } from 'vitest';
 
 import { ChartComponent } from './chart.component';
-import { ChartFacade } from './chart.facade';
-import { Location } from '../../state/location/location.model';
-import { Measurement } from '../../state/measurement/measurement.model';
+import { LocationFacade } from '../../services/location.facade';
+import { Location, Measurement } from '../../interfaces';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -53,13 +51,13 @@ function createMeasurements(overrides: Measurement[] = []): Measurement[] {
 
 describe('ChartComponent', () => {
   function setup() {
-    const selectedLocation$ = new BehaviorSubject<Location | undefined>(undefined);
-    const selectedLocationMeasurements$ = new BehaviorSubject<Measurement[] | undefined>(undefined);
+    const selectedLocation = signal<Location | null>(null);
+    const selectedLocationMeasurements = signal<Measurement[]>([]);
     const closeChart = vi.fn();
 
     const mockFacade = {
-      selectedLocation$: selectedLocation$.asObservable(),
-      selectedLocationMeasurements$: selectedLocationMeasurements$.asObservable(),
+      selectedLocation: selectedLocation,
+      selectedLocationMeasurements: selectedLocationMeasurements,
       closeChart,
     };
 
@@ -67,7 +65,7 @@ describe('ChartComponent', () => {
       imports: [ChartComponent],
       providers: [
         provideZonelessChangeDetection(),
-        { provide: ChartFacade, useValue: mockFacade },
+        { provide: LocationFacade, useValue: mockFacade },
       ],
     });
 
@@ -79,13 +77,7 @@ describe('ChartComponent', () => {
     fixture.detectChanges();
     const component = fixture.componentInstance;
 
-    return {
-      fixture,
-      component,
-      selectedLocation$,
-      selectedLocationMeasurements$,
-      closeChart,
-    };
+    return { fixture, component, selectedLocation, selectedLocationMeasurements, closeChart };
   }
 
   it('creates the component', () => {
@@ -93,91 +85,75 @@ describe('ChartComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('updates location and sets visible to true when selectedLocation$ emits a location', () => {
-    const { fixture, component, selectedLocation$ } = setup();
+  it('shows chart when location is selected', () => {
+    const { fixture, selectedLocation } = setup();
     const location = createLocation();
 
-    selectedLocation$.next(location);
+    selectedLocation.set(location);
     fixture.detectChanges();
 
-    expect(component.location).toEqual(location);
-    expect(component.visible).toBe(true);
     expect(fixture.nativeElement.classList).toContain('chart--visible');
   });
 
-  it('sets visible to false when selectedLocation$ emits undefined', () => {
-    const { fixture, component, selectedLocation$ } = setup();
+  it('hides chart when location is deselected', () => {
+    const { fixture, selectedLocation } = setup();
 
-    selectedLocation$.next(undefined);
+    selectedLocation.set(createLocation());
     fixture.detectChanges();
+    expect(fixture.nativeElement.classList).toContain('chart--visible');
 
-    expect(component.visible).toBe(false);
+    selectedLocation.set(null);
+    fixture.detectChanges();
     expect(fixture.nativeElement.classList).not.toContain('chart--visible');
   });
 
-  it('maps measurements to chart data when selectedLocationMeasurements$ emits', () => {
-    const { fixture, component, selectedLocation$, selectedLocationMeasurements$ } = setup();
+  it('computes chartData from selectedLocation and selectedLocationMeasurements', () => {
+    const { component, selectedLocation, selectedLocationMeasurements, fixture } = setup();
     const location = createLocation({ name: 'Living Room' });
     const measurements = createMeasurements();
 
-    selectedLocation$.next(location);
-    selectedLocationMeasurements$.next(measurements);
+    selectedLocation.set(location);
+    selectedLocationMeasurements.set(measurements);
     fixture.detectChanges();
 
-    expect(component.chartData).toEqual([
-      {
-        name: 'Living Room',
-        series: measurements.map(m => ({ name: m.created_at, value: m.value })),
-      },
-    ]);
+    const data = component.chartData();
+    expect(data).toEqual([{
+      name: 'Living Room',
+      series: measurements.map(m => ({ name: m.created_at, value: m.value })),
+    }]);
   });
 
-  it('filters out undefined measurement emissions', () => {
-    const { fixture, component, selectedLocation$, selectedLocationMeasurements$ } = setup();
-    const measurements = createMeasurements();
+  it('chartData is undefined when no location selected', () => {
+    const { component, selectedLocationMeasurements, fixture } = setup();
 
-    selectedLocation$.next(createLocation());
-    selectedLocationMeasurements$.next(measurements);
+    selectedLocationMeasurements.set(createMeasurements());
     fixture.detectChanges();
 
-    const chartDataAfterEmit = component.chartData;
-
-    selectedLocationMeasurements$.next(undefined);
-    fixture.detectChanges();
-
-    expect(component.chartData).toBe(chartDataAfterEmit);
+    expect(component.chartData()).toBeUndefined();
   });
 
-  it('close() calls chartFacade.closeChart()', () => {
+  it('close() calls locationFacade.closeChart()', () => {
     const { component, closeChart } = setup();
-
     component.close();
-
     expect(closeChart).toHaveBeenCalledOnce();
   });
 
   describe('mapMeasurementToChartDataPoint', () => {
     it('returns chart data with location name and measurement series', () => {
       const { component } = setup();
-      component.location = createLocation({ name: 'Kitchen' });
-
+      const location = createLocation({ name: 'Kitchen' });
       const measurements = createMeasurements();
-      const result = component.mapMeasurementToChartDataPoint(measurements);
-
-      expect(result).toEqual([
-        {
-          name: 'Kitchen',
-          series: measurements.map(m => ({ name: m.created_at, value: m.value })),
-        },
-      ]);
+      const result = component.mapMeasurementToChartDataPoint(location, measurements);
+      expect(result).toEqual([{
+        name: 'Kitchen',
+        series: measurements.map(m => ({ name: m.created_at, value: m.value })),
+      }]);
     });
 
     it('handles empty measurements array', () => {
       const { component } = setup();
-      component.location = createLocation({ name: 'EmptyRoom' });
-
-      const result = component.mapMeasurementToChartDataPoint([]);
-
+      const location = createLocation({ name: 'EmptyRoom' });
+      const result = component.mapMeasurementToChartDataPoint(location, []);
       expect(result).toEqual([{ name: 'EmptyRoom', series: [] }]);
     });
   });
@@ -186,30 +162,8 @@ describe('ChartComponent', () => {
     it('returns a HH:mm formatted string', () => {
       const { component } = setup();
       const date = new Date('2024-01-01T14:30:00Z');
-
       const result = component.formatTime(date);
-
       expect(result).toMatch(/^\d{2}:\d{2}$/);
-    });
-  });
-
-  describe('ngOnDestroy', () => {
-    it('unsubscribes from observables so component state is not updated after destroy', () => {
-      const { component, fixture, selectedLocation$, selectedLocationMeasurements$ } = setup();
-      const location = createLocation({ name: 'Before destroy' });
-      const measurements = createMeasurements();
-
-      selectedLocation$.next(location);
-      selectedLocationMeasurements$.next(measurements);
-
-      expect(component.location).toEqual(location);
-
-      fixture.destroy();
-
-      selectedLocation$.next(createLocation({ name: 'After destroy' }));
-      selectedLocationMeasurements$.next([]);
-
-      expect(component.location).toEqual(location);
     });
   });
 });

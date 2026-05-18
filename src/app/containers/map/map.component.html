@@ -1,8 +1,8 @@
 <termo-header />
-@for (location of locations$ | async; track location) {
+@for (location of enrichedLocations(); track location.id) {
   <termo-map-location [location]="location"
-    [loading]="loading$ | async"
-    [selected]="(selectedLocation$ | async)?.id === location.id"
+    [loading]="isLoading()"
+    [selected]="selectedLocation()?.id === location.id"
     (selectLocation)="onLocationSelect(location)"
    />
 }

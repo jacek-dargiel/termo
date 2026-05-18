@@ -1,5 +1,5 @@
 import { Component, Input, HostBinding, OnInit, HostListener, input, output, ChangeDetectionStrategy } from '@angular/core';
-import { LocationWithKeyMeasurementValues, Location } from '../../state/location/location.model';
+import { LocationWithKeyMeasurementValues, Location } from '../../interfaces';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
 import { RelativeTimePipe } from '../../pipes/relative-time.pipe';

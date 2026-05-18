@@ -37,6 +37,26 @@ export interface Point {
     y: number;
 }
 
+export interface Location {
+  id: string;
+  name: string;
+  mapPosition: Point;
+  updatedAt: Date;
+}
+
+export interface Measurement {
+  id: string;
+  value: number;
+  created_at: Date;
+  feed_id: number;
+  feed_key: string;
+}
+
+export interface LocationWithKeyMeasurementValues extends Location {
+  lastMeasurementValue: number | null;
+  minimalMeasurementValue: number | null;
+}
+
 export interface AIOFeedData {
     id: string;
     value: string;

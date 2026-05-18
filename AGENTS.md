@@ -22,17 +22,41 @@
 - Treat loaded rules as mandatory task-specific instructions.
 - Unit-test guidance: `@.agents/rules/unit-tests.instructions.md`.
 - E2E guidance: `@.agents/rules/e2e.instructions.md`.
+- ADR guidance: `@.agents/rules/adr.instructions.md`. Read before proposing or writing any Architecture Decision Record.
 
 ## Coding Style Preferences
 - Prefer `date-fns` for date/time math and formatting.
 - Follow workspace defaults: 2-space indentation, SCSS for component styles, selector prefix `termo`.
+- **Dependency injection field naming:** Use explicit, type-revealing field names (`readonly locationFacade = inject(LocationFacade)`), never generic names like `this.facade`. Prefer `private` visibility; use `readonly` / `protected` only when the template needs direct access.
+- **State management:** Prefer observables and signals over promises. Do not convert observables to promises (`firstValueFrom`, `toPromise`). Use observable chaining (`pipe`, `switchMap`, `forkJoin`) for sequencing async work. Subscribe explicitly when firing side effects.
+- **Template clean architecture:** HTML templates must not reference injected services or facades directly. Components expose the specific signals the template needs as class properties (e.g., `readonly isLoading = this.locationFacade.isLoading`).
+- **Declarative over imperative:** Use `Object.entries` / `Object.fromEntries` / `Array.flatMap` / `Array.filter` / `Array.map` / `Array.reduce` over `for…of` loops with mutable accumulator objects.
+
 
 ## Infra/Environment Details
 - Dev proxy rewrites `/api/*` to `https://io.adafruit.com/api/v2/przemekd/*` (`proxy.conf.json`).
 - Production redirect is templated in `netlify.toml.template`; `post-deploy` generates `netlify.toml` via `envsub`.
 - Runtime in `package.json` expects Node `24.x`.
 
+## Architecture Decisions
+- `docs/adr/README.md` — Index of all ADRs. Read before making structural changes to understand past decisions.
+- ADR format and rules: `.agents/rules/adr.instructions.md`.
+
 ## Agent-Specific Tooling
 - OpenCode MCP config is in `opencode.json`.
 - `angular-cli` MCP is available for Angular docs/project-aware tooling.
 - `grounded-docs` MCP is available; use it for up-to-date Vitest docs when needed.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues via the `gh` CLI in the `jacek-dargiel/termo` repo. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout. See `docs/agents/domain.md`.

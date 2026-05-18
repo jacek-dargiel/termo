@@ -399,5 +399,35 @@ test.describe('Refreshing data', () => {
     await expect(temperature).toHaveText('15.00');
     await expect(minimal).toHaveText('10.00');
   });
+});
 
+test.describe('API contract', () => {
+  test('feed data requests include start_time parameter', async ({ page }) => {
+    let capturedUrls: string[] = [];
+
+    await page.route('**/groups/tunele/feeds', async route => {
+      const feeds = [
+        {
+          key: 'temperature.t1',
+          name: 'T1',
+          description: JSON.stringify({ x: 0.5, y: 0.5 }),
+          updated_at: new Date().toISOString(),
+        },
+      ];
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(feeds) });
+    });
+
+    await page.route('api/feeds/**/data?*', async route => {
+      capturedUrls.push(route.request().url());
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify([]) });
+    });
+
+    await page.goto('/');
+
+    await expect.poll(() => capturedUrls.length).toBe(1);
+
+    for (const url of capturedUrls) {
+      expect(url).toContain('start_time=');
+    }
+  });
 });
