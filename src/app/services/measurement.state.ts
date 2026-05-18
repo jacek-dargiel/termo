@@ -27,7 +27,7 @@ export class MeasurementStateService {
     const requests = locationIds.map((id) =>
       this.fetchMeasurements(id, start).pipe(
         catchError((err) => {
-          const error = err instanceof Error ? err : new Error('Failed to fetch measurements');
+          const error = err instanceof Error ? err : new Error('Nie udało się pobrać pomiarów');
           this.errorSubject.next(error);
           return of([] as Measurement[]);
         }),
@@ -35,23 +35,13 @@ export class MeasurementStateService {
     );
     return forkJoin(requests).pipe(
       tap((results) => {
-        const grouped: Record<string, Measurement[]> = {};
-        for (const measurements of results) {
-          for (const m of measurements) {
-            const key = m.feed_key;
-            if (!grouped[key]) grouped[key] = [];
-            grouped[key].push(m);
-          }
-        }
-        const current = this.measurementsByLocation();
-        const merged: Record<string, Measurement[]> = { ...current };
-        for (const [key, values] of Object.entries(grouped)) {
-          const existing = current[key] ?? [];
-          const existingIds = new Set(existing.map((m) => m.id));
-          const newValues = values.filter((m) => !existingIds.has(m.id));
-          merged[key] = [...existing, ...newValues];
-        }
-        this.measurementsByLocation.set(merged);
+        const grouped = Object.groupBy(
+          results.flat(),
+          (m: Measurement) => m.feed_key,
+        ) as Record<string, Measurement[]>;
+        this.measurementsByLocation.set(
+          this.mergeMeasurements(this.measurementsByLocation(), grouped),
+        );
       }),
       finalize(() => this.loading.set(false)),
       map(() => undefined),
@@ -72,11 +62,35 @@ export class MeasurementStateService {
       .pipe(
         map((data) => {
           if (data.length === 0) {
-            throw new Error('0 Measurements received from API.');
+            throw new Error('Otrzymano 0 pomiarów z API.');
           }
           return data.map((item) => this.mapToMeasurement(item));
         }),
       );
+  }
+
+  private mergeMeasurements(
+    current: Record<string, Measurement[]>,
+    incoming: Record<string, Measurement[]>,
+  ): Record<string, Measurement[]> {
+    const merged = { ...current };
+    for (const key of Object.keys(incoming)) {
+      merged[key] = this.uniqBy(
+        [...(current[key] ?? []), ...incoming[key]],
+        (m) => m.id,
+      );
+    }
+    return merged;
+  }
+
+  private uniqBy<T, K>(arr: T[], keyFn: (item: T) => K): T[] {
+    const seen = new Set<K>();
+    return arr.filter((item) => {
+      const key = keyFn(item);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   }
 
   private mapToMeasurement(data: AIOFeedData): Measurement {

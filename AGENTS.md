@@ -27,6 +27,11 @@
 ## Coding Style Preferences
 - Prefer `date-fns` for date/time math and formatting.
 - Follow workspace defaults: 2-space indentation, SCSS for component styles, selector prefix `termo`.
+- **Dependency injection field naming:** Use explicit, type-revealing field names (`readonly locationFacade = inject(LocationFacade)`), never generic names like `this.facade`. Prefer `private` visibility; use `readonly` / `protected` only when the template needs direct access.
+- **State management:** Prefer observables and signals over promises. Do not convert observables to promises (`firstValueFrom`, `toPromise`). Use observable chaining (`pipe`, `switchMap`, `forkJoin`) for sequencing async work. Subscribe explicitly when firing side effects.
+- **Template clean architecture:** HTML templates must not reference injected services or facades directly. Components expose the specific signals the template needs as class properties (e.g., `readonly isLoading = this.locationFacade.isLoading`).
+- **Declarative over imperative:** Use `Object.entries` / `Object.fromEntries` / `Array.flatMap` / `Array.filter` / `Array.map` / `Array.reduce` over `for…of` loops with mutable accumulator objects.
+
 
 ## Infra/Environment Details
 - Dev proxy rewrites `/api/*` to `https://io.adafruit.com/api/v2/przemekd/*` (`proxy.conf.json`).

@@ -17,7 +17,7 @@ export class LocationStateService {
     return this.http.get<AIOFeed[]>(`${environment.API_URL}/groups/tunele/feeds`).pipe(
       tap(feeds => {
         if (feeds.length === 0) {
-          throw new Error('0 Locations received from API.');
+          throw new Error('Otrzymano 0 lokalizacji z API.');
         }
         const locations = feeds.map(feed => this.mapFeedToLocation(feed));
         this.locations.set(locations);
@@ -32,10 +32,10 @@ export class LocationStateService {
     try {
       mapPosition = JSON.parse(feed.description);
     } catch {
-      throw new Error('Failed parsing AIO feed description from JSON to map position');
+      throw new Error('Nie udało się sparsować opisu feedu AIO z JSON na pozycję na mapie');
     }
     if (!('x' in mapPosition) || !('y' in mapPosition)) {
-      throw new Error('Feed description does not contain a location position');
+      throw new Error('Opis feedu nie zawiera pozycji lokalizacji');
     }
     return {
       id: feed.key,
