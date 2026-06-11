@@ -1,4 +1,4 @@
-import { Component, input, output, provideZonelessChangeDetection, signal } from '@angular/core';
+import { Component, input, output, provideZonelessChangeDetection, signal, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
@@ -11,12 +11,14 @@ import { Location, LocationWithKeyMeasurementValues } from '../../interfaces';
 
 @Component({
   selector: 'termo-header',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 class HeaderStub {}
 
 @Component({
   selector: 'termo-map-location',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 class MapLocationStub {

@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { describe, expect, it } from 'vitest';
 
 import { AppComponent } from './app.component';
 
-@Component({ selector: 'termo-map', template: '' })
+@Component({ selector: 'termo-map', changeDetection: ChangeDetectionStrategy.Eager,
+ template: '' })
 class MapStub {}
 
-@Component({ selector: 'termo-chart', template: '' })
+@Component({ selector: 'termo-chart', changeDetection: ChangeDetectionStrategy.Eager,
+ template: '' })
 class ChartStub {}
 
 describe('AppComponent', () => {

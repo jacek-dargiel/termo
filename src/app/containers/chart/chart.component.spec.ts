@@ -1,4 +1,4 @@
-import { Component, input, provideZonelessChangeDetection, signal } from '@angular/core';
+import { Component, input, provideZonelessChangeDetection, signal, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -9,6 +9,7 @@ import { Location, Measurement } from '../../interfaces';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ng-charts-line-chart',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 class LineChartStub {

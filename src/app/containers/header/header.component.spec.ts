@@ -1,4 +1,4 @@
-import { Component, input, output, provideZonelessChangeDetection, signal } from '@angular/core';
+import { Component, input, output, provideZonelessChangeDetection, signal, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { describe, expect, it, vi } from 'vitest';
@@ -8,6 +8,7 @@ import { LocationFacade } from '../../services/location.facade';
 
 @Component({
   selector: 'termo-refresh-button',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 class RefreshButtonStub {

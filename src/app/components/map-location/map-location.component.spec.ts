@@ -1,4 +1,4 @@
-import { Component, provideZonelessChangeDetection } from '@angular/core';
+import { Component, provideZonelessChangeDetection, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -13,6 +13,7 @@ const MOCK_NOW = new Date('2026-04-25T12:00:00Z');
 
 @Component({
   selector: 'termo-spinner',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<div data-testid="spinner-stub"></div>',
 })
 class StubSpinnerComponent {}
