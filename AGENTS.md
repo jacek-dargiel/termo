@@ -1,7 +1,7 @@
 # AGENTS
 
 ## Repo Facts That Matter
-- Single Angular v21 application (not a monorepo). Entrypoint is `src/main.ts` with standalone `bootstrapApplication` and NgRx store/effects wired there.
+- Single Angular v22 application (not a monorepo). Entrypoint is `src/main.ts` with standalone `bootstrapApplication` and NgRx store/effects wired there.
 - App runs zoneless (`provideZonelessChangeDetection()` in `src/main.ts`), so **every** component test must include `provideZonelessChangeDetection()` in `TestBed.configureTestingModule` providers — missing it causes hangs or silent test failures.
 - API calls are always prefixed in `src/app/services/api.service.ts` with `environment.API_URL` (`/api` in both env files).
 - `src/app/interfaces` is a **file** (`interfaces.ts`), not a directory. Running `read src/app/interfaces` fails — use `src/app/interfaces.ts`.
