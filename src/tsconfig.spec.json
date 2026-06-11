@@ -16,6 +16,7 @@
         "nullishCoalescingNotNullable": "suppress",
         "optionalChainNotNullable": "suppress"
       }
-    }
+    },
+    "strictTemplates": false
   }
 }
