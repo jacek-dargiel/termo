@@ -48,7 +48,7 @@ describe('RefreshButtonComponent', () => {
     expect(progressBar.style.width).toBe('42%');
   });
 
-  it('leaves the progress bar width empty when progress is not set', () => {
+  it('shows the progress bar at 0% when progress is not set', () => {
     const { fixture } = setup();
 
     fixture.detectChanges();
@@ -56,7 +56,7 @@ describe('RefreshButtonComponent', () => {
     const el: HTMLElement = fixture.nativeElement;
     const progressBar = el.querySelector('.refresh__progress') as HTMLElement;
 
-    expect(progressBar.style.width).toBe('');
+    expect(progressBar.style.width).toBe('0%');
   });
 
   it('toggles the refreshing class when the refreshing input changes', () => {

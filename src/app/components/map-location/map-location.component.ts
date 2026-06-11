@@ -13,7 +13,7 @@ import { ToFixedPipe } from '../../pipes/to-fixed.pipe';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapLocationComponent implements OnInit {
-  readonly location = input<LocationWithKeyMeasurementValues>();
+  readonly location = input.required<LocationWithKeyMeasurementValues>();
   readonly loading = input<boolean>();
   @Input()
   @HostBinding('class.location--selected')

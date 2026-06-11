@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({ name: 'toFixed' })
 export class ToFixedPipe implements PipeTransform {
 
-  transform(value: number, precision = 2, locale?: string): string {
+  transform(value: number | null | undefined, precision = 2, locale?: string): string {
     let fixed;
     if (typeof value !== 'number') {
       return '–';
