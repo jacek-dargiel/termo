@@ -30,6 +30,15 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
+  /* Start the Angular dev server before tests and shut it down after.
+     This replaces playwright-ng-schematics which left ng serve running forever on CI. */
+  webServer: {
+    command: 'npx ng serve',
+    url: 'http://localhost:4200',
+    reuseExistingServer: !process.env['CI'],
+    timeout: 120_000,
+  },
+
   /* Configure projects for major browsers */
   projects: [
     {
