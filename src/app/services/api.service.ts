@@ -10,7 +10,7 @@ export class ApiService {
   private http = inject(HttpClient);
 
 
-  get<T>(url, options = {}) {
+  get<T>(url: string, options = {}) {
     return this.http.get<T>(`${environment.API_URL}${url}`, options)
       .pipe(
         tap(response => {

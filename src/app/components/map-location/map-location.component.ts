@@ -17,10 +17,10 @@ export class MapLocationComponent implements OnInit {
   readonly loading = input<boolean>();
   @Input()
   @HostBinding('class.location--selected')
-  selected: boolean;
+  selected!: boolean;
   readonly selectLocation = output<Location>();
-  @HostBinding('style.bottom.%') bottom: number;
-  @HostBinding('style.right.%') right: number;
+  @HostBinding('style.bottom.%') bottom!: number;
+  @HostBinding('style.right.%') right!: number;
 
   constructor(
   ) { }

@@ -28,7 +28,7 @@ export class MapComponent implements OnInit {
       .subscribe(dimentions => this.updateMapRatio(dimentions));
   }
 
-  updateMapRatio({width, height}) {
+  updateMapRatio({width, height}: {width: number, height: number}) {
     let ratio = (height / width).toString();
     this.el.nativeElement.style.setProperty('--mapBackgroundRatio', ratio);
   }
