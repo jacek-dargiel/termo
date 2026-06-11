@@ -13,8 +13,9 @@
 - Dev server: `npm start` (uses `proxy.conf.json`).
 - Lint: `npm run lint`.
 - Unit tests: `npm test`. Single spec: `npm run test:file -- <path>`.
-- E2E: `npm run e2e` (local — playwright-ng-schematics) or `npm run e2e:ci` (CI — Playwright `webServer` auto-manages `ng serve` lifecycle). Single spec: `npx playwright test e2e/termo.spec.ts`.
-- Deploy pipeline order is fixed: `lint -> test -> e2e-setup -> e2e:ci -> build -> post-deploy`.
+- **CI pipeline** (GitHub Actions): lint → test → e2e:ci runs on every PR and push to master.
+- **Deploy** (GitHub Actions → Netlify Build Hook): on push to master, after CI passes, fires a hook that triggers Netlify deploy: `npm run build && npm run post-deploy`.
+- Full local build simulation: `npm run deploy` (build + post-deploy only).
 
 ## External Rule Loading
 - CRITICAL: When you see a rules file reference (for example `@.agents/rules/unit-tests.instructions.md`), use the Read tool and load it only when relevant to the current task.
