@@ -1,5 +1,5 @@
 import { ApplicationRef, provideZonelessChangeDetection } from '@angular/core';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { subDays } from 'date-fns';
@@ -40,7 +40,7 @@ describe('MeasurementStateService', () => {
     TestBed.configureTestingModule({
       providers: [
         MeasurementStateService,
-        provideHttpClient(),
+        provideHttpClient(withXhr()),
         provideHttpClientTesting(),
         { provide: ErrorHandlingService, useValue: errorHandlingMock },
         provideZonelessChangeDetection(),

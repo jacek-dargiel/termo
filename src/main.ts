@@ -3,7 +3,7 @@ import { environment } from 'environments/environment';
 import { ErrorHandlingService } from './app/services/error-handling.service';
 import { TERMO_CURRENT_TIME_FACTORY } from './app/pipes/current-time.injection-token';
 import { SentryErrorHandler } from './app/services/sentry.error-handler';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
@@ -19,7 +19,7 @@ bootstrapApplication(AppComponent, {
         ErrorHandlingService,
         { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => new Date() },
         { provide: ErrorHandler, useClass: SentryErrorHandler },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideAnimations(),
         provideZonelessChangeDetection(),
         provideHotToastConfig({
