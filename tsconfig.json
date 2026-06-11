@@ -20,6 +20,7 @@
       "dom"
     ],
     "useDefineForClassFields": false,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "strict": true
   }
 }
