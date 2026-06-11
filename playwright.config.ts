@@ -31,19 +31,13 @@ export default defineConfig({
   },
 
   /* Start the Angular dev server before tests and shut it down after.
-     This replaces playwright-ng-schematics which left ng serve running forever on CI.
-     When E2E_EXTERNAL_SERVER is set, skip webServer — the calling script (bin/e2e-ci.sh)
-     manages the server lifecycle externally. */
-  ...(process.env['E2E_EXTERNAL_SERVER']
-    ? {}
-    : {
-        webServer: {
-          command: 'npx ng serve',
-          url: 'http://localhost:4200',
-          reuseExistingServer: !process.env['CI'],
-          timeout: 120_000,
-        },
-      }),
+     This replaces playwright-ng-schematics which left ng serve running forever on CI. */
+  webServer: {
+    command: 'npx ng serve',
+    url: 'http://localhost:4200',
+    reuseExistingServer: !process.env['CI'],
+    timeout: 120_000,
+  },
 
   /* Configure projects for major browsers */
   projects: [

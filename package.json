@@ -15,7 +15,7 @@
     "sentry-release": "sh ./bin/sentry-release.sh",
     "e2e-setup": "playwright install",
     "e2e": "ng e2e",
-    "e2e:ci": "bin/e2e-ci.sh",
+    "e2e:ci": "playwright test",
     "deploy": "npm run lint && npm run test && npm run e2e-setup && npm run e2e:ci && npm run build && npm run post-deploy",
     "post-deploy": "envsub ./dist/browser/index.html && envsub netlify.toml.template netlify.toml && npm run sentry-release",
     "lint": "ng lint",
