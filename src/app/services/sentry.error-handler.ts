@@ -11,10 +11,10 @@ interface ErrorWithOriginalError extends Error {
 export class SentryErrorHandler implements ErrorHandler {
   static getReleaseId() {
     try {
-      let linkEl = document.querySelector('head link[rel="DC.Identifier"]');
-      let link = linkEl?.getAttribute('href');
+      const linkEl = document.querySelector('head link[rel="DC.Identifier"]');
+      const link = linkEl?.getAttribute('href');
 
-      let commitIdRegex = /https:\/\/github.com\/.+\/commit\/([\da-f]+)/;
+      const commitIdRegex = /https:\/\/github.com\/.+\/commit\/([\da-f]+)/;
       return link?.match(commitIdRegex)?.[1];
     } catch {
       return undefined;

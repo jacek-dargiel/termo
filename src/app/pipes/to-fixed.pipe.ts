@@ -9,12 +9,12 @@ export class ToFixedPipe implements PipeTransform {
       return '–';
     }
     try {
-      let formatingOptions: Intl.NumberFormatOptions = {
+      const formatingOptions: Intl.NumberFormatOptions = {
         style: 'decimal',
         minimumFractionDigits: precision,
         maximumFractionDigits: precision,
       };
-      let formater = Intl.NumberFormat(locale, formatingOptions);
+      const formater = Intl.NumberFormat(locale, formatingOptions);
       fixed = formater.format(value);
       return fixed;
     } catch {

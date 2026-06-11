@@ -9,7 +9,7 @@ import { Location, Measurement } from '../../interfaces';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'ng-charts-line-chart',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: '',
 })
 class LineChartStub {

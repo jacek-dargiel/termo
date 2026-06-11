@@ -18,16 +18,16 @@ export class RelativeTimePipe implements PipeTransform {
 
 
   transform(value: Date): string {
-    let since = this.currentTimeFactory();
+    const since = this.currentTimeFactory();
     if (isBefore(value, subDays(since, 2))) {
-      let days = differenceInCalendarDays(since, value);
+      const days = differenceInCalendarDays(since, value);
       return `${days} dni`;
     }
     if (isBefore(value, subHours(since, 2))) {
-      let hours = differenceInHours(since, value);
+      const hours = differenceInHours(since, value);
       return `${hours} godz.`;
     }
-    let minutes = differenceInMinutes(since, value);
+    const minutes = differenceInMinutes(since, value);
     return `${minutes} min.`;
   }
 

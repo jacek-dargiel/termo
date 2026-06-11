@@ -13,7 +13,7 @@ const MOCK_NOW = new Date('2026-04-25T12:00:00Z');
 
 @Component({
   selector: 'termo-spinner',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: '<div data-testid="spinner-stub"></div>',
 })
 class StubSpinnerComponent {}

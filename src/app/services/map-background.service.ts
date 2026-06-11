@@ -14,9 +14,9 @@ export class MapBackgroundService {
 
   getImageDimentions(url: string): Observable<Dimentions> {
     return new Observable<Dimentions>(observer => {
-      let image = new Image();
+      const image = new Image();
       image.onload = () => {
-        let dimentions: Dimentions = {
+        const dimentions: Dimentions = {
           width: image.width,
           height: image.height,
         };

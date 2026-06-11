@@ -5,11 +5,11 @@ import { describe, expect, it } from 'vitest';
 
 import { AppComponent } from './app.component';
 
-@Component({ selector: 'termo-map', changeDetection: ChangeDetectionStrategy.Eager,
+@Component({ selector: 'termo-map', changeDetection: ChangeDetectionStrategy.OnPush,
  template: '' })
 class MapStub {}
 
-@Component({ selector: 'termo-chart', changeDetection: ChangeDetectionStrategy.Eager,
+@Component({ selector: 'termo-chart', changeDetection: ChangeDetectionStrategy.OnPush,
  template: '' })
 class ChartStub {}
 

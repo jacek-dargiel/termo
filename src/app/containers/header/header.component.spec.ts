@@ -8,7 +8,7 @@ import { LocationFacade } from '../../services/location.facade';
 
 @Component({
   selector: 'termo-refresh-button',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: '',
 })
 class RefreshButtonStub {

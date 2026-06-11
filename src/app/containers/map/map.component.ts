@@ -29,7 +29,7 @@ export class MapComponent implements OnInit {
   }
 
   updateMapRatio({width, height}: {width: number, height: number}) {
-    let ratio = (height / width).toString();
+    const ratio = (height / width).toString();
     this.el.nativeElement.style.setProperty('--mapBackgroundRatio', ratio);
   }
 

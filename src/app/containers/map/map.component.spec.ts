@@ -11,14 +11,14 @@ import { Location, LocationWithKeyMeasurementValues } from '../../interfaces';
 
 @Component({
   selector: 'termo-header',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: '',
 })
 class HeaderStub {}
 
 @Component({
   selector: 'termo-map-location',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: '',
 })
 class MapLocationStub {
