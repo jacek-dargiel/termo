@@ -13,7 +13,7 @@
 - Dev server: `npm start` (uses `proxy.conf.json`).
 - Lint: `npm run lint`.
 - Unit tests: `npm test`. Single spec: `npm run test:file -- <path>`.
-- E2E: `npm run e2e` (local — playwright-ng-schematics) or `npm run e2e:ci` (CI — Playwright `webServer` auto-manages `ng serve` lifecycle). Single spec: `npx playwright test e2e/termo.spec.ts`.
+- E2E: `npm run e2e` (local — playwright-ng-schematics) or `npm run e2e:ci` (CI — `bin/e2e-ci.sh` starts `ng serve`, runs Playwright, then kills the server). Single spec: `npx playwright test e2e/termo.spec.ts`.
 - Deploy pipeline order is fixed: `lint -> test -> e2e-setup -> e2e:ci -> build -> post-deploy`.
 
 ## External Rule Loading
