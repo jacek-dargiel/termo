@@ -1,4 +1,4 @@
-import { Component, HostBinding, computed, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject, ChangeDetectionStrategy } from '@angular/core';
 import { LocationFacade } from '../../services/location.facade';
 import { Location } from '../../interfaces';
 import { Measurement } from '../../interfaces';
@@ -11,17 +11,15 @@ import { LineChartComponent } from '@glitchtip/ng-charts';
   styleUrls: ['./chart.component.scss'],
   imports: [LineChartComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class.chart--visible]': 'selectedLocation() !== null',
+  },
 })
 export class ChartComponent {
   private readonly locationFacade = inject(LocationFacade);
 
   readonly selectedLocation = computed(() => this.locationFacade.selectedLocation());
   readonly selectedLocationMeasurements = computed(() => this.locationFacade.selectedLocationMeasurements());
-
-  @HostBinding('class.chart--visible')
-  get visible(): boolean {
-    return this.selectedLocation() !== null;
-  }
 
   readonly chartData = computed(() => {
     const location = this.selectedLocation();
