@@ -17,6 +17,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -38,6 +40,22 @@ jobs:
       - name: E2E tests
         run: npm run e2e:ci
 
-      - name: Trigger Netlify deploy
+      - name: Build
+        run: npm run build
+
+      - name: Post-deploy (envsub + sentry release)
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        run: curl -X POST -d {} ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: npm run post-deploy
+        env:
+          TERMO_AIO_USER: ${{ secrets.TERMO_AIO_USER }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+
+      - name: Deploy to Netlify
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=dist/browser --prod --message="Deploy from CI (${{ github.sha }})"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
