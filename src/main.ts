@@ -5,7 +5,6 @@ import { TERMO_CURRENT_TIME_FACTORY } from './app/pipes/current-time.injection-t
 import { SentryErrorHandler } from './app/services/sentry.error-handler';
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
 import { AppComponent } from './app/app.component';
 
@@ -20,7 +19,6 @@ bootstrapApplication(AppComponent, {
         { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => new Date() },
         { provide: ErrorHandler, useClass: SentryErrorHandler },
         provideHttpClient(withXhr(), withInterceptorsFromDi()),
-        provideAnimations(),
         provideZonelessChangeDetection(),
         provideHotToastConfig({
           position: 'bottom-center',
