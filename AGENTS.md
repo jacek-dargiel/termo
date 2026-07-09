@@ -5,7 +5,7 @@
 - App runs zoneless (`provideZonelessChangeDetection()` in `src/main.ts`), so **every** component test must include `provideZonelessChangeDetection()` in `TestBed.configureTestingModule` providers — missing it causes hangs or silent test failures.
 - API calls are always prefixed in `src/app/services/api.service.ts` with `environment.API_URL` (`/api` in both env files).
 - `src/app/interfaces` is a **file** (`interfaces.ts`), not a directory. Running `read src/app/interfaces` fails — use `src/app/interfaces.ts`.
-- `python` is not installed; write temporary scripts in bash or JS (Node) instead.
+- **JSON analysis:** Prefer `jq` (available at `/usr/bin/jq` v1.6). When jq isn't enough, use `node -e` over `python3 -c` — Node output is easier to read and carries less arbitrary-code-execution risk.
 - There is **no** `jest.config.js`, `vitest.config.ts`, or standalone `test.ts`. All test config lives in `angular.json` under the test target. Don't search for them.
 
 ## Commands (Source of Truth: `package.json`)
