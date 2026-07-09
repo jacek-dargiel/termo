@@ -55,6 +55,6 @@ jobs:
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: netlify/actions/cli@master
         with:
-          args: deploy --dir=dist/browser --prod --message="Deploy from CI (${{ github.sha }})"
+          args: deploy --dir=dist/browser --prod --message="Deploy from CI - ${{ github.sha }}"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
