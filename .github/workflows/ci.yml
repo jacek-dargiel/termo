@@ -58,3 +58,4 @@ jobs:
           args: deploy --dir=dist/browser --prod --message="Deploy from CI - ${{ github.sha }}"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ vars.NETLIFY_SITE_ID }}
