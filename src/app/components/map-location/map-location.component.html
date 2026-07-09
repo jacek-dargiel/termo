@@ -21,11 +21,11 @@
         </div>
       }
     </div>
-    @if (location().updatedAt | isLocationOutdated) {
+    @if (isOutdated()) {
       <div
         class="footer footer--warning footer--warning-outdated"
         >
-        <span data-testid="location-outdated">Opóźnione: {{ location().updatedAt | relativeTime }}</span>
+        <span data-testid="location-outdated">Opóźnione: {{ relativeTime() }}</span>
       </div>
     }
   </div>

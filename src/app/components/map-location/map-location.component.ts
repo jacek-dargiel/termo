@@ -1,15 +1,23 @@
-import { Component, Input, OnInit, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, OnInit, input, output, ChangeDetectionStrategy, computed, signal, DestroyRef, inject } from '@angular/core';
+import {
+  isBefore,
+  subDays,
+  subHours,
+  subMilliseconds,
+  differenceInCalendarDays,
+  differenceInHours,
+  differenceInMinutes,
+} from 'date-fns';
+import { environment } from 'environments/environment';
 import { LocationWithKeyMeasurementValues, Location } from '../../interfaces';
 import { SpinnerComponent } from '../spinner/spinner.component';
-import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
-import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
 import { ToFixedPipe } from '../../pipes/to-fixed.pipe';
 
 @Component({
     selector: 'termo-map-location',
     templateUrl: './map-location.component.html',
     styleUrls: ['./map-location.component.scss'],
-    imports: [SpinnerComponent, IsLocationOutdatedPipe, RelativeTimePipe, ToFixedPipe],
+    imports: [SpinnerComponent, ToFixedPipe],
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
         '[class.location--selected]': 'selected',
@@ -27,8 +35,33 @@ export class MapLocationComponent implements OnInit {
   bottom!: number;
   right!: number;
 
-  constructor(
-  ) { }
+  readonly #now = signal(new Date());
+  readonly #destroyRef = inject(DestroyRef);
+
+  readonly relativeTime = computed(() => {
+    const since = this.#now();
+    const value = this.location().updatedAt;
+    if (isBefore(value, subDays(since, 2))) {
+      const days = differenceInCalendarDays(since, value);
+      return `${days} dni`;
+    }
+    if (isBefore(value, subHours(since, 2))) {
+      const hours = differenceInHours(since, value);
+      return `${hours} godz.`;
+    }
+    const minutes = differenceInMinutes(since, value);
+    return `${minutes} min.`;
+  });
+
+  readonly isOutdated = computed(() => {
+    const thresholdDate = subMilliseconds(this.#now(), environment.locationOutdatedThreshold);
+    return isBefore(this.location().updatedAt, thresholdDate);
+  });
+
+  constructor() {
+    const intervalId = setInterval(() => this.#now.set(new Date()), 60_000);
+    this.#destroyRef.onDestroy(() => clearInterval(intervalId));
+  }
 
   ngOnInit() {
     this.adjustPosition();

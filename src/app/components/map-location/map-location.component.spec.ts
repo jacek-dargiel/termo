@@ -1,12 +1,9 @@
 import { Component, provideZonelessChangeDetection, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import { MapLocationComponent } from './map-location.component';
-import { IsLocationOutdatedPipe } from '../../pipes/is-location-outdated.pipe';
-import { RelativeTimePipe } from '../../pipes/relative-time.pipe';
 import { ToFixedPipe } from '../../pipes/to-fixed.pipe';
-import { TERMO_CURRENT_TIME_FACTORY } from '../../pipes/current-time.injection-token';
 import { LocationWithKeyMeasurementValues } from '../../interfaces';
 
 const MOCK_NOW = new Date('2026-04-25T12:00:00Z');
@@ -31,17 +28,25 @@ function createMockLocation(overrides?: Partial<LocationWithKeyMeasurementValues
 }
 
 describe('MapLocationComponent', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(MOCK_NOW);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   function setup() {
     TestBed.configureTestingModule({
       imports: [MapLocationComponent],
       providers: [
         provideZonelessChangeDetection(),
-        { provide: TERMO_CURRENT_TIME_FACTORY, useValue: () => MOCK_NOW },
       ],
     });
 
     TestBed.overrideComponent(MapLocationComponent, {
-      set: { imports: [StubSpinnerComponent, IsLocationOutdatedPipe, RelativeTimePipe, ToFixedPipe] },
+      set: { imports: [StubSpinnerComponent, ToFixedPipe] },
     });
 
     const fixture = TestBed.createComponent(MapLocationComponent);
