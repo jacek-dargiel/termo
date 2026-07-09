@@ -1,4 +1,4 @@
-[![Build Status](https://app.travis-ci.com/jacek-dargiel/termo.svg?branch=master)](https://app.travis-ci.com/jacek-dargiel/termo)
+[![CI](https://github.com/jacek-dargiel/termo/actions/workflows/ci.yml/badge.svg)](https://github.com/jacek-dargiel/termo/actions/workflows/ci.yml)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/409db545-73e5-4add-a29c-f1b1eedac165/deploy-status)](https://app.netlify.com/sites/jd-termo/deploys)
 
 # Termo
