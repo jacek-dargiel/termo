@@ -47,7 +47,9 @@ jobs:
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: npm run post-deploy
         env:
+          TERMO_AIO_USER: ${{ vars.TERMO_AIO_USER }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ vars.SENTRY_ORG }}
 
       - name: Deploy to Netlify
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
