@@ -62,7 +62,7 @@ export class MeasurementStateService {
       .pipe(
         map((data) => {
           if (data.length === 0) {
-            throw new Error('Otrzymano 0 pomiarów z API.');
+            throw new Error(`Otrzymano 0 pomiarów z API dla kanału: ${locationKey}.`);
           }
           return data.map((item) => this.mapToMeasurement(item));
         }),
