@@ -2,7 +2,8 @@ import { enableProdMode, ErrorHandler, importProvidersFrom, provideZonelessChang
 import { environment } from 'environments/environment';
 import { ErrorHandlingService } from './app/services/error-handling.service';
 import { SentryErrorHandler } from './app/services/sentry.error-handler';
-import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
+import { httpErrorInterceptor } from './app/interceptors/http-error.interceptor';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { provideHotToastConfig } from '@ngxpert/hot-toast';
 import { AppComponent } from './app/app.component';
@@ -14,9 +15,8 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
     providers: [
         importProvidersFrom(BrowserModule),
-        ErrorHandlingService,
         { provide: ErrorHandler, useClass: SentryErrorHandler },
-        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptors([httpErrorInterceptor])),
         provideZonelessChangeDetection(),
         provideHotToastConfig({
           position: 'bottom-center',
