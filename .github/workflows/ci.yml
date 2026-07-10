@@ -60,7 +60,7 @@ jobs:
 
       - name: Deploy to Netlify
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        run: pnpm dlx netlify-cli deploy --dir=dist/browser --prod --message="Deploy from CI - ${{ github.sha }}"
+        run: pnpm --package=netlify-cli dlx netlify deploy --dir=dist/browser --prod --message="Deploy from CI - ${{ github.sha }}"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ vars.NETLIFY_SITE_ID }}
