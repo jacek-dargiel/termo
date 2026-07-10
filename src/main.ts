@@ -1,6 +1,5 @@
 import { enableProdMode, ErrorHandler, importProvidersFrom, provideZonelessChangeDetection } from '@angular/core';
 import { environment } from 'environments/environment';
-import { ErrorHandlingService } from './app/services/error-handling.service';
 import { SentryErrorHandler } from './app/services/sentry.error-handler';
 import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import { httpErrorInterceptor } from './app/interceptors/http-error.interceptor';
