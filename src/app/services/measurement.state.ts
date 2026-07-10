@@ -1,36 +1,22 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, Subject, auditTime, forkJoin, of, map, tap, finalize, catchError } from 'rxjs';
+import { Observable, forkJoin, of, map, tap, finalize, catchError } from 'rxjs';
 import { subDays } from 'date-fns';
 import { environment } from 'environments/environment';
 import { AIOFeedData, Measurement } from '../interfaces';
-import { ErrorHandlingService } from './error-handling.service';
 
 @Injectable({ providedIn: 'root' })
 export class MeasurementStateService {
   private readonly http = inject(HttpClient);
-  private readonly errorHandling = inject(ErrorHandlingService);
 
   readonly measurementsByLocation = signal<Record<string, Measurement[]>>({});
   readonly loading = signal(false);
-
-  private readonly errorSubject = new Subject<Error>();
-
-  constructor() {
-    this.errorSubject
-      .pipe(auditTime(environment.snackbarDefaultTimeout))
-      .subscribe((error) => this.errorHandling.handle(error));
-  }
 
   refreshAll(locationIds: string[], start: Date = subDays(new Date(), 1)): Observable<void> {
     this.loading.set(true);
     const requests = locationIds.map((id) =>
       this.fetchMeasurements(id, start).pipe(
-        catchError((err) => {
-          const error = err instanceof Error ? err : new Error('Nie udało się pobrać pomiarów');
-          this.errorSubject.next(error);
-          return of([] as Measurement[]);
-        }),
+        catchError(() => of([] as Measurement[])),
       )
     );
     return forkJoin(requests).pipe(
@@ -62,7 +48,7 @@ export class MeasurementStateService {
       .pipe(
         map((data) => {
           if (data.length === 0) {
-            throw new Error(`Otrzymano 0 pomiarów z API dla kanału: ${locationKey}.`);
+            return [] as Measurement[];
           }
           return data.map((item) => this.mapToMeasurement(item));
         }),
