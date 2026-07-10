@@ -47,3 +47,7 @@ netlify.toml
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# pnpm
+.pnpm-store
+pnpm-debug.log*
