@@ -8,7 +8,7 @@
     },
     "angular-cli":{
       "type": "local",
-      "command": ["npx", "-y", "@angular/cli", "mcp"],
+      "command": ["pnpm", "dlx", "@angular/cli", "mcp"],
       "enabled": true
     },
     "grounded-docs": {
