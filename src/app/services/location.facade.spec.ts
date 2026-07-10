@@ -1,9 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { subHours } from 'date-fns';
 import { signal } from '@angular/core';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { LocationFacade } from './location.facade';
 import { LocationStateService } from './location.state';
@@ -46,7 +47,7 @@ describe('LocationFacade', () => {
     loading: ReturnType<typeof signal<boolean>>;
     refreshAll: ReturnType<typeof vi.fn>;
   };
-  let mockErrorHandling: { handle: ReturnType<typeof vi.fn> };
+  let mockErrorHandling: { handle: ReturnType<typeof vi.fn>; handleImmediate: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     mockLocationState = {
@@ -60,7 +61,7 @@ describe('LocationFacade', () => {
       loading: signal(false),
       refreshAll: vi.fn(() => of(undefined)),
     };
-    mockErrorHandling = { handle: vi.fn() };
+    mockErrorHandling = { handle: vi.fn(), handleImmediate: vi.fn() };
 
     TestBed.configureTestingModule({
       providers: [
@@ -211,8 +212,8 @@ describe('LocationFacade', () => {
       const loc = createLocation({ id: 'loc-a' });
       locationFacade.selectLocation(loc);
 
-      expect(mockErrorHandling.handle).toHaveBeenCalledTimes(1);
-      const errorArg = mockErrorHandling.handle.mock.calls[0][0];
+      expect(mockErrorHandling.handleImmediate).toHaveBeenCalledTimes(1);
+      const errorArg = mockErrorHandling.handleImmediate.mock.calls[0][0];
       expect(errorArg.message).toContain('Brak aktualnych danych');
       expect(mockLocationState.selectedLocationId()).toBeNull();
     });
@@ -224,8 +225,8 @@ describe('LocationFacade', () => {
       const loc = createLocation({ id: 'loc-a' });
       locationFacade.selectLocation(loc);
 
-      expect(mockErrorHandling.handle).toHaveBeenCalledTimes(1);
-      const errorArg = mockErrorHandling.handle.mock.calls[0][0];
+      expect(mockErrorHandling.handleImmediate).toHaveBeenCalledTimes(1);
+      const errorArg = mockErrorHandling.handleImmediate.mock.calls[0][0];
       expect(errorArg.message).toContain('Brak aktualnych danych');
       expect(mockLocationState.selectedLocationId()).toBeNull();
     });
@@ -239,7 +240,7 @@ describe('LocationFacade', () => {
       const loc = createLocation({ id: 'loc-a' });
       locationFacade.selectLocation(loc);
 
-      expect(mockErrorHandling.handle).not.toHaveBeenCalled();
+      expect(mockErrorHandling.handleImmediate).not.toHaveBeenCalled();
       expect(mockLocationState.selectedLocationId()).toBe('loc-a');
     });
   });
@@ -269,6 +270,32 @@ describe('LocationFacade', () => {
       expect(mockLocationState.load).toHaveBeenCalledTimes(1);
       expect(mockMeasurementState.refreshAll).toHaveBeenCalledTimes(1);
       expect(mockMeasurementState.refreshAll).toHaveBeenCalledWith(['loc-a', 'loc-b']);
+    });
+
+    it('calls ErrorHandlingService.handle for domain errors from locationState.load()', () => {
+      const domainError = new Error('Otrzymano 0 lokalizacji z API.');
+      mockLocationState.load.mockReturnValue(throwError(() => domainError));
+
+      locationFacade.init();
+
+      expect(mockErrorHandling.handle).toHaveBeenCalledWith(domainError);
+      expect(mockMeasurementState.refreshAll).not.toHaveBeenCalled();
+    });
+
+    it('does not double-handle HTTP errors from the interceptor', () => {
+      const httpError = new HttpErrorResponse({
+        error: 'Server error',
+        status: 500,
+        statusText: 'Internal Server Error',
+      });
+      mockLocationState.load.mockReturnValue(throwError(() => httpError));
+
+      locationFacade.init();
+
+      // HTTP errors are already handled by the interceptor — the facade should NOT
+      // call handle() again.
+      expect(mockErrorHandling.handle).not.toHaveBeenCalled();
+      expect(mockMeasurementState.refreshAll).not.toHaveBeenCalled();
     });
   });
 
