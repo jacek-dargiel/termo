@@ -4,3 +4,12 @@ allowBuilds:
   esbuild: true
   lmdb: true
   msgpackr-extract: true
+
+# Dependabot alert #200: @babel/core < 7.29.6 brought in transitively by
+# @angular/build. See https://github.com/jacek-dargiel/termo/security/dependabot/200
+# Remove this override once @angular/build ships with
+# @babel/core >= 7.29.6. To check, run:
+#   pnpm ls @babel/core --depth=10
+# Both @angular/build and all other paths should resolve to >= 7.29.6.
+overrides:
+  '@angular/build>@babel/core': '7.29.6'
