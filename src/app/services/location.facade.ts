@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
 import { isAfter, subHours } from 'date-fns';
 import { switchMap } from 'rxjs';
@@ -89,15 +90,22 @@ export class LocationFacade {
         const locationIds = this.locationState.locations().map((l) => l.id);
         return this.measurementState.refreshAll(locationIds);
       }),
-    ).subscribe(() => {
-      this.startRefreshTimer();
+    ).subscribe({
+      next: () => this.startRefreshTimer(),
+      error: (err) => {
+        // HTTP errors are already handled (throttled toast + Sentry) by the interceptor.
+        // Only show toast for domain errors thrown inside LocationStateService.
+        if (!(err instanceof HttpErrorResponse)) {
+          this.errorHandling.handle(err);
+        }
+      },
     });
   }
 
   selectLocation(location: Location): void {
     const measurements = this.measurementsByLocation()[location.id];
     if (!measurements || measurements.length === 0) {
-      this.errorHandling.handle(
+      this.errorHandling.handleImmediate(
         new Error('Brak aktualnych danych do wyświetlenia na wykresie.')
       );
       return;

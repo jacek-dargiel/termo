@@ -8,7 +8,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { environment } from 'environments/environment';
 
 import { MeasurementStateService } from './measurement.state';
-import { ErrorHandlingService } from './error-handling.service';
 import { AIOFeedData } from '../interfaces';
 
 function createAIOFeedData(overrides?: Partial<AIOFeedData>): AIOFeedData {
@@ -31,18 +30,14 @@ function createAIOFeedData(overrides?: Partial<AIOFeedData>): AIOFeedData {
 describe('MeasurementStateService', () => {
   let service: MeasurementStateService;
   let httpTesting: HttpTestingController;
-  let errorHandlingMock: { handle: ReturnType<typeof vi.fn> };
   let appRef: ApplicationRef;
 
   beforeEach(() => {
-    errorHandlingMock = { handle: vi.fn() };
-
     TestBed.configureTestingModule({
       providers: [
         MeasurementStateService,
         provideHttpClient(withXhr()),
         provideHttpClientTesting(),
-        { provide: ErrorHandlingService, useValue: errorHandlingMock },
         provideZonelessChangeDetection(),
       ],
     });
@@ -119,30 +114,37 @@ describe('MeasurementStateService', () => {
       expect(service.loading()).toBe(false);
     });
 
-    it('when refreshAll fails, error is shown but only one toast per 5 seconds', async () => {
-      vi.useFakeTimers();
+    it('when one feed fails, successful feeds still populate measurements and loading resets', async () => {
+      const goodFeed = createAIOFeedData({ id: '1', feed_key: 'loc-a', value: '21.5' });
 
-      service.refreshAll(['loc-a', 'loc-b', 'loc-c']).subscribe();
+      service.refreshAll(['loc-a', 'loc-b']).subscribe();
 
-      const reqA = httpTesting.expectOne(urlFor('loc-a'));
-      const reqB = httpTesting.expectOne(urlFor('loc-b'));
-      const reqC = httpTesting.expectOne(urlFor('loc-c'));
-
-      reqA.flush('Server error', { status: 500, statusText: 'Internal Server Error' });
-      reqB.flush('Server error', { status: 500, statusText: 'Internal Server Error' });
-      reqC.flush('Server error', { status: 500, statusText: 'Internal Server Error' });
+      httpTesting.expectOne(urlFor('loc-a')).flush([goodFeed]);
+      httpTesting.expectOne(urlFor('loc-b')).flush(
+        'Server error',
+        { status: 500, statusText: 'Internal Server Error' },
+      );
 
       await appRef.whenStable();
 
-      // Before auditTime window expires, no error should be shown
-      expect(errorHandlingMock.handle).not.toHaveBeenCalled();
+      const result = service.measurementsByLocation();
+      // loc-b's feed is absent because its request failed → empty fallback
+      expect(Object.keys(result)).toEqual(['loc-a']);
+      expect(result['loc-a'].length).toBe(1);
+      expect(result['loc-a'][0].value).toBe(21.5);
+      expect(service.loading()).toBe(false);
+    });
 
-      vi.advanceTimersByTime(5000);
+    it('when API returns empty array for a feed, no measurements are stored for that key', async () => {
+      service.refreshAll(['loc-a']).subscribe();
 
-      // After auditTime window, exactly one error toast
-      expect(errorHandlingMock.handle).toHaveBeenCalledTimes(1);
+      httpTesting.expectOne(urlFor('loc-a')).flush([]);
 
-      vi.useRealTimers();
+      await appRef.whenStable();
+
+      const result = service.measurementsByLocation();
+      expect(result).toEqual({});
+      expect(service.loading()).toBe(false);
     });
   });
 });
