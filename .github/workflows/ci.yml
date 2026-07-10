@@ -20,32 +20,37 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24.x
-          cache: npm
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
+
+      - name: Approve builds
+        run: pnpm approve-builds --all
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        run: pnpm exec playwright install --with-deps
 
       - name: Lint
-        run: npm run lint
+        run: pnpm lint
 
       - name: Unit tests
-        run: npm test
+        run: pnpm test
 
       - name: E2E tests
-        run: npm run e2e:ci
+        run: pnpm e2e:ci
 
       - name: Build
-        run: npm run build
+        run: pnpm build
 
       - name: Post-deploy (envsub + sentry release)
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        run: npm run post-deploy
+        run: pnpm post-deploy
         env:
           TERMO_AIO_USER: ${{ vars.TERMO_AIO_USER }}
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -53,7 +58,7 @@ jobs:
 
       - name: Deploy to Netlify
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
-        run: npx netlify-cli deploy --dir=dist/browser --prod --message="Deploy from CI - ${{ github.sha }}"
+        run: pnpm dlx netlify-cli deploy --dir=dist/browser --prod --message="Deploy from CI - ${{ github.sha }}"
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ vars.NETLIFY_SITE_ID }}
